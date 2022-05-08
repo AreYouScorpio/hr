@@ -3,7 +3,7 @@ package hu.webuni.hr.akostomschweger.service;
 import hu.webuni.hr.akostomschweger.model.Employee;
 import org.springframework.stereotype.Service;
 
-//@Service
+@Service
 public class DefaultEmployeeService implements EmployeeService{
 
     @Override

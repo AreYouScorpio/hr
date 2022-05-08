@@ -1,11 +1,14 @@
 package hu.webuni.hr.akostomschweger;
 
 import hu.webuni.hr.akostomschweger.model.Employee;
+import hu.webuni.hr.akostomschweger.service.DefaultEmployeeService;
+import hu.webuni.hr.akostomschweger.service.EmployeeService;
 import hu.webuni.hr.akostomschweger.service.SalaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDateTime;
 
@@ -46,4 +49,5 @@ public class HrApplication implements CommandLineRunner {
 
 
 	}
+
 }
