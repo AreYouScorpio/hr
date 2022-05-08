@@ -59,9 +59,9 @@ public class AtConfigurationProperties {
         private int percent2;
         private int percent3;
         private int percent4;
-        private int limit1;
-        private int limit2;
-        private int limit3;
+        private double limit1;
+        private double limit2;
+        private double limit3;
 
         public int getPercent1() {
             return percent1;
@@ -95,27 +95,27 @@ public class AtConfigurationProperties {
             this.percent4 = percent4;
         }
 
-        public int getLimit1() {
+        public double getLimit1() {
             return limit1;
         }
 
-        public void setLimit1(int limit1) {
+        public void setLimit1(double limit1) {
             this.limit1 = limit1;
         }
 
-        public int getLimit2() {
+        public double getLimit2() {
             return limit2;
         }
 
-        public void setLimit2(int limit2) {
+        public void setLimit2(double limit2) {
             this.limit2 = limit2;
         }
 
-        public int getLimit3() {
+        public double getLimit3() {
             return limit3;
         }
 
-        public void setLimit3(int limit3) {
+        public void setLimit3(double limit3) {
             this.limit3 = limit3;
         }
     }
