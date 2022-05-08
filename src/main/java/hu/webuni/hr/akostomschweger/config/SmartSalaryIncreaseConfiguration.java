@@ -8,10 +8,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
-@Profile("!smart")
-public class SalaryIncreaseConfiguration {
+@Profile("smart")
+public class SmartSalaryIncreaseConfiguration {
     @Bean
     public EmployeeService employeeService() {
-        return new DefaultEmployeeService();
+        return new SmartEmployeeService();
     }
 }
