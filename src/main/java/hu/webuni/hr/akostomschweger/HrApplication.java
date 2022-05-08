@@ -1,13 +1,49 @@
 package hu.webuni.hr.akostomschweger;
 
+import hu.webuni.hr.akostomschweger.model.Employee;
+import hu.webuni.hr.akostomschweger.service.SalaryService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.time.LocalDateTime;
+
 @SpringBootApplication
-public class HrApplication {
+public class HrApplication implements CommandLineRunner {
+
+	@Autowired
+	SalaryService salaryService;
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(HrApplication.class, args);
 	}
 
+	@Override
+	public void run(String... args) throws Exception {
+
+		Employee employee1 =
+				new Employee(1L, "Akos", "Tester1", 100,
+						LocalDateTime.of(2000,1, 1,0,0,0,0 ));
+
+		Employee employee2 =
+				new Employee(2L, "Bkos", "Tester2", 200,
+						LocalDateTime.of(2016,1, 1,0,0,0,0 ));
+
+		Employee employee3 =
+				new Employee(3L, "Ckos", "Tester3", 300,
+						LocalDateTime.of(2018,1, 1,0,0,0,0 ));
+
+		Employee employee4 =
+				new Employee(4L, "Dkos", "Tester4", 400,
+						LocalDateTime.of(2022,1, 1,0,0,0,0 ));
+
+		System.out.println(salaryService.getPayRaisePercent(employee1));
+		System.out.println(salaryService.getPayRaisePercent(employee2));
+		System.out.println(salaryService.getPayRaisePercent(employee3));
+		System.out.println(salaryService.getPayRaisePercent(employee4));
+
+
+	}
 }
