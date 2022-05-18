@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en", xmlns:th="http://www.thymeleaf.org">
+
+<!-- http://localhost:8080/airports --- itt checkolni
+az idea saját localhostjára csak a html-t küldi, a java frissítéseket nem-->
+
+<head>
+  <meta charset="UTF-8">
+  <title>HR application</title>
+</head>
+<body>
+<h1> List of employees </h1>
+
+<ul>
+  <li th:each="employee : ${employees}">
+    <span th:text="${employee.id}">id</span>
+    <span th:text="${employee.name}">name</span>
+    <span th:text="${employee.position}">position</span>
+    <span th:text="${employee.salary}">salary</span>
+    <span th:text="${employee.startDateAtTheCompany}">startDateAtTheCompany</span>
+  </li>
+</ul>
+
+<form th:action="@{/employees}" method="post" th:object="${newEmployee}">
+  Id: <input th:field="*{id}" /> <br/>
+  Name:<input th:field="*{name}" /> <br/>
+  Position:<input th:field="*{position}" /> <br/>
+  Salary:<input th:field="*{salary}" /> <br/>
+  StartDateAtTheCompany:<input th:field="*{startDateAtTheCompany}" /> <br/>
+  <input type="submit" value="Add" />
+</form>
+
+</body>
+</html>
