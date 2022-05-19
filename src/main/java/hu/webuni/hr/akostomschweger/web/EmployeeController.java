@@ -74,9 +74,10 @@ public class EmployeeController {
     }
 
     @GetMapping("/list")
-    public List<EmployeeDto> getSalaryLimitOver(@RequestParam int salaryLimit){
+    public List<EmployeeDto> getSalaryLimitOver(@RequestParam int minSalary){
+
         return new ArrayList<>(employees.values().stream()
-                .filter(employeeDto -> employeeDto.getSalary()>salaryLimit)
+                .filter(employeeDto -> employeeDto.getSalary()>minSalary)
                 .collect(Collectors.toList()));
     }
 
