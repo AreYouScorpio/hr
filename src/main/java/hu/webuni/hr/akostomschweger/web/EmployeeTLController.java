@@ -4,6 +4,7 @@ import hu.webuni.hr.akostomschweger.dto.EmployeeDto;
 import hu.webuni.hr.akostomschweger.model.Employee;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -50,5 +51,11 @@ public class EmployeeTLController {
 
     }
 
+    @PostMapping("/employees")
+    public String addEmployee(EmployeeDto employee){
+        employees.add(employee);
+        return "redirect:employees";
+
+    }
 
 }
