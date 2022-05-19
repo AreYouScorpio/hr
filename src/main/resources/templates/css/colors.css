@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Macondo&display=swap');
+
+
+
+body {
+   background-color: #f0f0f0;
+
+}
+
+
+.login-div {
+    padding: 15px;
+    border: solid;
+    box-shadow: 0 0 2px #777;
+    display: inline-block;
+}
+
+.login-div input {
+    padding: 3px;
+    display: block;
+    margin-bottom: 7px;
+}
+
+#bioheader {
+    color: rebeccapurple;
+}
+
+.content {
+    color: red;
+}
+
+.login-div input[type="email"] {
+    border: solid 1px blue;
+}
+
+.login-div input[class*="blue"] {
+    border: solid 1px red;
+}
+
+.login-div button:hover {
+    box-shadow: 2px 2px 3px #c0c0c0;
+}
+
+.login-div input:focus {
+    box-shadow: 2px 2px 3px #c0c0c0;
+    border: none;
+}
+
+ul li:first-child {
+    color: red;
+}
+
+ul li:nth-child(2) {
+    color: blueviolet;
+    font-family: monospace;
+}
+
+
+h1 {
+    color: blue;
+    /* text-transform: uppercase ; */
+}
+
+p  {
+    color: red;
+    font-size: 14px;
+}
+img {
+    display: block;
+    width: 300px;
+    margin-top: 10px;
+    /* margin: 0.02% */;
+}

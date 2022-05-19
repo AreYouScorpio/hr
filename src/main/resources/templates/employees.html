@@ -2,30 +2,74 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <meta charset="UTF-8">
-  <title>HR application</title>
+    <meta charset="UTF-8">
+
+    <!-- bootstrap added -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+    <title>HR application</title>
+    <link rel="stylesheet" href="../css/colors.css">
 </head>
-<body>
-<h1> List of employees </h1>
+<body style="background-color:#f0f0f0;">
 
-<ul>
-  <li th:each="employee : ${employees}">
-    <span th:text="${employee.id}">id</span>
-    <span th:text="${employee.name}">name</span>
-    <span th:text="${employee.position}">position</span>
-    <span th:text="${employee.salary}">salary</span>
-    <span th:text="${employee.startDateAtTheCompany}">startDateAtTheCompany</span>
-  </li>
-</ul>
 
-<form th:action="@{/employees}" method="post" th:object="${newEmployee}">
-  Id: <input th:field="*{id}" /> <br/>
-  Name:<input th:field="*{name}" /> <br/>
-  Position:<input th:field="*{position}" /> <br/>
-  Salary:<input th:field="*{salary}" /> <br/>
-  StartDateAtTheCompany:<input th:field="*{startDateAtTheCompany}" /> <br/>
-  <input type="submit" value="Add" />
-</form>
+<h5 style="color:blue"> List of employees </h5>
+
+
+<table class="table table-striped table-bordered table-sm table-hover">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Position</th>
+        <th>Salary</th>
+        <th>Start date</th>
+    </tr>
+    </thead>
+
+    <tr
+            th:each="employee : ${employees}">
+        <td><span th:text="${employee.id}">id</span></td>
+        <td><span th:text="${employee.name}">name</span></td>
+        <td><span th:text="${employee.position}">position</span></td>
+        <td><span th:text="${employee.salary}">salary</span></td>
+        <td><span th:text="${employee.startDateAtTheCompany}">startDateAtTheCompany</span></td>
+    </tr>
+</table>
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-4">
+
+                <form th:action="@{/employees}" method="post" th:object="${newEmployee}">
+
+                    <p style="background-color: #E9F9BD;"> Employee input fields: </p>
+
+                    <div class="login-div">
+                        <div class="form-group">
+                            Id: <input class="form-control blue" th:field="*{id}"/> <br/>
+                            Name:<input class="form-control blue" th:field="*{name}"/> <br/>
+                            Position:<input class="form-control blue" th:field="*{position}"/> <br/>
+                            Salary:<input class="form-control blue" th:field="*{salary}"/> <br/>
+                            StartDateAtTheCompany:<input class="form-control blue" th:field="*{startDateAtTheCompany}"/>
+                            <br/>
+
+
+
+
+                            <input type="submit" value="Add"/>
+                        </div>
+                    </div>
+
+
+                </form>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>
