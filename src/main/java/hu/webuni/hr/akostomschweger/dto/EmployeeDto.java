@@ -19,6 +19,9 @@ public class EmployeeDto {
         this.startDateAtTheCompany = startDateAtTheCompany;
     }
 
+    public EmployeeDto() {
+    }
+
     public Long getId() {
         return id;
     }
