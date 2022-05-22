@@ -31,7 +31,7 @@
     <tr
             th:each="employee : ${employees}">
         <td><span th:text="${employee.id}">id</span></td>
-        <td><span th:text="${employee.name}">name</span></td>
+        <td><a th:href="@{'/modify/' + ${employee.id}}"><span th:text="${employee.name}">name</span></a></td>
         <td><span th:text="${employee.position}">position</span></td>
         <td><span th:text="${employee.salary}">salary</span></td>
         <td><span th:text="${employee.startDateAtTheCompany}">startDateAtTheCompany</span></td>
