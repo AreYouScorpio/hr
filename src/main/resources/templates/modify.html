@@ -28,11 +28,11 @@
     </thead>
 
     <tr>
-        <td><input readonly=true class="form-control blue" th:field="*{id}" th:value="${employee.id}"></td>
+        <td width="4%"><input readonly=true class="form-control blue" th:field="*{id}" th:value="${employee.id}"></td>
         <td><input class="form-control blue" th:field="*{name}" th:value="${employee.name}"></td>
         <td><input class="form-control blue" th:field="*{position}" th:value="${employee.position}"></td>
-        <td><input class="form-control blue" th:field="*{salary}" th:value="${employee.salary}"></td>
-        <td><input class="form-control blue" th:type="datetime-local" th:field="*{startDateAtTheCompany}" th:value="${employee.startDateAtTheCompany}" ></td>
+        <td width="12%"><input class="form-control blue" th:field="*{salary}" th:value="${employee.salary}"></td>
+        <td width="16%"><input class="form-control blue" th:type="datetime-local" th:field="*{startDateAtTheCompany}" th:value="${employee.startDateAtTheCompany}" ></td>
     </tr>
    <!-- th:type="datetime-local"
      <tr>
