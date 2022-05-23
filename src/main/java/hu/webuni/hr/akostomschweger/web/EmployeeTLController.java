@@ -2,12 +2,14 @@ package hu.webuni.hr.akostomschweger.web;
 
 import hu.webuni.hr.akostomschweger.dto.EmployeeDto;
 import hu.webuni.hr.akostomschweger.model.Employee;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -84,6 +86,8 @@ public class EmployeeTLController {
                 .findFirst()
                 .orElseThrow(() ->new IllegalArgumentException("ID not present."));
         model.put("employee", emp);
+//        String sd=emp.getStartDateAtTheCompany().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+//        model.put("startDate", sd);
         return "modify";
 
     }

@@ -32,12 +32,14 @@
         <td><input class="form-control blue" th:field="*{name}" th:value="${employee.name}"></td>
         <td><input class="form-control blue" th:field="*{position}" th:value="${employee.position}"></td>
         <td><input class="form-control blue" th:field="*{salary}" th:value="${employee.salary}"></td>
-        <td><input class="form-control blue" th:field="*{startDateAtTheCompany}" th:value="${employee.startDateAtTheCompany}"></td>
+        <td><input class="form-control blue" th:type="datetime-local" th:field="*{startDateAtTheCompany}" th:value="${employee.startDateAtTheCompany}" ></td>
     </tr>
    <!-- th:type="datetime-local"
      <tr>
     <td><input type="submit" value="Modify"/></td>
     </tr>
+    id="datetime_input"
+<span id="startDate_from" th:text="${startDate}"></span>
     -->
 </table>
 
@@ -47,12 +49,19 @@
         <div class="col-2"></div>
         <div class="col-4">
 
-            <input type="submit" value="Modify"/>
+            <input type="submit" value="Modify" onsubmit="hack();"/>
         </div>
     </div>
 </div>
 </form>
 
+<script type="text/javascript">
+    //document.getElementById('datetime_input').value=document.getElementById('startDate_from').innerHTML;
+    function hack()
+    {
+      alert('ok');
+    }
+</script>
 
 </body>
 </html>
