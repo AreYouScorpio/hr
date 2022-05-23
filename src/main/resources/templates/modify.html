@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+
+    <!-- bootstrap added -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+
+    <title> Employee modification</title>
+</head>
+<body style="background-color:#f0f0f0;">
+
+<form method="post" action="" th:object="${employee}">
+<h5 style="color:blue" ><span th:text="${employee.name}" ></span> data modification sheet </h5>
+
+<table class="table table-striped table-bordered table-sm table-hover">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Position</th>
+        <th>Salary</th>
+        <th>Start date</th>
+    </tr>
+    </thead>
+
+    <tr>
+        <td><input readonly=true class="form-control blue" th:field="*{id}" th:value="${employee.id}"></td>
+        <td><input class="form-control blue" th:field="*{name}" th:value="${employee.name}"></td>
+        <td><input class="form-control blue" th:field="*{position}" th:value="${employee.position}"></td>
+        <td><input class="form-control blue" th:field="*{salary}" th:value="${employee.salary}"></td>
+        <td><input class="form-control blue" th:field="*{startDateAtTheCompany}" th:value="${employee.startDateAtTheCompany}"></td>
+    </tr>
+   <!-- th:type="datetime-local"
+     <tr>
+    <td><input type="submit" value="Modify"/></td>
+    </tr>
+    -->
+</table>
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-4">
+
+            <input type="submit" value="Modify"/>
+        </div>
+    </div>
+</div>
+</form>
+
+
+</body>
+</html>
