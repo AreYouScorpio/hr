@@ -4,6 +4,7 @@ import hu.webuni.hr.akostomschweger.dto.EmployeeDto;
 import hu.webuni.hr.akostomschweger.model.Employee;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -100,5 +101,12 @@ public class EmployeeTLController {
         return "redirect:/employees";
     }
 
+    @PostMapping("/delete/{id}")
+    public String deleteEmployee(@PathVariable long id){
+        for(int i=0;i<employees.size();i++)
+            if(employees.get(i).getId()==id)
+                employees.remove(i);
+        return "redirect:/employees";
+    }
 
 }

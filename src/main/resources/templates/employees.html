@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <script src="https://kit.fontawesome.com/4e0a19b281.js" crossorigin="anonymous"></script>
 
     <!-- bootstrap added -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,6 +36,13 @@
         <td><span th:text="${employee.position}">position</span></td>
         <td><span th:text="${employee.salary}">salary</span></td>
         <td><span th:text="${employee.startDateAtTheCompany}">startDateAtTheCompany</span></td>
+        <td>
+            <form th:action="@{'/delete/' + ${employee.id}}" method="POST">
+        <div class="btn-group">
+            <button style="height: 30px; text-align: center; display: flex" class="btn-danger btn"> <i class="fa-solid fa-trash-can"></i>  </button>
+        </div>
+            </form>
+        </td>
     </tr>
 </table>
 
@@ -54,8 +62,9 @@
                             Name:<input class="form-control blue" th:field="*{name}"/> <br/>
                             Position:<input class="form-control blue" th:field="*{position}"/> <br/>
                             Salary:<input class="form-control blue" th:field="*{salary}"/> <br/>
-                            StartDateAtTheCompany:<input class="form-control blue" th:field="*{startDateAtTheCompany}"/>
+                            StartDateAtTheCompany:<input class="form-control blue" th:type="datetime-local" th:field="*{startDateAtTheCompany}"/>
                             <br/>
+
 
 
 
