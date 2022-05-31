@@ -28,26 +28,7 @@ public class EmployeeController {
 
     // ---> teacher's solution for companyController's payRaise
 
-    private Map<Long, EmployeeDto> employees = new HashMap<>();
 
-    {
-        employees.put(1L, new EmployeeDto(
-                1L,
-                "Akos",
-                "junior java developer",
-                100000,
-                LocalDateTime.of(2011, 1, 11, 11, 11))
-
-        );
-        employees.put(2L, new EmployeeDto(
-                2L,
-                "Bkos",
-                "senior java developer",
-                200000,
-                LocalDateTime.of(2012, 2, 22, 22, 22))
-
-        );
-    }
 
     @GetMapping
     public List<EmployeeDto> getAll() {
