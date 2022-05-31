@@ -1,13 +1,23 @@
 package hu.webuni.hr.akostomschweger.dto;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 
 public class EmployeeDto {
 
     private Long id;
+    // @Size(min=3,max=20)
+    @NotBlank @NotNull
     private String name;
+    @NotBlank @NotNull
     private String position;
+    //@Min (value = 0)
+    @Positive
     private int salary;
+    @Past
     private LocalDateTime startDateAtTheCompany;
 
 
@@ -33,11 +43,9 @@ public class EmployeeDto {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     public String getPosition() {
         return position;
     }
@@ -53,7 +61,6 @@ public class EmployeeDto {
     public void setSalary(int salary) {
         this.salary = salary;
     }
-
     public LocalDateTime getStartDateAtTheCompany() {
         return startDateAtTheCompany;
     }

@@ -4,9 +4,12 @@ import hu.webuni.hr.akostomschweger.dto.EmployeeDto;
 import hu.webuni.hr.akostomschweger.model.Employee;
 import hu.webuni.hr.akostomschweger.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,6 +56,20 @@ public class EmployeeController {
 
 
     @GetMapping("/{id}")
+    public EmployeeDto getById(@PathVariable long id) {
+        EmployeeDto employeeDto = employees.get(id);
+        // if (employeeDto != null)
+        //    return ResponseEntity.ok(employeeDto);
+        // else
+        //    return ResponseEntity.notFound().build();
+        if (employeeDto!=null)
+            return employeeDto;
+        else
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+
+    /*
+    @GetMapping("/{id}")
     public ResponseEntity<EmployeeDto> getById(@PathVariable long id) {
         EmployeeDto employeeDto = employees.get(id);
         if (employeeDto != null)
@@ -61,9 +78,11 @@ public class EmployeeController {
             return ResponseEntity.notFound().build();
     }
 
+     */
+
 
     @PostMapping
-    public EmployeeDto createEmployee(@RequestBody EmployeeDto employeeDto) {
+    public EmployeeDto createEmployee(@RequestBody @Valid EmployeeDto employeeDto) {
         employees.put(employeeDto.getId(), employeeDto);
         return employeeDto;
     }

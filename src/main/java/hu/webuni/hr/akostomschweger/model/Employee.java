@@ -1,5 +1,6 @@
 package hu.webuni.hr.akostomschweger.model;
 
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 
 public class Employee {
