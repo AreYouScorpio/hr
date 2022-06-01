@@ -4,13 +4,16 @@ import hu.webuni.hr.akostomschweger.dto.CompanyDto;
 import hu.webuni.hr.akostomschweger.dto.EmployeeDto;
 import hu.webuni.hr.akostomschweger.model.Company;
 import hu.webuni.hr.akostomschweger.model.Employee;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class CompanyService {
+
 
     private Map<Long, Company> companies = new HashMap<>();
 
@@ -20,7 +23,7 @@ public class CompanyService {
                 "11111",
                 "A company",
                 "Budapest",
-                new ArrayList<Employee>()
+                new ArrayList<EmployeeDto>()
 
         ));
         companies.put(2L, new Company(
@@ -28,7 +31,7 @@ public class CompanyService {
                 "22222",
                 "B company",
                 "Amsterdam",
-                new ArrayList<Employee>()
+                new ArrayList<EmployeeDto>()
 
         ));
     }
@@ -48,4 +51,6 @@ public class CompanyService {
     public void delete(long id) {
         companies.remove(id);
     }
+
+
 }

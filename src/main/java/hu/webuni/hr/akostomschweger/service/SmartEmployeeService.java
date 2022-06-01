@@ -9,7 +9,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Service
-public class SmartEmployeeService extends EmployeeSuperClass implements EmployeeService {
+public class SmartEmployeeService extends EmployeeSuperClass {
 
     private final int DAYS_IN_A_YEAR = 365;
 

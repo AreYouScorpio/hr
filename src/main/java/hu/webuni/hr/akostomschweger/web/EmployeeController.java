@@ -1,8 +1,10 @@
 package hu.webuni.hr.akostomschweger.web;
 
 import hu.webuni.hr.akostomschweger.dto.EmployeeDto;
+import hu.webuni.hr.akostomschweger.mapper.EmployeeMapper;
 import hu.webuni.hr.akostomschweger.model.Employee;
 import hu.webuni.hr.akostomschweger.service.EmployeeService;
+import hu.webuni.hr.akostomschweger.service.EmployeeSuperClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,30 +23,31 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/employees")
 public class EmployeeController {
 
-    // ---> employeeservice to teacher's solution for companyController's payRaise
 
     @Autowired
-    private EmployeeService employeeService;
+    private EmployeeSuperClass employeeSuperClass;
 
-    // ---> teacher's solution for companyController's payRaise
-
+    @Autowired
+    EmployeeMapper employeeMapper;
 
 
     @GetMapping
     public List<EmployeeDto> getAll() {
+        return employeeMapper.employeesToDtos(employeeSuperClass.findAll());
         //return new ArrayList<>(employees.values());
     }
 
 
     @GetMapping("/{id}")
     public EmployeeDto getById(@PathVariable long id) {
-        EmployeeDto employeeDto = employees.get(id);
+        Employee employee = employeeSuperClass.findById(id);
+        //EmployeeDto employeeDto = employeeSuperClass.get(id);
         // if (employeeDto != null)
         //    return ResponseEntity.ok(employeeDto);
         // else
         //    return ResponseEntity.notFound().build();
-        if (employeeDto!=null)
-            return employeeDto;
+        if (employee!=null)
+            return employeeMapper.employeeToDto(employee);
         else
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
@@ -64,10 +67,19 @@ public class EmployeeController {
 
     @PostMapping
     public EmployeeDto createEmployee(@RequestBody @Valid EmployeeDto employeeDto) {
+       Employee employee = employeeSuperClass.save(employeeMapper.dtoToEmployee(employeeDto));
+        return employeeMapper.employeeToDto(employee);
+    }
+
+    /*
+    @PostMapping
+    public EmployeeDto createEmployee(@RequestBody @Valid EmployeeDto employeeDto) {
         employees.put(employeeDto.getId(), employeeDto);
         return employeeDto;
     }
+    */
 
+    /* !!!
     @PutMapping("/{id}")
     public ResponseEntity<EmployeeDto> modifyEmployee(@PathVariable long id,
                                                       @RequestBody EmployeeDto employeeDto) {
@@ -97,6 +109,8 @@ public class EmployeeController {
     public int getPayRaisePercent(@RequestBody Employee employee) {
         return employeeService.getPayRaisePercent(employee);
     }
+
+     */
 }
 
 

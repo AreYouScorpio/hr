@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DefaultEmployeeService extends EmployeeSuperClass implements EmployeeService {
+public class DefaultEmployeeService extends EmployeeSuperClass {
 
     @Autowired
     AtConfigurationProperties config;

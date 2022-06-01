@@ -2,7 +2,11 @@ package hu.webuni.hr.akostomschweger.web;
 
 import hu.webuni.hr.akostomschweger.dto.CompanyDto;
 import hu.webuni.hr.akostomschweger.dto.EmployeeDto;
+import hu.webuni.hr.akostomschweger.mapper.CompanyMapper;
+import hu.webuni.hr.akostomschweger.mapper.EmployeeMapper;
+import hu.webuni.hr.akostomschweger.model.Company;
 import hu.webuni.hr.akostomschweger.model.Employee;
+import hu.webuni.hr.akostomschweger.service.CompanyService;
 import hu.webuni.hr.akostomschweger.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +26,12 @@ import java.util.stream.Collectors;
 public class CompanyController {
 
 
+    @Autowired
+    private CompanyService companyService;
+
+    @Autowired
+    CompanyMapper companyMapper;
+
 
     /*
 
@@ -34,6 +44,19 @@ public class CompanyController {
 
      */
 
+
+
+    @GetMapping("/{id}")
+    public CompanyDto getById(@PathVariable long id) {
+        Company company = companyService.findById(id);
+        if (company != null)
+            return companyMapper.companyToDto(company);
+        else
+            // return ResponseEntity.notFound().build();
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+
+/*
     @GetMapping("/{id}")
     public ResponseEntity<CompanyDto> getById(@PathVariable long id) {
         CompanyDto companyDto = companies.get(id);
@@ -42,14 +65,18 @@ public class CompanyController {
         else
             return ResponseEntity.notFound().build();
     }
-
+    */
 
     @PostMapping
     public CompanyDto createCompany(@RequestBody CompanyDto companyDto) {
-        companies.put(companyDto.getId(), companyDto);
-        return companyDto;
+        Company company = companyService.save(companyMapper.dtoToCompany(companyDto));
+        // companies.put(companyDto.getId(), companyDto);
+        // return companyDto;
+        return companyMapper.companyToDto(company);
     }
 
+
+    /* !!
     @PutMapping("/{id}")
     public ResponseEntity<CompanyDto> modifyCompany(@PathVariable long id,
                                                     @RequestBody CompanyDto companyDto) {
@@ -123,9 +150,10 @@ public class CompanyController {
     @GetMapping
     public List<CompanyDto> getAll(@RequestParam(required = false) Boolean full) {
         if (full != null && full)
-            return new ArrayList<>(companies.values());
+            //return new ArrayList<>(companies.values());
+            return companyMapper.companiesToDtos(companyService.findAll());
         else
-            return companies.values()
+            return companyMapper.companiesToDtos(companyService.findAll())
                     .stream()
                     .map(c -> new CompanyDto(c.getId(), c.getRegNo(), c.getName(), c.getAddress(), null))
                     .collect(Collectors.toList());

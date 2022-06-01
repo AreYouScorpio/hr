@@ -2,6 +2,8 @@ package hu.webuni.hr.akostomschweger.service;
 
 import hu.webuni.hr.akostomschweger.dto.EmployeeDto;
 import hu.webuni.hr.akostomschweger.model.Employee;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -11,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-abstract class EmployeeSuperClass {
+public abstract class EmployeeSuperClass implements EmployeeService{
 
     private Map<Long, Employee> employees = new HashMap<>();
 
