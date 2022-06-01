@@ -25,9 +25,6 @@ public class EmployeeController {
 
 
     @Autowired
-    private EmployeeSuperClass employeeSuperClass;
-
-    @Autowired
     EmployeeMapper employeeMapper;
 
     @Autowired
@@ -35,14 +32,14 @@ public class EmployeeController {
 
     @GetMapping
     public List<EmployeeDto> getAll() {
-        return employeeMapper.employeesToDtos(employeeSuperClass.findAll());
+        return employeeMapper.employeesToDtos(employeeService.findAll());
         //return new ArrayList<>(employees.values());
     }
 
 
     @GetMapping("/{id}")
     public EmployeeDto getById(@PathVariable long id) {
-        Employee employee = employeeSuperClass.findById(id);
+        Employee employee = employeeService.findById(id);
         //EmployeeDto employeeDto = employeeSuperClass.get(id);
         // if (employeeDto != null)
         //    return ResponseEntity.ok(employeeDto);
@@ -69,10 +66,15 @@ public class EmployeeController {
 
     @PostMapping
     public EmployeeDto createEmployee(@RequestBody @Valid EmployeeDto employeeDto) {
-       Employee employee = employeeSuperClass.save(employeeMapper.dtoToEmployee(employeeDto));
+       Employee employee = employeeService.save(employeeMapper.dtoToEmployee(employeeDto));
         return employeeMapper.employeeToDto(employee);
     }
 
+    @DeleteMapping("/{id}")
+    public void deleteEmployee(@PathVariable long id) {
+        employeeService.delete(id);
+
+    }
     /*
     @PostMapping
     public EmployeeDto createEmployee(@RequestBody @Valid EmployeeDto employeeDto) {

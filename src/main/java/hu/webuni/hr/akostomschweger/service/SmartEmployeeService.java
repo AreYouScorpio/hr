@@ -16,9 +16,6 @@ public class SmartEmployeeService extends EmployeeSuperClass {
     @Autowired
     AtConfigurationProperties config;
 
-    @Autowired
-    EmployeeService employeeService;
-
     @Override
     public int getPayRaisePercent(Employee employee) {
 
