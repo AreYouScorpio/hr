@@ -22,26 +22,6 @@ import java.util.stream.Collectors;
 public class CompanyController {
 
 
-    private Map<Long, CompanyDto> companies = new HashMap<>();
-
-    {
-        companies.put(1L, new CompanyDto(
-                1L,
-                "11111",
-                "A company",
-                "Budapest",
-                new ArrayList<EmployeeDto>()
-
-        ));
-        companies.put(2L, new CompanyDto(
-                2L,
-                "22222",
-                "B company",
-                "Amsterdam",
-                new ArrayList<EmployeeDto>()
-
-        ));
-    }
 
     /*
 

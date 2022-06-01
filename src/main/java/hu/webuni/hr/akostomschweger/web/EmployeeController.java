@@ -32,7 +32,7 @@ public class EmployeeController {
 
     @GetMapping
     public List<EmployeeDto> getAll() {
-        return new ArrayList<>(employees.values());
+        //return new ArrayList<>(employees.values());
     }
 
 
