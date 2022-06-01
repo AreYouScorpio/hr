@@ -30,6 +30,8 @@ public class EmployeeController {
     @Autowired
     EmployeeMapper employeeMapper;
 
+    @Autowired
+    EmployeeService employeeService;
 
     @GetMapping
     public List<EmployeeDto> getAll() {

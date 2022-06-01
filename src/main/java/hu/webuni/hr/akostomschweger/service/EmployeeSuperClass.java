@@ -12,8 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Service
-public abstract class EmployeeSuperClass implements EmployeeService{
+// itt ne legyen annotáció (teacher's hint) -- @Service
+public abstract class EmployeeSuperClass implements EmployeeService {
 
     private Map<Long, Employee> employees = new HashMap<>();
 
