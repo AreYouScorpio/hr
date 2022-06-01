@@ -96,6 +96,10 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeDto);
     }
 
+    */
+
+    /*
+
     @DeleteMapping("/{id}")
     public void deleteEmployee(@PathVariable long id) {
         employees.remove(id);
@@ -108,13 +112,13 @@ public class EmployeeController {
                 .filter(employeeDto -> employeeDto.getSalary() > minSalary)
                 .collect(Collectors.toList()));
     }
-
+*/
     @PostMapping("/payRaise")
     public int getPayRaisePercent(@RequestBody Employee employee) {
         return employeeService.getPayRaisePercent(employee);
     }
 
-     */
+
 }
 
 
