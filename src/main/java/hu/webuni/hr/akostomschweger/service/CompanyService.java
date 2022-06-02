@@ -56,5 +56,27 @@ public class CompanyService {
         companies.remove(id);
     }
 
+    public Company addNewEmployee(long company_id, EmployeeDto employee) {
+
+        Company company = findById(company_id);
+        company.getEmployeeDtoList().add(employee);
+
+        return company;
+    }
+
+    public Company deleteEmployeeFromCompany(long company_id, long employee_id) {
+        Company company = findById(company_id);
+        company.getEmployeeDtoList().removeIf(e -> e.getId() == employee_id);
+
+        return company;
+    }
+
+    public Company modifyCompany(long company_id, List<EmployeeDto> employees) {
+        Company company = findById(company_id);
+        company.setEmployeeDtoList(employees);
+
+        return company;
+    }
+
 
 }

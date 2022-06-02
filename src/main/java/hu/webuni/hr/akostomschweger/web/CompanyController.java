@@ -32,6 +32,9 @@ public class CompanyController {
     @Autowired
     CompanyMapper companyMapper;
 
+    @Autowired
+    EmployeeMapper employeeMapper;
+
 
     /*
 
@@ -136,8 +139,46 @@ public class CompanyController {
         return company;
     }
 
+new version after MapStruct --->
+ */
+    @PostMapping("/addemployeetocompany/{company_id}")
+    public CompanyDto addEmployeeToCompany(@PathVariable long company_id,
+                                           @RequestBody EmployeeDto employeeDto) {
+
+        Company company = companyService.findById(company_id);
+
+        if (company != null)
+            companyService.addNewEmployee(company_id, employeeDto);
+        else
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+
+
+       return companyMapper.companyToDto(company);
+
+
+
+    }
+
 
     @DeleteMapping("/{id}/employees/{employeeId}")
+    public CompanyDto deleteEmployeeFromCompany(@PathVariable long id, @PathVariable long employeeId) {
+
+        Company company = companyService.findById(id);
+
+        if (company != null)
+            companyService.deleteEmployeeFromCompany(id, employeeId);
+        else
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+
+        // company.getEmployeeDtoList().removeIf(e -> e.getId() == employeeId);
+
+        return companyMapper.companyToDto(company);
+
+
+    }
+
+    /* before MapStruct:
+        @DeleteMapping("/{id}/employees/{employeeId}")
     public CompanyDto deleteEmployeeFromCompany(@PathVariable long id, @PathVariable long employeeId) {
         if (!companies.containsKey(id))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -145,8 +186,26 @@ public class CompanyController {
         company.getEmployeeDtoList().removeIf(e -> e.getId() == employeeId);
         return company;
     }
+     */
+
+
+
 
     @PutMapping("/{id}/employees")
+    public CompanyDto modifyCompany(@PathVariable long id,
+                                                    @RequestBody List<EmployeeDto> employees) {
+        Company company = companyService.findById(id);
+
+        if (company != null)
+            companyService.modifyCompany(id, employees);
+        else
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        return companyMapper.companyToDto(company);
+    }
+
+
+    /* old version employee list change
+        @PutMapping("/{id}/employees")
     public ResponseEntity<CompanyDto> modifyCompany(@PathVariable long id,
                                                     @RequestBody List<EmployeeDto> employees) {
         if (!companies.containsKey(id)) {
@@ -156,6 +215,10 @@ public class CompanyController {
         company.setEmployeeDtoList(employees);
         return ResponseEntity.ok(company);
     }
+
+
+     */
+
 
 
 
