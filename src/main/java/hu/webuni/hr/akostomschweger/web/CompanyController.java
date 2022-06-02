@@ -80,8 +80,8 @@ public class CompanyController {
         return companyMapper.companyToDto(company);
     }
 
+/* old putmapping before mapstruct
 
-    /* !!
     @PutMapping("/{id}")
     public ResponseEntity<CompanyDto> modifyCompany(@PathVariable long id,
                                                     @RequestBody CompanyDto companyDto) {
@@ -93,6 +93,25 @@ public class CompanyController {
         companies.put(id, companyDto);
         return ResponseEntity.ok(companyDto);
     }
+
+    */
+
+    @PutMapping("/{id}")
+    public CompanyDto modifyCompany(@PathVariable long id,
+                                                    @RequestBody CompanyDto companyDto) {
+
+        Company company = companyService.findById(id);
+
+        if (company != null)
+            companyService.update(id, companyMapper.dtoToCompany(companyDto));
+        else throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+
+        return companyMapper.companyToDto(company);
+    }
+
+
+
+    /*
 
     @DeleteMapping("/{id}")
     public void deleteCompany(@PathVariable long id) {
