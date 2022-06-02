@@ -48,6 +48,10 @@ public class CompanyService {
         return companies.get(id);
     }
 
+    public Company update(long id, Company company) {
+        companies.put(id, company);
+        return company;
+    }
     public void delete(long id) {
         companies.remove(id);
     }
