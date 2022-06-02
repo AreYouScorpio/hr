@@ -60,19 +60,6 @@ public class CompanyController {
     }
 
 
-    @GetMapping("/{id}")
-    public EmployeeDto getById(@PathVariable long id) {
-        Employee employee = employeeService.findById(id);
-        //EmployeeDto employeeDto = employeeSuperClass.get(id);
-        // if (employeeDto != null)
-        //    return ResponseEntity.ok(employeeDto);
-        // else
-        //    return ResponseEntity.notFound().build();
-        if (employee!=null)
-            return employeeMapper.employeeToDto(employee);
-        else
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-    }
 
 /*
     @GetMapping("/{id}")
