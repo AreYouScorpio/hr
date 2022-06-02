@@ -49,9 +49,16 @@ public abstract class EmployeeSuperClass implements EmployeeService {
         return employees.get(id);
     }
 
+    public Employee update(long id, Employee employee) {
+        employees.put(id, employee);
+        return employee;
+    }
+
     public void delete(long id) {
         employees.remove(id);
     }
+
+
 
 
 }

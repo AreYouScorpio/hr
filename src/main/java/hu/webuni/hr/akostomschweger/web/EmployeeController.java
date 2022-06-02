@@ -83,7 +83,26 @@ public class EmployeeController {
     }
     */
 
-    /* !!!
+    @PutMapping("/{id}")
+    public EmployeeDto modifyEmployee(@PathVariable long id,
+                                    @RequestBody @Valid EmployeeDto employeeDto) {
+
+        Employee employee = employeeService.findById(id);
+
+
+        if (employee != null)
+            employeeService.update(id, employeeMapper.dtoToEmployee(employeeDto));
+        else throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+
+
+        return employeeMapper.employeeToDto(employee);
+
+
+    }
+
+
+
+    /* !!! ----> old version before MapStruct added
     @PutMapping("/{id}")
     public ResponseEntity<EmployeeDto> modifyEmployee(@PathVariable long id,
                                                       @RequestBody EmployeeDto employeeDto) {
