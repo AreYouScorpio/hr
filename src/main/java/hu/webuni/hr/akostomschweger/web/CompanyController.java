@@ -27,7 +27,7 @@ public class CompanyController {
 
 
     @Autowired
-    private CompanyService companyService;
+    CompanyService companyService;
 
     @Autowired
     CompanyMapper companyMapper;
@@ -44,7 +44,10 @@ public class CompanyController {
 
      */
 
-
+    @GetMapping
+    public List<CompanyDto> getAll(){
+        return companyMapper.companiesToDtos(companyService.findAll());
+    }
 
     @GetMapping("/{id}")
     public CompanyDto getById(@PathVariable long id) {
@@ -95,6 +98,13 @@ public class CompanyController {
     }
 
 
+     */
+
+    @DeleteMapping("/{id}")
+    public void deleteCompany(@PathVariable long id) {
+        companyService.delete(id); }
+
+/*
     @PostMapping("/addemployeetocompany/{company_id}")
     public CompanyDto addEmployeeToCompany(@PathVariable long company_id,
                                            @RequestBody EmployeeDto employeeDto) {
@@ -145,7 +155,7 @@ public class CompanyController {
 	//1. megoldás
 
 	*/
-
+/*
 
     @GetMapping
     public List<CompanyDto> getAll(@RequestParam(required = false) Boolean full) {
@@ -159,6 +169,8 @@ public class CompanyController {
                     .collect(Collectors.toList());
     }
 
+
+ */
 
 
 
