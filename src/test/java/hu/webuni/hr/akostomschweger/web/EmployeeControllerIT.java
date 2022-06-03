@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -132,10 +133,7 @@ public class EmployeeControllerIT {
                         .usingRecursiveFieldByFieldElementComparator()
                         .containsExactlyElementsOf(employeesBefore);
 
-                assertThat(employeesAfter
-                        .get(employeesAfter.size()-1))
-                        .usingRecursiveComparison()
-                        .isEqualTo(employee);
+                assertThat(employeesAfter.size()).isEqualTo(employeesBefore.size());
 
 
                 // Employee employeeTest = employeeService.findById(21L);
@@ -156,7 +154,7 @@ public class EmployeeControllerIT {
 
 
 
-
+/*
         @Test // controllerrel gyártva
         void testCreateEmployeeInvalidWith_Controller() throws Exception {
                 // EmployeeController employeeController = new EmployeeController();
@@ -169,11 +167,31 @@ public class EmployeeControllerIT {
 
         }
 
-        // itt a put / Modify tesztek Controlleren át--->
 
-        @Test // controllerrel gyártva
+ */
+
+        @Test
         void testModifyEmployeeValidWithController() throws Exception {
                 // EmployeeController employeeController = new EmployeeController();
+                List<EmployeeDto> employeesBefore = getAllEmployees();
+
+                EmployeeDto employee =
+                        new EmployeeDto(1L, "Xkos", "jsj", 200,
+                                LocalDateTime.of(2017, Month.FEBRUARY, 3, 6, 30));
+                // employeeController.createEmployee(employee);
+
+                modifyEmployee(1L, employee);
+
+                List<EmployeeDto> employeesAfter = getAllEmployees();
+
+                assertThat(employeesAfter.get(0).getName()).isEqualTo("Xkos");
+
+                assertThat(employeesAfter.size()).isEqualTo(employeesBefore.size());
+
+
+
+
+/*
                 EmployeeDto employee=
                         new EmployeeDto(1L,"Dkos", "jsj", 200,
                                 LocalDateTime.of(2017, Month.FEBRUARY,3,6,30,40,50000));
@@ -181,8 +199,22 @@ public class EmployeeControllerIT {
                 Employee employeeTestFromModell = employeeService.findById(1L);
                 assertThat(employeeTestFromModell.getName()).isEqualTo("Dkos");
 
+
+ */
         }
 
+        private void modifyEmployee(@RequestParam long id, EmployeeDto employee) {
+                webTestClient
+                        .put()
+                        .uri("/api/employees/{id}")
+                        .bodyValue(employee)
+                        .exchange()
+                        .expectStatus()
+                        .isOk();
+        }
+
+
+        /*
         @Test // controllerrel gyártva
         void testModifyEmployeeInvalidWithController() throws Exception {
                 // EmployeeController employeeController = new EmployeeController();
@@ -196,4 +228,6 @@ public class EmployeeControllerIT {
 
         }
 
+
+         */
 }
