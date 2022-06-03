@@ -95,6 +95,16 @@ public class EmployeeControllerIT {
                         .isOk();
         }
 
+        private void createEmployeeInvalid(EmployeeDto employee) {
+                webTestClient
+                        .post()
+                        .uri(BASE_URI)
+                        .bodyValue(employee)
+                        .exchange()
+                        .expectStatus()
+                        .isBadRequest();
+        }
+
         private List<EmployeeDto> getAllEmployees() {
                 List<EmployeeDto> responseList =
                         webTestClient
@@ -125,7 +135,7 @@ public class EmployeeControllerIT {
                                 LocalDateTime.of(2017, Month.FEBRUARY,3,6,30));
                 // employeeController.createEmployee(employee);
 
-                createEmployee(employee);
+                createEmployeeInvalid(employee);
 
                 List<EmployeeDto> employeesAfter = getAllEmployees();
 
@@ -203,10 +213,10 @@ public class EmployeeControllerIT {
  */
         }
 
-        private void modifyEmployee(@RequestParam long id, EmployeeDto employee) {
+        private void modifyEmployee( long id, EmployeeDto employee) {
                 webTestClient
                         .put()
-                        .uri("/api/employees/{id}")
+                        .uri("/api/employees/"+"id")
                         .bodyValue(employee)
                         .exchange()
                         .expectStatus()
