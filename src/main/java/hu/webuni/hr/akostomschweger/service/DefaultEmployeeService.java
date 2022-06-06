@@ -2,6 +2,7 @@ package hu.webuni.hr.akostomschweger.service;
 
 import hu.webuni.hr.akostomschweger.config.AtConfigurationProperties;
 import hu.webuni.hr.akostomschweger.model.Employee;
+import hu.webuni.hr.akostomschweger.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,8 @@ public class DefaultEmployeeService extends EmployeeSuperClass {
 
     @Autowired
     AtConfigurationProperties config;
+
+
 
     @Override
     public int getPayRaisePercent(Employee employee) {

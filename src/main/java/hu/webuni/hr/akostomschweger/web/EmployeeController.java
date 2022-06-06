@@ -13,10 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -39,16 +36,21 @@ public class EmployeeController {
 
     @GetMapping("/{id}")
     public EmployeeDto getById(@PathVariable long id) {
-        Employee employee = employeeService.findById(id);
+        Employee employee = employeeService.findById(id)
+                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND));
         //EmployeeDto employeeDto = employeeSuperClass.get(id);
         // if (employeeDto != null)
         //    return ResponseEntity.ok(employeeDto);
         // else
         //    return ResponseEntity.notFound().build();
+        /*
         if (employee!=null)
             return employeeMapper.employeeToDto(employee);
         else
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    */
+        return employeeMapper.employeeToDto(employee);
+
     }
 
     /*
@@ -84,18 +86,28 @@ public class EmployeeController {
     */
 
     @PutMapping("/{id}")
-    public EmployeeDto modifyEmployee(@PathVariable long id,
+    public ResponseEntity<EmployeeDto> modifyEmployee(@PathVariable long id,
                                     @RequestBody @Valid EmployeeDto employeeDto) {
 
-        Employee employee = employeeService.findById(id);
+        //Employee employee = employeeService.findById(id);
 
+        Employee employee = employeeMapper.dtoToEmployee(employeeDto);
+        employee.setId(id); // hogy tudjunk módosítani azonos iata-jút a uniqecheck ellenére
+        try {
+            EmployeeDto savedEmployeeDto = employeeMapper.employeeToDto(employeeService.update(id, employee));
+            return ResponseEntity.ok(savedEmployeeDto);
+        }
+        catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
 
+        /*
         if (employee != null)
             employeeService.update(id, employeeMapper.dtoToEmployee(employeeDto));
         else throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+         */
 
-
-        return employeeMapper.employeeToDto(employee);
+        // return employeeMapper.employeeToDto(employee);
 
 
     }

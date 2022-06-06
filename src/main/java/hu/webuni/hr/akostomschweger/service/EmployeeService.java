@@ -3,6 +3,7 @@ package hu.webuni.hr.akostomschweger.service;
 import hu.webuni.hr.akostomschweger.model.Employee;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface EmployeeService {
@@ -13,7 +14,7 @@ public interface EmployeeService {
 
     public List<Employee> findAll();
 
-    public Employee findById(long id);
+    public Optional<Employee> findById(long id);
 
     public Employee update(long id, Employee employee);
 
