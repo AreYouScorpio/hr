@@ -1,11 +1,7 @@
 package hu.webuni.hr.akostomschweger.web;
 
 import hu.webuni.hr.akostomschweger.dto.EmployeeDto;
-import hu.webuni.hr.akostomschweger.model.Company;
-import hu.webuni.hr.akostomschweger.model.Employee;
-import hu.webuni.hr.akostomschweger.service.CompanyService;
 import hu.webuni.hr.akostomschweger.service.EmployeeService;
-import hu.webuni.hr.akostomschweger.service.EmployeeSuperClass;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -213,7 +208,23 @@ public class EmployeeControllerIT {
  */
         }
 
-        private void modifyEmployee( long id, EmployeeDto employee) {
+        private void modifyEmployee(@RequestParam long id, EmployeeDto employee) {
+
+
+                WebTestClient.ResponseSpec foundRecord=(this.webTestClient
+                                .get()
+                                .uri(BASE_URI + "/{id}",id)
+                        //.header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+                        .exchange()
+                        .expectStatus()
+                        .isNotFound());
+
+
+
+
+
+/*
+                {
                 webTestClient
                         .put()
                         .uri("/api/employees/"+"id")
@@ -221,6 +232,8 @@ public class EmployeeControllerIT {
                         .exchange()
                         .expectStatus()
                         .isOk();
+        }
+  */
         }
 
 
