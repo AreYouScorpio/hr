@@ -77,7 +77,17 @@ public abstract class EmployeeSuperClass implements EmployeeService {
     employeeRepository.deleteById(id);
     }
 
+    public List<Employee> getListOfPosition(String position) {
+        return employeeRepository.findByPosition(position);
+    }
 
+    public List<Employee> findByFirstnameStartingWithIgnorecase(String prefix) {
+        return employeeRepository.findByFirstnameStartingWithIgnorecase(prefix);
+    }
+
+    public List<Employee> findByStartDateBetween(LocalDateTime startDate, LocalDateTime endDate) {
+        return employeeRepository.findByStartDateBetween(startDate, endDate);
+    }
 
 
 }
