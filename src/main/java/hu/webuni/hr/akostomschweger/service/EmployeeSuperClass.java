@@ -73,11 +73,12 @@ public abstract class EmployeeSuperClass implements EmployeeService {
     employeeRepository.deleteById(id);
     }
 
-    /*
     public List<Employee> findByPosition(String position) {
+
+
         return employeeRepository.findByPosition(position);
     }
-
+/*
     public List<Employee> findByFirstnameStartingWithIgnorecase(String prefix) {
         return employeeRepository.findByFirstnameStartingWithIgnorecase(prefix);
     }
@@ -88,5 +89,4 @@ public abstract class EmployeeSuperClass implements EmployeeService {
 
 
      */
-
-}
+    }

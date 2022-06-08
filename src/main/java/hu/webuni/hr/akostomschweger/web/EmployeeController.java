@@ -33,18 +33,16 @@ public class EmployeeController {
         //return new ArrayList<>(employees.values());
     }
 
-/*
-    @GetMapping("/position")
+
+    @GetMapping("/position/{position}")
     public List<EmployeeDto> findByPosition(@PathVariable String position) {
         List<Employee> employees = employeeService.findByPosition(position);
-                //.orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND));
-
         return employeeMapper.employeesToDtos(employees);
 
     }
 
 
- */
+
 
 
     @GetMapping("/{id}")

@@ -10,7 +10,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     Long countById(Long id);
 
-    // List<Employee> findByPosition(String position);
+    List<Employee> findByPosition(String position);
 
     // List<Employee> findByFirstnameStartingWithIgnorecase(String prefix);
 
