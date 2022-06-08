@@ -4,8 +4,11 @@ import hu.webuni.hr.akostomschweger.model.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.swing.text.html.parser.Entity;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
@@ -17,8 +20,13 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     @Query(value = "SELECT e from Employee e where upper(e.name) like concat(upper(:prefix),'%')")
     List<Employee> findByNameStartingWith(@Param("prefix") String prefix);
 
-    // List<Employee> findByStartDateBetween(LocalDateTime startDate, LocalDateTime endDate);
-
+    //@Query(value = "SELECT e from Employee e where e.start_date_at_the_company between :startDate and :endDate")
+    // @Query(value = "SELECT e from Employee e where e.start_date_at_the_company > 2020-02-02")
+    //@Query(value = "SELECT e from Employee e")
+    //@Query(value = "SELECT * from Employee e where e.start_date_at_the_company < now() ", nativeQuery = true)
+    @Query(value = "SELECT * from Employee e where e.start_date_at_the_company between :startDate and :endDate ", nativeQuery = true)
+    List<Employee> findByStartDateBetween(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+//  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 
 
 

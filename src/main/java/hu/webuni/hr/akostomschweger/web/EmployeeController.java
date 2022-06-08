@@ -49,6 +49,16 @@ public class EmployeeController {
 
     }
 
+    @GetMapping("/date/{startDate}/{endDate}")
+    public List<EmployeeDto> findByStartDateBetween(@PathVariable String startDate, @PathVariable String endDate) {
+        List<Employee> employees = employeeService
+                .findByStartDateBetween(LocalDateTime.parse(startDate), LocalDateTime.parse(endDate));
+//                        LocalDateTime.of(2000,1,1,10,10)
+//                        , LocalDateTime.of(2002,1,1,10,10));
+        return employeeMapper.employeesToDtos(employees);
+
+    }
+
 
 
 
