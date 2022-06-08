@@ -1,12 +1,8 @@
 package hu.webuni.hr.akostomschweger.service;
 
-import hu.webuni.hr.akostomschweger.dto.EmployeeDto;
 import hu.webuni.hr.akostomschweger.model.Employee;
 import hu.webuni.hr.akostomschweger.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -77,7 +73,8 @@ public abstract class EmployeeSuperClass implements EmployeeService {
     employeeRepository.deleteById(id);
     }
 
-    public List<Employee> getListOfPosition(String position) {
+    /*
+    public List<Employee> findByPosition(String position) {
         return employeeRepository.findByPosition(position);
     }
 
@@ -89,5 +86,7 @@ public abstract class EmployeeSuperClass implements EmployeeService {
         return employeeRepository.findByStartDateBetween(startDate, endDate);
     }
 
+
+     */
 
 }

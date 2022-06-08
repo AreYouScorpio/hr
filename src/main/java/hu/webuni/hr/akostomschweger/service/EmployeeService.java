@@ -15,10 +15,13 @@ public interface EmployeeService {
     public List<Employee> findAll();
 
     public Optional<Employee> findById(long id);
+//    public List<Employee> findByPosition(String position);
 
     public Employee update(long id, Employee employee);
 
     public void delete(long id);
+
+
 
 
 }

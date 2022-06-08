@@ -227,7 +227,7 @@ public class EmployeeControllerIT {
                 {
                 webTestClient
                         .put()
-                        .uri("/api/employees/"+"id")
+                        .uri("/api/employees/"+id)
                         .bodyValue(employee)
                         .exchange()
                         .expectStatus()
