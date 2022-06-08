@@ -3,6 +3,7 @@ package hu.webuni.hr.akostomschweger.service;
 import hu.webuni.hr.akostomschweger.model.Employee;
 import hu.webuni.hr.akostomschweger.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -78,11 +79,14 @@ public abstract class EmployeeSuperClass implements EmployeeService {
 
         return employeeRepository.findByPosition(position);
     }
-/*
-    public List<Employee> findByFirstnameStartingWithIgnorecase(String prefix) {
-        return employeeRepository.findByFirstnameStartingWithIgnorecase(prefix);
+
+    public List<Employee> findByNameStartingWith(String prefix) {
+
+        return employeeRepository.findByNameStartingWith(prefix);
     }
 
+
+/*
     public List<Employee> findByStartDateBetween(LocalDateTime startDate, LocalDateTime endDate) {
         return employeeRepository.findByStartDateBetween(startDate, endDate);
     }

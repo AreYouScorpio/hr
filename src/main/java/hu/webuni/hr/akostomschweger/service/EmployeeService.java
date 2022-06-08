@@ -16,6 +16,7 @@ public interface EmployeeService {
 
     public Optional<Employee> findById(long id);
     public List<Employee> findByPosition(String position);
+    public List<Employee> findByNameStartingWith(String prefix);
 
     public Employee update(long id, Employee employee);
 

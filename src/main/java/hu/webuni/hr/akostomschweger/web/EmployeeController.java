@@ -41,6 +41,14 @@ public class EmployeeController {
 
     }
 
+    @GetMapping("/prefix/{prefix}")
+    public List<EmployeeDto> findByNameStartingWith(@PathVariable String prefix) {
+        List<Employee> employees = employeeService
+                .findByNameStartingWith(prefix);
+        return employeeMapper.employeesToDtos(employees);
+
+    }
+
 
 
 
