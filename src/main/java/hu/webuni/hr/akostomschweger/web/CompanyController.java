@@ -47,9 +47,20 @@ public class CompanyController {
 
      */
 
-    @GetMapping
     public List<CompanyDto> getAll(){
-        return companyMapper.companiesToDtos(companyService.findAll());
+        return companyMapper
+                .companiesToDtos(companyService.findAll());
+    }
+
+    @GetMapping
+    public List<CompanyDto> getAllFull(@RequestParam(required = false) Boolean full) {
+        if (full != null && full)
+            return companyMapper.companiesToDtos(companyService.findAll());
+        else
+            return companyMapper.companiesToDtos(companyService.findAll())
+                    .stream()
+                    .map(c -> new CompanyDto(c.getId(), c.getRegNo(), c.getName(), c.getAddress(), null))
+                    .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
@@ -239,22 +250,8 @@ new version after MapStruct --->
 	//1. megoldás
 
 	*/
-/*
-
-    @GetMapping
-    public List<CompanyDto> getAll(@RequestParam(required = false) Boolean full) {
-        if (full != null && full)
-            //return new ArrayList<>(companies.values());
-            return companyMapper.companiesToDtos(companyService.findAll());
-        else
-            return companyMapper.companiesToDtos(companyService.findAll())
-                    .stream()
-                    .map(c -> new CompanyDto(c.getId(), c.getRegNo(), c.getName(), c.getAddress(), null))
-                    .collect(Collectors.toList());
-    }
 
 
- */
 
 
 
