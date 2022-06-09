@@ -47,10 +47,14 @@ public class CompanyController {
 
      */
 
+    /*
     public List<CompanyDto> getAll(){
         return companyMapper
                 .companiesToDtos(companyService.findAll());
     }
+
+
+     */
 
     @GetMapping
     public List<CompanyDto> getAllFull(@RequestParam(required = false) Boolean full) {
