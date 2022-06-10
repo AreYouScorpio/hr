@@ -4,16 +4,22 @@ import hu.webuni.hr.akostomschweger.dto.CompanyDto;
 import hu.webuni.hr.akostomschweger.dto.EmployeeDto;
 import hu.webuni.hr.akostomschweger.model.Company;
 import hu.webuni.hr.akostomschweger.model.Employee;
+import hu.webuni.hr.akostomschweger.repository.CompanyRepository;
+import hu.webuni.hr.akostomschweger.repository.EmployeeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class CompanyService {
 
+    @Autowired
+    CompanyRepository companyRepository;
+    EmployeeRepository employeeRepository;
+
+    /*
 
     private Map<Long, Company> companies = new HashMap<>();
 
@@ -35,30 +41,55 @@ public class CompanyService {
 
         ));
     }
+
+
+     */
+
+    public CompanyService(CompanyRepository companyRepository, EmployeeRepository employeeRepository) {
+        this.companyRepository = companyRepository;
+        this.employeeRepository = employeeRepository;
+    }
+
+    @Transactional
     public Company save(Company company) {
-        companies.put(company.getId(), company);
-        return company;
+        // companies.put(company.getId(), company);
+        // return company;
+        return companyRepository.save(company);
     }
 
     public List<Company> findAll() {
-        return new ArrayList<>(companies.values());
+        // return new ArrayList<>(companies.values());
+        return companyRepository.findAll();
     }
 
-    public Company findById(long id) {
-        return companies.get(id);
+    public Optional<Company> findById(long id) {
+        // return companies.get(id);
+        return companyRepository.findById(id);
     }
 
+    /*
     public Company update(long id, Company company) {
         companies.put(id, company);
         return company;
     }
+     */
+
+    @Transactional
+    public Company update(Company company) {
+        if (companyRepository.existsById(company.getId()))
+            return companyRepository.save(company);
+        else throw new NoSuchElementException();
+    }
+
+    @Transactional
     public void delete(long id) {
-        companies.remove(id);
+        //companies.remove(id);
+        companyRepository.deleteById(id);
     }
 
     public Company addNewEmployee(long company_id, EmployeeDto employee) {
 
-        Company company = findById(company_id);
+        Company company = findById(company_id).get();
         company.getEmployeeDtoList().add(employee);
 
         return company;

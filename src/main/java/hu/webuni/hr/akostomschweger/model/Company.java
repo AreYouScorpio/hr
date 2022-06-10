@@ -2,11 +2,17 @@ package hu.webuni.hr.akostomschweger.model;
 
 import hu.webuni.hr.akostomschweger.dto.EmployeeDto;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Company {
 
+    @Id
+    @GeneratedValue
     private Long id;
     private String regNo;
     private String name;

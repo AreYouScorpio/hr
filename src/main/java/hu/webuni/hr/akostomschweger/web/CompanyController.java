@@ -32,6 +32,8 @@ public class CompanyController {
     @Autowired
     CompanyMapper companyMapper;
 
+
+
     @Autowired
     EmployeeMapper employeeMapper;
 
@@ -69,7 +71,7 @@ public class CompanyController {
 
     @GetMapping("/{id}")
     public CompanyDto getById(@PathVariable long id) {
-        Company company = companyService.findById(id);
+        Company company = companyService.findById(id).get() ;
         if (company != null)
             return companyMapper.companyToDto(company);
         else
