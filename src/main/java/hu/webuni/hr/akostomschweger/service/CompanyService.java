@@ -99,7 +99,7 @@ public class CompanyService {
 
     public Company deleteEmployeeFromCompany(long company_id, long employee_id) {
         Company company = companyRepository.findById(company_id).get();
-        Employee employee = employeeRepository.findById().get();
+        Employee employee = employeeRepository.findById(employee_id).get();
         //removeIf(e -> e.getId() == employee_id);
         employee.setCompany(null);
         company.getEmployees().remove(employee);
@@ -110,22 +110,36 @@ public class CompanyService {
     public Company modifyCompany(long company_id, List<Employee> employees) {
         Company company = companyRepository.findById(company_id).get();
 
-        for(Employee employee : company.getEmployees()) {
+        for (Employee employee : company.getEmployees()) {
             employee.setCompany(null);
         }
-            company.getEmployees().clear();
+        company.getEmployees().clear();
 
 
-        for(Employee employee : company.getEmployees()) {
+        for (Employee employee : company.getEmployees()) {
             company.addEmployee(employee);
             employeeRepository.save(employee);
         }
 
 
-            // company.setEmployeeDtoList(employees);
+        // company.setEmployeeDtoList(employees);
 
-            return company;
+        return company;
+    }
+
+
+    public Company replaceEmployees(long id, List<Employee> employees) {
+        Company company = companyRepository.findById(id).get();
+        for (Employee employee : company.getEmployees()) {
+            employee.setCompany(null);
         }
-
+        //második oldalról is
+        company.getEmployees().clear();
+        for (Employee employee : employees) {
+            company.addEmployee(employee);
+            employeeRepository.save(employee);
+        }
+        return company;
 
     }
+}

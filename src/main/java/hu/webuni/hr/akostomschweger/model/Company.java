@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Company {
@@ -74,18 +75,31 @@ public class Company {
     }
 
 //    public List<EmployeeDto> getEmployeeDtoList() {
-  //      return employeeDtoList;
-   // }
+    //      return employeeDtoList;
+    // }
 
-  //  public void setEmployeeDtoList(List<EmployeeDto> employeeDtoList) {
+    //  public void setEmployeeDtoList(List<EmployeeDto> employeeDtoList) {
     //    this.employeeDtoList = employeeDtoList;
-   // }
+    // }
 
     public void addEmployee(Employee employee) {
-        if(this.employees==null)
+        if (this.employees == null)
             this.employees = new ArrayList<>();
 
         this.employees.add(employee);
         employee.setCompany(this); //másik oldalról is bebiztosítom
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Company)) return false;
+        Company company = (Company) o;
+        return Objects.equals(id, company.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

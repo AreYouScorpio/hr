@@ -33,7 +33,6 @@ public class CompanyController {
     CompanyMapper companyMapper;
 
 
-
     @Autowired
     EmployeeMapper employeeMapper;
 
@@ -71,12 +70,12 @@ public class CompanyController {
 
     @GetMapping("/{id}")
     public CompanyDto getById(@PathVariable long id) {
-        Company company = companyService.findById(id).get() ;
+        Company company = companyService.findById(id).get();
         if (company != null)
             return companyMapper.companyToDto(company);
         else
             // return ResponseEntity.notFound().build();
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
 
@@ -128,7 +127,7 @@ public class CompanyController {
 
         if (updatedCompany == null) {
             return ResponseEntity.notFound().build();
-    }
+        }
 
         //    companyService.update(id, companyMapper.dtoToCompany(companyDto));
         // else throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -151,37 +150,37 @@ public class CompanyController {
 
     @DeleteMapping("/{id}")
     public void deleteCompany(@PathVariable long id) {
-        companyService.delete(id); }
-
-/*
-    @PostMapping("/addemployeetocompany/{company_id}")
-    public CompanyDto addEmployeeToCompany(@PathVariable long company_id,
-                                           @RequestBody EmployeeDto employeeDto) {
-        if (!companies.containsKey(company_id))
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        CompanyDto company = companies.get(company_id);
-        company.getEmployeeDtoList().add(employeeDto);
-        return company;
+        companyService.delete(id);
     }
 
-new version after MapStruct --->
- */
+    /*
+        @PostMapping("/addemployeetocompany/{company_id}")
+        public CompanyDto addEmployeeToCompany(@PathVariable long company_id,
+                                               @RequestBody EmployeeDto employeeDto) {
+            if (!companies.containsKey(company_id))
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            CompanyDto company = companies.get(company_id);
+            company.getEmployeeDtoList().add(employeeDto);
+            return company;
+        }
+
+    new version after MapStruct --->
+     */
     @PostMapping("/addemployeetocompany/{company_id}")
     public CompanyDto addEmployeeToCompany(@PathVariable long company_id,
                                            @RequestBody EmployeeDto employeeDto) {
 
-       //  Company company = companyService.findById(company_id);
+        //  Company company = companyService.findById(company_id);
 
         // if (company != null)
-            return companyMapper.companyToDto(
-                    companyService.addNewEmployee(
-                            company_id, companyMapper.dtoToEmployee(employeeDto)));
+        return companyMapper.companyToDto(
+                companyService.addNewEmployee(
+                        company_id, companyMapper.dtoToEmployee(employeeDto)));
         //else
-          //  throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        //  throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 
 
-       // return companyMapper.companyToDto(company);
-
+        // return companyMapper.companyToDto(company);
 
 
     }
@@ -202,7 +201,7 @@ new version after MapStruct --->
 
 
          */
-        return  companyMapper.companyToDto(
+        return companyMapper.companyToDto(
                 companyService.deleteEmployeeFromCompany(id, employeeId));
 
 
@@ -220,25 +219,27 @@ new version after MapStruct --->
      */
 
 
-
-
     @PutMapping("/{id}/employees")
     public CompanyDto replaceEmployees(@PathVariable long id,
-                                                    @RequestBody List<EmployeeDto> employees) {
+                                       @RequestBody List<EmployeeDto> employees) {
+
 
         return companyMapper.companyToDto(
                 companyService.replaceEmployees(
                         id, companyMapper.dtosToEmployees(employees)));
+
+        /*
         if (company != null)
             companyService.modifyCompany(id, employees);
         else
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         return companyMapper.companyToDto(company);
-    }
-
-
+         */
 
     }
+
+
+}
 
 
 
@@ -296,7 +297,7 @@ new version after MapStruct --->
 */
 
 
-}
+
 
 
 
