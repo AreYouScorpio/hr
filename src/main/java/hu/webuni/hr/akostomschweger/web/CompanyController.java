@@ -37,6 +37,10 @@ public class CompanyController {
     EmployeeMapper employeeMapper;
 
 
+    private CompanyDto mapCompanyWithoutEmployees(CompanyDto c) {
+        return new CompanyDto(c.getId(), c.getRegNo(), c.getName(), c.getAddress(), null) ;
+    }
+
     /*
 
     ha a full boolean-os getAll megy, akk ez nyilvan kommentben legyen
@@ -57,6 +61,7 @@ public class CompanyController {
 
      */
 
+    /*
     @GetMapping
     public List<CompanyDto> getAllFull(@RequestParam(required = false) Boolean full) {
         if (full != null && full)
@@ -67,7 +72,26 @@ public class CompanyController {
                     .map(c -> new CompanyDto(c.getId(), c.getRegNo(), c.getName(), c.getAddress(), null))
                     .collect(Collectors.toList());
     }
+*/
+    @GetMapping
+    public List<CompanyDto> getAllFull(@RequestParam(required = false) Boolean full) {
+        List<Company> companies = companyService.findAll();
+        //return companies;
 
+        if (full != null && full)
+            return companyMapper.companiesToDtos(companies);
+        else
+            return companyMapper.companiesToDtosWithNoEmployees(companies);
+            /*
+            return companyMapper.companiesToDtos(companyService.findAll())
+                    .stream()
+                    .map(c -> new CompanyDto(c.getId(), c.getRegNo(), c.getName(), c.getAddress(), null))
+                    .collect(Collectors.toList());
+
+
+             */
+    }
+/*
     @GetMapping("/{id}")
     public CompanyDto getById(@PathVariable long id) {
         Company company = companyService.findById(id).get();
@@ -76,6 +100,20 @@ public class CompanyController {
         else
             // return ResponseEntity.notFound().build();
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+
+    */
+
+    @GetMapping("/{id}")
+    public CompanyDto getById(@PathVariable long id, @RequestParam(required = false) Boolean full) {
+        Company company = companyService.findById(id)
+                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if (full != null && full)
+            return companyMapper.companyToDto(company);
+        else
+            // return ResponseEntity.notFound().build();
+            //throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        return companyMapper.companyToDtoWithNoEmployees(company);
     }
 
 
@@ -93,7 +131,7 @@ public class CompanyController {
 
     @PostMapping
     public CompanyDto createCompany(@RequestBody CompanyDto companyDto) {
-        Company company = companyService.save(companyMapper.dtoToCompany(companyDto));
+        //Company company = companyService.save(companyMapper.dtoToCompany(companyDto));
         // companies.put(companyDto.getId(), companyDto);
         // return companyDto;
         return companyMapper.companyToDto(

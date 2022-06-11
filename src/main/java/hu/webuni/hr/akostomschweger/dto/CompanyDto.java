@@ -65,4 +65,8 @@ public class CompanyDto {
     public void setEmployeeDtoList(List<EmployeeDto> employeeDtoList) {
         this.employeeDtoList = employeeDtoList;
     }
+
+    public void addNewEmployee(EmployeeDto employeeDto) {
+        employeeDtoList.add(employeeDto);
+    }
 }

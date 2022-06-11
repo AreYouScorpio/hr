@@ -19,6 +19,8 @@ public class CompanyService {
     CompanyRepository companyRepository;
     @Autowired
     EmployeeRepository employeeRepository;
+    @Autowired
+    EmployeeService employeeService;
 
     /*
 
@@ -93,6 +95,7 @@ public class CompanyService {
         Company company = companyRepository.findById(company_id).get();
         company.addEmployee(employee);
         employeeRepository.save(employee);
+        //employeeService.save(employee);
 
         return company;
     }
