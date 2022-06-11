@@ -97,7 +97,9 @@ public class CompanyController {
         Company company = companyService.save(companyMapper.dtoToCompany(companyDto));
         // companies.put(companyDto.getId(), companyDto);
         // return companyDto;
-        return companyMapper.companyToDto(company);
+        return companyMapper.companyToDto(
+                companyService.save(
+                        companyMapper.dtoToCompany(companyDto)));
     }
 
 /* old putmapping before mapstruct
@@ -117,16 +119,22 @@ public class CompanyController {
     */
 
     @PutMapping("/{id}")
-    public CompanyDto modifyCompany(@PathVariable long id,
+    public ResponseEntity<CompanyDto> modifyCompany(@PathVariable long id,
                                                     @RequestBody CompanyDto companyDto) {
 
-        Company company = companyService.findById(id);
+        companyDto.setId(id);
+        Company updatedCompany = companyService.update(companyMapper.dtoToCompany(companyDto));
 
-        if (company != null)
-            companyService.update(id, companyMapper.dtoToCompany(companyDto));
-        else throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 
-        return companyMapper.companyToDto(company);
+        if (updatedCompany == null) {
+            return ResponseEntity.notFound().build();
+    }
+
+        //    companyService.update(id, companyMapper.dtoToCompany(companyDto));
+        // else throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+
+        return ResponseEntity.ok(companyMapper.companyToDto(updatedCompany));
+//        return companyMapper.companyToDto(company);
     }
 
 
@@ -162,15 +170,17 @@ new version after MapStruct --->
     public CompanyDto addEmployeeToCompany(@PathVariable long company_id,
                                            @RequestBody EmployeeDto employeeDto) {
 
-        Company company = companyService.findById(company_id);
+       //  Company company = companyService.findById(company_id);
 
-        if (company != null)
-            companyService.addNewEmployee(company_id, employeeDto);
-        else
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        // if (company != null)
+            return companyMapper.companyToDto(
+                    companyService.addNewEmployee(
+                            company_id, companyMapper.dtoToEmployee(employeeDto)));
+        //else
+          //  throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 
 
-       return companyMapper.companyToDto(company);
+       // return companyMapper.companyToDto(company);
 
 
 
@@ -180,6 +190,7 @@ new version after MapStruct --->
     @DeleteMapping("/{id}/employees/{employeeId}")
     public CompanyDto deleteEmployeeFromCompany(@PathVariable long id, @PathVariable long employeeId) {
 
+        /*
         Company company = companyService.findById(id);
 
         if (company != null)
@@ -189,7 +200,10 @@ new version after MapStruct --->
 
         // company.getEmployeeDtoList().removeIf(e -> e.getId() == employeeId);
 
-        return companyMapper.companyToDto(company);
+
+         */
+        return  companyMapper.companyToDto(
+                companyService.deleteEmployeeFromCompany(id, employeeId));
 
 
     }
@@ -209,16 +223,23 @@ new version after MapStruct --->
 
 
     @PutMapping("/{id}/employees")
-    public CompanyDto modifyCompany(@PathVariable long id,
+    public CompanyDto replaceEmployees(@PathVariable long id,
                                                     @RequestBody List<EmployeeDto> employees) {
-        Company company = companyService.findById(id);
 
+        return companyMapper.companyToDto(
+                companyService.replaceEmployees(
+                        id, companyMapper.dtosToEmployees(employees)));
         if (company != null)
             companyService.modifyCompany(id, employees);
         else
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         return companyMapper.companyToDto(company);
     }
+
+
+
+    }
+
 
 
     /* old version employee list change

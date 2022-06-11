@@ -17,6 +17,7 @@ public class CompanyService {
 
     @Autowired
     CompanyRepository companyRepository;
+    @Autowired
     EmployeeRepository employeeRepository;
 
     /*
@@ -87,27 +88,44 @@ public class CompanyService {
         companyRepository.deleteById(id);
     }
 
-    public Company addNewEmployee(long company_id, EmployeeDto employee) {
+    public Company addNewEmployee(long company_id, Employee employee) {
 
-        Company company = findById(company_id).get();
-        company.getEmployeeDtoList().add(employee);
+        Company company = companyRepository.findById(company_id).get();
+        company.addEmployee(employee);
+        employeeRepository.save(employee);
 
         return company;
     }
 
     public Company deleteEmployeeFromCompany(long company_id, long employee_id) {
-        Company company = findById(company_id);
-        company.getEmployeeDtoList().removeIf(e -> e.getId() == employee_id);
-
+        Company company = companyRepository.findById(company_id).get();
+        Employee employee = employeeRepository.findById().get();
+        //removeIf(e -> e.getId() == employee_id);
+        employee.setCompany(null);
+        company.getEmployees().remove(employee);
+        employeeRepository.save(employee);
         return company;
     }
 
-    public Company modifyCompany(long company_id, List<EmployeeDto> employees) {
-        Company company = findById(company_id);
-        company.setEmployeeDtoList(employees);
+    public Company modifyCompany(long company_id, List<Employee> employees) {
+        Company company = companyRepository.findById(company_id).get();
 
-        return company;
+        for(Employee employee : company.getEmployees()) {
+            employee.setCompany(null);
+        }
+            company.getEmployees().clear();
+
+
+        for(Employee employee : company.getEmployees()) {
+            company.addEmployee(employee);
+            employeeRepository.save(employee);
+        }
+
+
+            // company.setEmployeeDtoList(employees);
+
+            return company;
+        }
+
+
     }
-
-
-}

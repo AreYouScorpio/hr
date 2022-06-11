@@ -3,6 +3,7 @@ package hu.webuni.hr.akostomschweger.web;
 import hu.webuni.hr.akostomschweger.dto.EmployeeDto;
 import hu.webuni.hr.akostomschweger.mapper.EmployeeMapper;
 import hu.webuni.hr.akostomschweger.model.Employee;
+import hu.webuni.hr.akostomschweger.repository.EmployeeRepository;
 import hu.webuni.hr.akostomschweger.service.EmployeeService;
 import hu.webuni.hr.akostomschweger.service.EmployeeSuperClass;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class EmployeeController {
 
     @Autowired
     EmployeeService employeeService;
+
+    @Autowired
+    EmployeeRepository employeeRepository;
 
     @GetMapping
     public List<EmployeeDto> getAll() {

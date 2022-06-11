@@ -3,6 +3,7 @@ package hu.webuni.hr.akostomschweger.model;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 
@@ -17,6 +18,9 @@ public class Employee {
 
     private LocalDateTime startDateAtTheCompany;
 
+    @ManyToOne
+    private Company company;
+
     public Employee(Long id, String name, String position, int salary, LocalDateTime startDateAtTheCompany) {
         this.id = id;
         this.name = name;
@@ -26,6 +30,14 @@ public class Employee {
     }
 
     public Employee() {
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
     public Long getId() {

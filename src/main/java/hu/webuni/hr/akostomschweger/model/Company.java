@@ -5,6 +5,7 @@ import hu.webuni.hr.akostomschweger.dto.EmployeeDto;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +18,8 @@ public class Company {
     private String regNo;
     private String name;
     private String address;
-
-    private List<EmployeeDto> employeeDtoList= new ArrayList<>();
+    @OneToMany(mappedBy = "company")
+    private List<Employee> employees; //= new ArrayList<>();
 
 
     public Company() {
@@ -29,9 +30,16 @@ public class Company {
         this.regNo = regNo;
         this.name = name;
         this.address = address;
-        this.employeeDtoList = employeeDtoList;
+        this.employees = employees;
     }
 
+    public List<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
+    }
 
     public Long getId() {
         return id;
@@ -65,11 +73,19 @@ public class Company {
         this.address = address;
     }
 
-    public List<EmployeeDto> getEmployeeDtoList() {
-        return employeeDtoList;
-    }
+//    public List<EmployeeDto> getEmployeeDtoList() {
+  //      return employeeDtoList;
+   // }
 
-    public void setEmployeeDtoList(List<EmployeeDto> employeeDtoList) {
-        this.employeeDtoList = employeeDtoList;
+  //  public void setEmployeeDtoList(List<EmployeeDto> employeeDtoList) {
+    //    this.employeeDtoList = employeeDtoList;
+   // }
+
+    public void addEmployee(Employee employee) {
+        if(this.employees==null)
+            this.employees = new ArrayList<>();
+
+        this.employees.add(employee);
+        employee.setCompany(this); //másik oldalról is bebiztosítom
     }
 }

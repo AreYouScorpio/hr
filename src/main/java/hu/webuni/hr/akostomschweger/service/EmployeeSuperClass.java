@@ -13,7 +13,7 @@ import java.util.*;
 public abstract class EmployeeSuperClass implements EmployeeService {
 
     @Autowired
-    EmployeeRepository employeeRepository;
+    private EmployeeRepository employeeRepository;
 
 
     /*
@@ -45,6 +45,7 @@ public abstract class EmployeeSuperClass implements EmployeeService {
     @Transactional
     public Employee save(Employee employee) {
         // employees.put(employee.getId(), employee);
+        employee.setId(null); // biztos ami biztos ne felülírjon
         return employeeRepository.save(employee);// employee;
     }
 
