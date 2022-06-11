@@ -26,7 +26,7 @@ public class Company {
     public Company() {
     }
 
-    public Company(Long id, String regNo, String name, String address, List<EmployeeDto> employeeDtoList) {
+    public Company(Long id, String regNo, String name, String address, List<Employee> employees) {
         this.id = id;
         this.regNo = regNo;
         this.name = name;

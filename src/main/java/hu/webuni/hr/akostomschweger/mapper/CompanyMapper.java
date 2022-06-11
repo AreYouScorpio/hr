@@ -11,10 +11,11 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface CompanyMapper {
 
-    CompanyDto companyToDto(Company company);
-    List<CompanyDto> companiesToDtos(List<Company> companies);
+    CompanyDto companyToDto(Company company); //
+    List<CompanyDto> companiesToDtos(List<Company> companies); //
 
     Company dtoToCompany(CompanyDto companyDto);
+    List<Company> dtosToCompanies(List<CompanyDto> companies);
 
     // tanari video kod:
     //@Mapping(target = "entryDate", source = "dateOfStartWork");
