@@ -31,7 +31,7 @@ public interface CompanyMapper {
     @InheritInverseConfiguration
     Employee dtoToEmployee(EmployeeDto employeeDto);
 
-    List<Employee> dtosToEmployees(List<EmployeeDto> employees);
+    List<Employee> dtosToEmployees(List<EmployeeDto> employeeDtoList);
 
 
     @Named("summary")
