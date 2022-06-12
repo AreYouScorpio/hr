@@ -36,10 +36,12 @@ public interface CompanyMapper {
 
 
     @Named("summary")
-    @Mapping(target = "employeeDtoList", ignore = true)
+    @Mapping(target = "employees", ignore = true)
     CompanyDto companyToDtoWithNoEmployees(Company company);
 
     @IterableMapping(qualifiedByName = "summary")
     List<CompanyDto> companiesToDtosWithNoEmployees(List<Company> companies);
+
+
 
 }

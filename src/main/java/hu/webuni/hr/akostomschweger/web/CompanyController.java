@@ -5,21 +5,14 @@ import hu.webuni.hr.akostomschweger.dto.EmployeeDto;
 import hu.webuni.hr.akostomschweger.mapper.CompanyMapper;
 import hu.webuni.hr.akostomschweger.mapper.EmployeeMapper;
 import hu.webuni.hr.akostomschweger.model.Company;
-import hu.webuni.hr.akostomschweger.model.Employee;
 import hu.webuni.hr.akostomschweger.service.CompanyService;
-import hu.webuni.hr.akostomschweger.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/companies")
@@ -41,7 +34,10 @@ public class CompanyController {
         return new CompanyDto(c.getId(), c.getRegNo(), c.getName(), c.getAddress(), null) ;
     }
 
-    /*
+
+
+
+ /*
 
     ha a full boolean-os getAll megy, akk ez nyilvan kommentben legyen
     @GetMapping
@@ -73,14 +69,21 @@ public class CompanyController {
                     .collect(Collectors.toList());
     }
 */
+
+
+
     @GetMapping
     public List<CompanyDto> getAllFull(@RequestParam(required = false) Boolean full) {
         List<Company> companies = companyService.findAll();
+        System.out.println(companies.stream().findFirst().get().getEmployees().get(0).getName());
+        System.out.println(companyMapper.companiesToDtos(companies).get(0).getEmployees().isEmpty());
+
         //return companies;
 
         if (full != null && full)
             return companyMapper.companiesToDtos(companies);
         else
+            //return companyMapper.companiesToDtos(companies);
             return companyMapper.companiesToDtosWithNoEmployees(companies);
             /*
             return companyMapper.companiesToDtos(companyService.findAll())
@@ -91,6 +94,7 @@ public class CompanyController {
 
              */
     }
+
 /*
     @GetMapping("/{id}")
     public CompanyDto getById(@PathVariable long id) {
@@ -113,6 +117,8 @@ public class CompanyController {
         else
             // return ResponseEntity.notFound().build();
             //throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+
+
         return companyMapper.companyToDtoWithNoEmployees(company);
     }
 

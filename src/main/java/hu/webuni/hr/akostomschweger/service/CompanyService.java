@@ -48,10 +48,16 @@ public class CompanyService {
 
      */
 
-    public CompanyService(CompanyRepository companyRepository, EmployeeRepository employeeRepository) {
+
+    public CompanyService(CompanyRepository companyRepository,
+                          EmployeeRepository employeeRepository) {
         this.companyRepository = companyRepository;
         this.employeeRepository = employeeRepository;
     }
+
+
+
+
 
     @Transactional
     public Company save(Company company) {
@@ -62,6 +68,7 @@ public class CompanyService {
 
     public List<Company> findAll() {
         // return new ArrayList<>(companies.values());
+        //System.out.println(companyRepository.findAll().stream().findFirst().get().getEmployees().get(0).getName());
         return companyRepository.findAll();
     }
 

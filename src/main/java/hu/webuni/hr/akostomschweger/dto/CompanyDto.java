@@ -1,6 +1,5 @@
 package hu.webuni.hr.akostomschweger.dto;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,18 +10,18 @@ public class CompanyDto {
     private String name;
     private String address;
 
-    private List<EmployeeDto> employeeDtoList= new ArrayList<>();
+    private List<EmployeeDto> employees = new ArrayList<>();
 
 
     public CompanyDto() {
     }
 
-    public CompanyDto(Long id, String regNo, String name, String address, List<EmployeeDto> employeeDtoList) {
+    public CompanyDto(Long id, String regNo, String name, String address, List<EmployeeDto> employees) {
         this.id = id;
         this.regNo = regNo;
         this.name = name;
         this.address = address;
-        this.employeeDtoList = employeeDtoList;
+        this.employees = employees;
     }
 
 
@@ -59,18 +58,15 @@ public class CompanyDto {
     }
 
 
-
-
-
-    public List<EmployeeDto> getEmployeeDtoList() {
-        return employeeDtoList;
+    public List<EmployeeDto> getEmployees() {
+        return employees;
     }
 
-        public void setEmployeeDtoList(List<EmployeeDto> employeeDtoList) {
-        this.employeeDtoList = employeeDtoList;
+    public void setEmployees(List<EmployeeDto> employees) {
+        this.employees = employees;
     }
 
     public void addNewEmployee(EmployeeDto employeeDto) {
-        employeeDtoList.add(employeeDto);
+        employees.add(employeeDto);
     }
 }
