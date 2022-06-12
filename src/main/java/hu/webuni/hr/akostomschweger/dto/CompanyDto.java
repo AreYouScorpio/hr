@@ -58,6 +58,10 @@ public class CompanyDto {
         this.address = address;
     }
 
+
+
+
+
     public List<EmployeeDto> getEmployeeDtoList() {
         return employeeDtoList;
     }

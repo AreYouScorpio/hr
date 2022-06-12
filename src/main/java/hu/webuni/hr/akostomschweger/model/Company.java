@@ -20,7 +20,7 @@ public class Company {
     private String name;
     private String address;
     @OneToMany(mappedBy = "company")
-    private List<Employee> employees; //= new ArrayList<>();
+    private List<Employee> employees = new ArrayList<>();
 
 
     public Company() {
@@ -81,6 +81,9 @@ public class Company {
     //  public void setEmployeeDtoList(List<EmployeeDto> employeeDtoList) {
     //    this.employeeDtoList = employeeDtoList;
     // }
+
+
+
 
     public void addEmployee(Employee employee) {
         if (this.employees == null)
