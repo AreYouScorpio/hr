@@ -15,7 +15,7 @@ public interface CompanyMapper {
     List<CompanyDto> companiesToDtos(List<Company> companies); //
 
     Company dtoToCompany(CompanyDto companyDto);
-    List<Company> dtosToCompanies(List<CompanyDto> companies);
+    List<Company> dtosToCompanies(List<CompanyDto> companyDtoList);
 
     // tanari video kod:
     //@Mapping(target = "entryDate", source = "dateOfStartWork");
