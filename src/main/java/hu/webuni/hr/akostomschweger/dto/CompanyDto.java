@@ -66,7 +66,7 @@ public class CompanyDto {
         return employeeDtoList;
     }
 
-    public void setEmployeeDtoList(List<EmployeeDto> employeeDtoList) {
+        public void setEmployeeDtoList(List<EmployeeDto> employeeDtoList) {
         this.employeeDtoList = employeeDtoList;
     }
 

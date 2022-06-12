@@ -19,8 +19,8 @@ public class CompanyService {
     CompanyRepository companyRepository;
     @Autowired
     EmployeeRepository employeeRepository;
-    @Autowired
-    EmployeeService employeeService;
+    //@Autowired
+    //EmployeeService employeeService;
 
     /*
 
