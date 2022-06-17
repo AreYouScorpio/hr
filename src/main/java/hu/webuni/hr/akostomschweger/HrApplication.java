@@ -21,6 +21,8 @@ public class HrApplication implements CommandLineRunner {
 	@Autowired
 	SalaryService salaryService;
 
+	@Autowired
+	InitDbService initDbService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(HrApplication.class, args);
@@ -58,6 +60,8 @@ public class HrApplication implements CommandLineRunner {
 
 
 
+		initDbService.clearDB();
+		initDbService.insertTestData();
 	}
 
 }

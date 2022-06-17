@@ -9,17 +9,25 @@ import hu.webuni.hr.akostomschweger.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.Position;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class InitDbService  {
 
     @Autowired
     CompanyRepository companyRepository;
     EmployeeRepository employeeRepository;
+
+    @Transactional
+    public void initDB(){
+        //Position developer = pos
+    }
 
     @Transactional
     public void clearDB(){
@@ -63,35 +71,42 @@ public class InitDbService  {
     public void insertTestData(){
 
         Employee employeeA = new Employee(
-                1L,
-                "Akos",
+                1001L,
+                "Xkos",
                 "junior java developer",
-                100000,
-                LocalDateTime.of(2011, 1, 11, 11, 11));
+                111111,
+                LocalDateTime.of(2018, 1, 11, 11, 11));
 
         Employee employeeB = new Employee(
-                2L,
-                "Bkos",
+                1002L,
+                "Ykos",
                 "senior java developer",
-                200000,
-                LocalDateTime.of(2012, 2, 22, 22, 22));
+                2222,
+                LocalDateTime.of(2019, 2, 22, 22, 22));
 
 
         Company companyA =  new Company(
                 1L,
-                "11111",
-                "A company",
-                "Budapest",
+                "88888",
+                "X company",
+                "Weert",
                  List.of(employeeA));
 
         Company companyB =  new Company(
                 2L,
-                "22222",
-                "B company",
-                "Amsterdam",
+                "99999",
+                "Y company",
+                "Best",
                 List.of(employeeA, employeeB));
 
 
+        employeeRepository.save(employeeA);
+        employeeRepository.save(employeeB);
+        companyRepository.save(companyA);
+        companyRepository.save(companyB);
+        // companyA.addEmployee(employeeA);
+        // companyB.addEmployee(employeeA);
+        // companyB.addEmployee(employeeB);
 
     }
 
