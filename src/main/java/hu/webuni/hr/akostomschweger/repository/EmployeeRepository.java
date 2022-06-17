@@ -2,6 +2,7 @@ package hu.webuni.hr.akostomschweger.repository;
 
 import hu.webuni.hr.akostomschweger.model.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -28,6 +29,11 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     List<Employee> findByStartDateBetween(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 //  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 
+
+    @Modifying
+    @Query(value = "truncate table employee",
+            nativeQuery = true)
+    void truncate();
 
 
 }

@@ -213,7 +213,7 @@ public class EmployeeControllerIT {
 
                 WebTestClient.ResponseSpec foundRecord=(this.webTestClient
                                 .get()
-                                .uri(BASE_URI + "/{id}",id)
+                                .uri("/api/employees/"+id)
                         //.header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
                         .exchange()
                         .expectStatus()
