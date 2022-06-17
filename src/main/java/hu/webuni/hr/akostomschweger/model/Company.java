@@ -2,10 +2,7 @@ package hu.webuni.hr.akostomschweger.model;
 
 import hu.webuni.hr.akostomschweger.dto.EmployeeDto;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -21,6 +18,10 @@ public class Company {
     private String address;
     @OneToMany(mappedBy = "company")
     private List<Employee> employees = new ArrayList<>();
+    @ManyToOne
+    private CompanyType companyType;
+
+
 
 
     public Company() {
@@ -33,6 +34,8 @@ public class Company {
         this.address = address;
         this.employees = employees;
     }
+
+
 
     public List<Employee> getEmployees() {
         return employees;
@@ -92,6 +95,16 @@ public class Company {
         this.employees.add(employee);
         employee.setCompany(this); //másik oldalról is bebiztosítom
     }
+
+    public CompanyType getCompanyType() {
+        return companyType;
+    }
+
+    public void setCompanyType(CompanyType companyType) {
+        this.companyType = companyType;
+    }
+
+
 
     @Override
     public boolean equals(Object o) {
