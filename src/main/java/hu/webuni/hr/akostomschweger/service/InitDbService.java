@@ -25,18 +25,30 @@ public class InitDbService  {
     @Autowired
     EmployeeRepository employeeRepository;
 
-    @Transactional
-    public void initDB(){
-        //Position developer = pos
-    }
 
     @Transactional
     public void clearDB(){
-        //employeeRepository.truncate();
+        employeeRepository.truncate();
+        //companyRepository.truncate();
+
+        /*
+
+        vagy végig iterálva, de lassabb lenne
 
         for (Employee e : employeeRepository.findAll()) {
             employeeRepository.delete(e);
         }
+
+
+         */
+        for (Company c : companyRepository.findAll()) {
+            companyRepository.delete(c);
+        }
+
+
+
+
+
         /*
         MysqlDataSource dataSource = new MysqlDataSource();
         dataSource.setURL("jdbc:mysql://localhost:3306/employees?useUnicode=true");
@@ -82,23 +94,25 @@ public class InitDbService  {
                 1002L,
                 "Ykos",
                 "senior java developer",
-                2222,
+                222222,
                 LocalDateTime.of(2019, 2, 22, 22, 22));
 
 
         Company companyA =  new Company(
-                1L,
+                9991L,
                 "88888",
                 "X company",
                 "Weert",
-                 null);
+                 new ArrayList<Employee>());
+
+        //new ArrayList<Employee>(List.of(employeeA,employeeB))
 
         Company companyB =  new Company(
-                2L,
+                9992L,
                 "99999",
                 "Y company",
                 "Best",
-                null);
+                new ArrayList<Employee>());
 
 
         employeeRepository.save(employeeA);
