@@ -22,6 +22,7 @@ public class InitDbService  {
 
     @Autowired
     CompanyRepository companyRepository;
+    @Autowired
     EmployeeRepository employeeRepository;
 
     @Transactional
