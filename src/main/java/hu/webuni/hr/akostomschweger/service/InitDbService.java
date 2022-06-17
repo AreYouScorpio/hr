@@ -91,23 +91,23 @@ public class InitDbService  {
                 "88888",
                 "X company",
                 "Weert",
-                 List.of(employeeA));
+                 null);
 
         Company companyB =  new Company(
                 2L,
                 "99999",
                 "Y company",
                 "Best",
-                List.of(employeeA, employeeB));
+                null);
 
 
         employeeRepository.save(employeeA);
         employeeRepository.save(employeeB);
         companyRepository.save(companyA);
         companyRepository.save(companyB);
-        // companyA.addEmployee(employeeA);
-        // companyB.addEmployee(employeeA);
-        // companyB.addEmployee(employeeB);
+        companyA.addEmployee(employeeA);
+        companyB.addEmployee(employeeA);
+        companyB.addEmployee(employeeB);
 
     }
 
