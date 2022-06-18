@@ -135,11 +135,17 @@ public class InitDbService  {
 
 
         employeeRepository.save(employeeA);
+        //employeeA=employeeRepository.save(employeeA);
         employeeRepository.save(employeeB);
+        //employeeB=employeeRepository.save(employeeB);
         companyRepository.save(companyA);
+        //companyA=employeeRepository.save(companyA)
         companyRepository.save(companyB);
+        //companyB=employeeRepository.save(companyB)
+        //this.employeeRepository.flush();
+        //this.companyRepository.flush();
         companyA.addEmployee(employeeA);
-        companyB.addEmployee(employeeA);
+        //companyB.addEmployee(employeeA);
         companyB.addEmployee(employeeB);
 
     }
