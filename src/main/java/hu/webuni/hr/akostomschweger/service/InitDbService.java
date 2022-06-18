@@ -141,6 +141,8 @@ public class InitDbService  {
         companyRepository.save(companyA);
         //companyA=employeeRepository.save(companyA)
         companyRepository.save(companyB);
+        //positionRepository.save(developer);
+        //positionRepository.save(tester);
         //companyB=employeeRepository.save(companyB)
         //this.employeeRepository.flush();
         //this.companyRepository.flush();
