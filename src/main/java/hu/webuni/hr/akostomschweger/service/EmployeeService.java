@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-
 public interface EmployeeService {
 
     int getPayRaisePercent(Employee employee);
@@ -23,8 +22,5 @@ public interface EmployeeService {
     public Employee update(long id, Employee employee);
 
     public void delete(long id);
-
-
-
 
 }

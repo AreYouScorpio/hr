@@ -19,8 +19,10 @@ public class CompanyService {
     CompanyRepository companyRepository;
     @Autowired
     EmployeeRepository employeeRepository;
+    @Autowired
+    EmployeeService employeeService;
     //@Autowired
-    //EmployeeService employeeService;
+    //EmployeeSuperClass employeeSuperClass;
 
     /*
 
@@ -48,13 +50,21 @@ public class CompanyService {
 
      */
 
+    public CompanyService(CompanyRepository companyRepository, EmployeeRepository employeeRepository, EmployeeService employeeService) {
+        this.companyRepository = companyRepository;
+        this.employeeRepository = employeeRepository;
+        this.employeeService = employeeService;
+    }
 
+    /*
     public CompanyService(CompanyRepository companyRepository,
                           EmployeeRepository employeeRepository) {
         this.companyRepository = companyRepository;
         this.employeeRepository = employeeRepository;
     }
 
+
+     */
 
 
 
@@ -68,7 +78,7 @@ public class CompanyService {
 
     public List<Company> findAll() {
         // return new ArrayList<>(companies.values());
-        //System.out.println(companyRepository.findAll().stream().findFirst().get().getEmployees().get(0).getName());
+        System.out.println(companyRepository.findAll().stream().findFirst().get().getEmployees().get(0).getName());
         return companyRepository.findAll();
     }
 
@@ -91,12 +101,12 @@ public class CompanyService {
         else throw new NoSuchElementException();
     }
 
-    @Transactional
     public void delete(long id) {
         //companies.remove(id);
         companyRepository.deleteById(id);
     }
 
+    @Transactional
     public Company addNewEmployee(long company_id, Employee employee) {
 
         Company company = companyRepository.findById(company_id).get();
@@ -107,6 +117,7 @@ public class CompanyService {
         return company;
     }
 
+    @Transactional
     public Company deleteEmployeeFromCompany(long company_id, long employee_id) {
         Company company = companyRepository.findById(company_id).get();
         Employee employee = employeeRepository.findById(employee_id).get();
@@ -117,6 +128,7 @@ public class CompanyService {
         return company;
     }
 
+    @Transactional
     public Company modifyCompany(long company_id, List<Employee> employees) {
         Company company = companyRepository.findById(company_id).get();
 
@@ -137,7 +149,7 @@ public class CompanyService {
         return company;
     }
 
-
+    @Transactional
     public Company replaceEmployees(long id, List<Employee> employees) {
         Company company = companyRepository.findById(id).get();
         for (Employee employee : company.getEmployees()) {
