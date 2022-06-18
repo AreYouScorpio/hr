@@ -34,10 +34,14 @@ public class CompanyController {
     @Autowired
     CompanyRepository companyRepository;
 
-    private CompanyDto mapCompanyWithoutEmployees(CompanyDto c) {
-        return new CompanyDto(c.getId(), c.getRegNo(), c.getName(), c.getAddress(), null);
+    /*
+    private List<Company> mapCompanyWithoutEmployees(CompanyDto c) {
+        // return new CompanyDto(c.getId(), c.getRegNo(), c.getName(), c.getAddress(), null)
+        return companyService.findAll();
     }
 
+
+     */
 
 
 
