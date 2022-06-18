@@ -4,7 +4,9 @@ import hu.webuni.hr.akostomschweger.dto.CompanyDto;
 import hu.webuni.hr.akostomschweger.dto.EmployeeDto;
 import hu.webuni.hr.akostomschweger.mapper.CompanyMapper;
 import hu.webuni.hr.akostomschweger.mapper.EmployeeMapper;
+import hu.webuni.hr.akostomschweger.model.AverageSalaryByPosition;
 import hu.webuni.hr.akostomschweger.model.Company;
+import hu.webuni.hr.akostomschweger.repository.CompanyRepository;
 import hu.webuni.hr.akostomschweger.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,9 +31,11 @@ public class CompanyController {
     @Autowired
     EmployeeMapper employeeMapper;
 
+    @Autowired
+    CompanyRepository companyRepository;
 
     private CompanyDto mapCompanyWithoutEmployees(CompanyDto c) {
-        return new CompanyDto(c.getId(), c.getRegNo(), c.getName(), c.getAddress(), null) ;
+        return new CompanyDto(c.getId(), c.getRegNo(), c.getName(), c.getAddress(), null);
     }
 
 
@@ -71,7 +75,6 @@ public class CompanyController {
 */
 
 
-
     @GetMapping
     public List<CompanyDto> getAllFull(@RequestParam(required = false) Boolean full) {
         List<Company> companies = companyService.findAll();
@@ -108,10 +111,17 @@ public class CompanyController {
 
     */
 
+    private List<CompanyDto> mapCompanies(List<Company> companies, Boolean full) {
+        if (full != null && full)
+            return companyMapper.companiesToDtos(companies);
+        else
+            return companyMapper.companiesToDtosWithNoEmployees(companies);
+    }
+
     @GetMapping("/{id}")
     public CompanyDto getById(@PathVariable long id, @RequestParam(required = false) Boolean full) {
         Company company = companyService.findById(id)
-                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if (full != null && full)
             return companyMapper.companyToDto(company);
         else
@@ -119,7 +129,7 @@ public class CompanyController {
             //throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 
 
-        return companyMapper.companyToDtoWithNoEmployees(company);
+            return companyMapper.companyToDtoWithNoEmployees(company);
     }
 
 
@@ -282,6 +292,29 @@ public class CompanyController {
         return companyMapper.companyToDto(company);
          */
 
+    }
+
+    @GetMapping(params = "abovSalary")
+    public List<CompanyDto> getCompaniesAboveSalary(@RequestParam int aboveSalary,
+                                                    @RequestParam(required = false)
+                                                            Boolean full) {
+        List<Company> filteredCompanies = companyRepository.findByEmployeeWithSalaryHigherThan(aboveSalary);
+        return mapCompanies(filteredCompanies, full);
+    }
+
+    @GetMapping(params = "aboveEmployeeNumber")
+    public List<CompanyDto> getCompaniesAboveEmployeeNumber(@RequestParam int aboveEmployeeNumber,
+                                                            @RequestParam(required = false)
+                                                                    Boolean full) {
+        List<Company> filteredCompanies = companyRepository.findByEmployeeCountHigherThan(aboveEmployeeNumber);
+        return mapCompanies(filteredCompanies, full);
+    }
+
+    @GetMapping("/{id}/salaryStats")
+    public List<AverageSalaryByPosition> getSalaryStatsById(@PathVariable long id,
+                                                            @RequestParam(required = false)
+                                                                    Boolean full) {
+        return companyRepository.findAverageSalaryByPosition(id);
     }
 
 
