@@ -43,9 +43,13 @@ public class CompanyController {
 
      */
 
-
-
- /*
+    public CompanyController(CompanyService companyService, CompanyMapper companyMapper, EmployeeMapper employeeMapper, CompanyRepository companyRepository) {
+        this.companyService = companyService;
+        this.companyMapper = companyMapper;
+        this.employeeMapper = employeeMapper;
+        this.companyRepository = companyRepository;
+    }
+/*
 
     ha a full boolean-os getAll megy, akk ez nyilvan kommentben legyen
     @GetMapping

@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.swing.text.html.parser.Entity;
 import java.time.LocalDateTime;
@@ -42,5 +43,13 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
             nativeQuery = true)
     void truncate();
 
+    @Modifying //update vagy delete query esetén (ha nem selectet írunk) --- így nem getresultlist hanem executeupdate-tel futtatja spring
+    @Transactional
+    @Query("UPDATE Employee e "
+            + "SET e.salary = :minSalary "
+            + "WHERE e.position.name= :position"
+            + "AND e.salary < :minSalary "
+            + "AND e.company.id = :companyId")
+    int updateSalaries(String position, int minSalary, long companyId);
 
 }

@@ -3,10 +3,12 @@ package hu.webuni.hr.akostomschweger.service;
 import hu.webuni.hr.akostomschweger.dto.EmployeeDto;
 import hu.webuni.hr.akostomschweger.model.Company;
 import hu.webuni.hr.akostomschweger.model.Employee;
+import hu.webuni.hr.akostomschweger.model.PositionDetailsByCompany;
 import hu.webuni.hr.akostomschweger.model.Qualification;
 import hu.webuni.hr.akostomschweger.repository.CompanyRepository;
 import hu.webuni.hr.akostomschweger.repository.EmployeeRepository;
 // import org.flywaydb.core.Flyway;
+import hu.webuni.hr.akostomschweger.repository.PositionDetailsByCompanyRepository;
 import hu.webuni.hr.akostomschweger.repository.PositionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -30,6 +32,9 @@ public class InitDbService  {
     //position entitás miatt hozzáadás
     @Autowired
     PositionRepository positionRepository;
+
+    @Autowired
+    PositionDetailsByCompanyRepository positionDetailsByCompanyRepository;
 
     @Transactional
     public void clearDB(){
@@ -116,6 +121,16 @@ public class InitDbService  {
                 LocalDateTime.of(2019, 2, 22, 22, 22));
         employeeB.setPosition(tester);
 
+        Employee employeeC = new Employee(
+                null,
+                "Zkos",
+                /*"senior java developer",
+
+                 */
+                333333,
+                LocalDateTime.of(2020, 2, 22, 22, 22));
+        employeeB.setPosition(tester);
+
 
         Company companyA =  new Company(
                 9991L,
@@ -147,8 +162,23 @@ public class InitDbService  {
         //this.employeeRepository.flush();
         //this.companyRepository.flush();
         companyA.addEmployee(employeeA);
-        //companyB.addEmployee(employeeA);
+        companyB.addEmployee(employeeA);
         companyB.addEmployee(employeeB);
+        companyB.addEmployee(employeeC);
+
+
+        PositionDetailsByCompany pd = new PositionDetailsByCompany();
+        pd.setCompany(companyA);
+        pd.setMinSalary(100000);
+        pd.setPosition(developer);
+        positionDetailsByCompanyRepository.save(pd);
+
+        PositionDetailsByCompany pd2 = new PositionDetailsByCompany();
+        pd.setCompany(companyB);
+        pd.setMinSalary(50000);
+        pd.setPosition(tester);
+        positionDetailsByCompanyRepository.save(pd2);
+
 
     }
 
