@@ -24,11 +24,12 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     @Query("SELECT c from Company c WHERE SIZE(c.employees) > :minEmployeeCount")
     public List<Company> findByEmployeeCountHigherThan(int minEmployeeCount);
 
-    @Query("SELECT e.position AS position, avg(e.salary) as averageSalary "
+    //e.position -> e.position.name a position entitás bevezetésével:
+    @Query("SELECT e.position.name AS position, avg(e.salary) as averageSalary "
     + "FROM Company c "
     + "INNER JOIN c.employees e "
     + "WHERE c.id= :companyId "
-    + "GROUP BY e.position "
+    + "GROUP BY e.position.name "
     + "ORDER BY avg(e.salary) DESC ")
     public List<AverageSalaryByPosition> findAverageSalaryByPosition(long companyId);
 

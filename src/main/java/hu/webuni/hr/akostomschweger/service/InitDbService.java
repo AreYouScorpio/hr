@@ -3,9 +3,11 @@ package hu.webuni.hr.akostomschweger.service;
 import hu.webuni.hr.akostomschweger.dto.EmployeeDto;
 import hu.webuni.hr.akostomschweger.model.Company;
 import hu.webuni.hr.akostomschweger.model.Employee;
+import hu.webuni.hr.akostomschweger.model.Qualification;
 import hu.webuni.hr.akostomschweger.repository.CompanyRepository;
 import hu.webuni.hr.akostomschweger.repository.EmployeeRepository;
 // import org.flywaydb.core.Flyway;
+import hu.webuni.hr.akostomschweger.repository.PositionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -25,6 +27,9 @@ public class InitDbService  {
     @Autowired
     EmployeeRepository employeeRepository;
 
+    //position entitás miatt hozzáadás
+    @Autowired
+    PositionRepository positionRepository;
 
     @Transactional
     public void clearDB(){
@@ -83,19 +88,33 @@ public class InitDbService  {
 
     public void insertTestData(){
 
+        //position entitás bekapcsolása
+        hu.webuni.hr.akostomschweger.model.Position developer = positionRepository.save(
+                new hu.webuni.hr.akostomschweger.model.Position("fejlesztő", Qualification.UNIVERSITY));
+        hu.webuni.hr.akostomschweger.model.Position tester = positionRepository.save(
+                new hu.webuni.hr.akostomschweger.model.Position("tesztelő", Qualification.HIGH_SCHOOL));
+
+
+
         Employee employeeA = new Employee(
                 1001L,
                 "Xkos",
-                "junior java developer",
+                /*"junior java developer",
+                position entitás miatt törölve
+                 */
                 111111,
                 LocalDateTime.of(2018, 1, 11, 11, 11));
+        employeeA.setPosition(developer);
 
         Employee employeeB = new Employee(
                 1002L,
                 "Ykos",
-                "senior java developer",
+                /*"senior java developer",
+
+                 */
                 222222,
                 LocalDateTime.of(2019, 2, 22, 22, 22));
+        employeeB.setPosition(tester);
 
 
         Company companyA =  new Company(

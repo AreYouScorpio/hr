@@ -20,6 +20,15 @@ public class EmployeeDto {
     @Past
     private LocalDateTime startDateAtTheCompany;
 
+    private CompanyDto company;
+
+    public CompanyDto getCompany() {
+        return company;
+    }
+
+    public void setCompany(CompanyDto company) {
+        this.company = company;
+    }
 
     public EmployeeDto(Long id, String name, String position, int salary, LocalDateTime startDateAtTheCompany) {
         this.id = id;

@@ -78,7 +78,7 @@ public abstract class EmployeeSuperClass implements EmployeeService {
     public List<Employee> findByPosition(String position) {
 
 
-        return employeeRepository.findByPosition(position);
+        return employeeRepository.findByPositionName(position);
     }
 
     public List<Employee> findByNameStartingWith(String prefix) {

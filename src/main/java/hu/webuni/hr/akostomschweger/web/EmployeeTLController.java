@@ -20,8 +20,11 @@ import java.util.stream.Collectors;
 public class EmployeeTLController {
 
     private List<EmployeeDto> employees = new ArrayList<>();
-
+    // Position Entity miatt kivesszük őket:
+        /*
     {
+
+
         employees.add(new EmployeeDto(
                 1L,
                 "Akos",
@@ -46,8 +49,12 @@ public class EmployeeTLController {
 
 
         System.out.println(employees);
+
+
     }
 
+
+         */
 
     @GetMapping("/")
     public String home() {

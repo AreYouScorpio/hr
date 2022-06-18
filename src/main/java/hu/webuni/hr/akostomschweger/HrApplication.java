@@ -38,19 +38,19 @@ public class HrApplication implements CommandLineRunner {
 
 
 		Employee employee1 =
-				new Employee(1L, "Akos", "Tester1", 100,
+				new Employee(1L, "Akos", /*"Tester1",*/ 100,
 						LocalDateTime.of(2000,1, 1,0,0,0,0 ));
 
 		Employee employee2 =
-				new Employee(2L, "Bkos", "Tester2", 200,
+				new Employee(2L, "Bkos", /*"Tester2",*/ 200,
 						LocalDateTime.of(2016,1, 1,0,0,0,0 ));
 
 		Employee employee3 =
-				new Employee(3L, "Ckos", "Tester3", 300,
+				new Employee(3L, "Ckos", /*"Tester3",*/ 300,
 						LocalDateTime.of(2018,1, 1,0,0,0,0 ));
 
 		Employee employee4 =
-				new Employee(4L, "Dkos", "Tester4", 400,
+				new Employee(4L, "Dkos", /*"Tester4",*/ 400,
 						LocalDateTime.of(2022,1, 1,0,0,0,0 ));
 
 		System.out.println(salaryService.getPayRaisePercent(employee1));

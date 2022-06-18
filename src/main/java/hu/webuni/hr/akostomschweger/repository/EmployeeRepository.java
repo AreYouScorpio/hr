@@ -21,7 +21,9 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     List<Employee> findBySalaryGreaterThan(int salary);
     Page<Employee> findBySalaryGreaterThan(int salary, Pageable pageable);
 
-    List<Employee> findByPosition(String position);
+    // position entitás bevezetése miatt ez is megváltozik, már a position name attribútumára keres
+    // List<Employee> findByPosition(String position);
+    List<Employee> findByPositionName(String position);
 
     @Query(value = "SELECT e from Employee e where upper(e.name) like concat(upper(:prefix),'%')")
     List<Employee> findByNameStartingWith(@Param("prefix") String prefix);
