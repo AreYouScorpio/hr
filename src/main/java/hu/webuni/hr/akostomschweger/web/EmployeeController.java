@@ -7,6 +7,9 @@ import hu.webuni.hr.akostomschweger.repository.EmployeeRepository;
 import hu.webuni.hr.akostomschweger.service.EmployeeService;
 import hu.webuni.hr.akostomschweger.service.EmployeeSuperClass;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +19,8 @@ import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
+
+//import static com.sun.beans.introspect.PropertyInfo.Name.required;
 
 @RestController
 @RequestMapping("/api/employees")
@@ -31,11 +36,47 @@ public class EmployeeController {
     @Autowired
     EmployeeRepository employeeRepository;
 
+    /* old, before Pageable ---->
     @GetMapping
     public List<EmployeeDto> getAll() {
         return employeeMapper.employeesToDtos(employeeService.findAll());
         //return new ArrayList<>(employees.values());
     }
+    */
+
+
+    // new--- after Pageable and including minSalary:
+    @GetMapping
+    public List<EmployeeDto> getAll(@RequestParam(required = false) Integer minSalary,
+                                     @PageableDefault(sort = {"id"})
+                                     Pageable pageable) {
+        // már nem List, hanem Page of Employees lesz a típusa:
+        // ehelyett:
+        // List<Employee> employees = null;
+        Page<Employee> employeesPage = null; // employees helyett employeesPage nevet kap:
+        if (minSalary == null) {
+            // már inkább employeerepositoryn hívjuk ehelyett, átadva neki a pageable-t:
+            // employees = employeeService.findAll();
+            // névváltoztatás: employees = employeeRepository.findAll(pageable);
+            employeesPage = employeeRepository.findAll(pageable);
+        } else {
+            // névváltoztatás: employees = employeeRepository.findBySalaryGreaterThan(minSalary);
+            employeesPage = employeeRepository.findBySalaryGreaterThan(minSalary, pageable);
+            //ehhez a repoba is beletenni egy page-eset is
+        }
+        // infokat kiiratjuk:
+        System.out.println(employeesPage.getTotalElements());
+        System.out.println(employeesPage.getTotalPages());
+        System.out.println(employeesPage.isLast()); // ő-e az utolsó oldal
+        System.out.println(employeesPage.isFirst()); // ő-e az utolsó oldal
+
+        //return employeeMapper.employeesToDtos(employeeService.findAll());
+        //névváltoztatás: return employeeMapper.employeesToDtos(employees);
+        // már tartalmat adunk vissza: return employeeMapper.employeesToDtos(employeesPage);
+        return employeeMapper.employeesToDtos(employeesPage.getContent());
+        //return new ArrayList<>(employees.values());
+    }
+
 
 
 

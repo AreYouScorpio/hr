@@ -1,6 +1,8 @@
 package hu.webuni.hr.akostomschweger.repository;
 
 import hu.webuni.hr.akostomschweger.model.Employee;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,6 +17,9 @@ import java.util.List;
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     Long countById(Long id);
+
+    List<Employee> findBySalaryGreaterThan(int salary);
+    Page<Employee> findBySalaryGreaterThan(int salary, Pageable pageable);
 
     List<Employee> findByPosition(String position);
 
