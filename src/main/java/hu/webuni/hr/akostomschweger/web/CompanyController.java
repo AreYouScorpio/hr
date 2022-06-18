@@ -78,8 +78,9 @@ public class CompanyController {
     @GetMapping
     public List<CompanyDto> getAllFull(@RequestParam(required = false) Boolean full) {
         List<Company> companies = companyService.findAll();
-        System.out.println(companies.stream().findFirst().get().getEmployees().get(0).getName());
-        System.out.println(companyMapper.companiesToDtos(companies).get(0).getEmployees().isEmpty());
+        //System.out.println(companies.stream().findFirst().get().getEmployees().get(0).getName());
+        //System.out.println(companyMapper.companiesToDtos(companies).get(0).getEmployees().isEmpty());
+        //System.out.println("CCCCC" + companyMapper.companiesToDtos(companies).get(0).getRegNo());
 
         //return companies;
 

@@ -78,7 +78,7 @@ public class CompanyService {
 
     public List<Company> findAll() {
         // return new ArrayList<>(companies.values());
-        System.out.println(companyRepository.findAll().stream().findFirst().get().getEmployees().get(0).getName());
+        // System.out.println(companyRepository.findAll().stream().findFirst().get().getEmployees().get(0).getName());
         return companyRepository.findAll();
     }
 
