@@ -294,7 +294,7 @@ public class CompanyController {
 
     }
 
-    @GetMapping(params = "abovSalary")
+    @GetMapping(params = "aboveSalary")
     public List<CompanyDto> getCompaniesAboveSalary(@RequestParam int aboveSalary,
                                                     @RequestParam(required = false)
                                                             Boolean full) {
