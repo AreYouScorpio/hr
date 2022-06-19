@@ -123,6 +123,8 @@ public class CompanyService {
         //employeeRepository.save(employee); ----->
         employeeService.save(employee);
 
+        // ---
+
         Position position = employee.getPosition();
         if (position != null) {
             String positionName = position.getName();
@@ -140,6 +142,8 @@ public class CompanyService {
             }
 
         }
+
+        // ---
             return company;
 
     }

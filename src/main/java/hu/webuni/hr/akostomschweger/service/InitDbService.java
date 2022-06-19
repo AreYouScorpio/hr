@@ -29,6 +29,12 @@ public class InitDbService  {
     @Autowired
     EmployeeRepository employeeRepository;
 
+    @Autowired
+    CompanyService companyService;
+    //@Autowired
+    //EmployeeService employeeService;
+
+
     //position entitás miatt hozzáadás
     @Autowired
     PositionRepository positionRepository;
@@ -133,7 +139,7 @@ public class InitDbService  {
 
 
         Company companyA =  new Company(
-                9991L,
+                null,
                 "88888",
                 "X company",
                 "Weert",
@@ -142,17 +148,20 @@ public class InitDbService  {
         //new ArrayList<Employee>(List.of(employeeA,employeeB))
 
         Company companyB =  new Company(
-                9992L,
+                null,
                 "99999",
                 "Y company",
                 "Best",
                 new ArrayList<Employee>());
 
 
+
         employeeRepository.save(employeeA);
         //employeeA=employeeRepository.save(employeeA);
         employeeRepository.save(employeeB);
         //employeeB=employeeRepository.save(employeeB);
+
+
         companyRepository.save(companyA);
         //companyA=employeeRepository.save(companyA)
         companyRepository.save(companyB);
@@ -163,10 +172,20 @@ public class InitDbService  {
         //this.companyRepository.flush();
 
 
+        //System.out.println(companyA.getId()); -- ha fent null az ID, akkor a valódit kérdezi le, ha fiktív, pl 9991L, akkor ezt a fiktívet adja vissza
+        //companyA.addEmployee(employeeA);
+        //companyService.addNewEmployee(companyA.getId(),employeeA);
+
+
+        //employeeRepository.save(employeeA);
         companyA.addEmployee(employeeA);
+        employeeRepository.save(employeeA);
         companyB.addEmployee(employeeA);
+        employeeRepository.save(employeeA);
         companyB.addEmployee(employeeB);
-        companyB.addEmployee(employeeC);
+        employeeRepository.save(employeeB);
+
+
 
         /*
 
