@@ -62,4 +62,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
             + ")")
     int updateSalaries(String position, int minSalary, long companyId);
 
-}
+
+
+    }

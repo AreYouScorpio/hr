@@ -4,11 +4,14 @@ import hu.webuni.hr.akostomschweger.dto.CompanyDto;
 import hu.webuni.hr.akostomschweger.dto.EmployeeDto;
 import hu.webuni.hr.akostomschweger.model.Company;
 import hu.webuni.hr.akostomschweger.model.Employee;
+import hu.webuni.hr.akostomschweger.model.Position;
 import hu.webuni.hr.akostomschweger.repository.CompanyRepository;
 import hu.webuni.hr.akostomschweger.repository.EmployeeRepository;
+import hu.webuni.hr.akostomschweger.repository.PositionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.util.*;
 
@@ -23,6 +26,8 @@ public class CompanyService {
     EmployeeService employeeService;
     //@Autowired
     //EmployeeSuperClass employeeSuperClass;
+    @Autowired
+    PositionRepository positionRepository;
 
     /*
 
@@ -115,11 +120,61 @@ public class CompanyService {
 
         Company company = companyRepository.findById(company_id).get();
         company.addEmployee(employee);
-        employeeRepository.save(employee);
-        //employeeService.save(employee);
+        //employeeRepository.save(employee); ----->
+        employeeService.save(employee);
 
-        return company;
+        Position position = employee.getPosition();
+        if (position != null) {
+            String positionName = position.getName();
+            if (!ObjectUtils.isEmpty(positionName)) {
+                Position positionInDb = null;
+                Optional<Position> foundPosition = positionRepository.findByName(positionName);
+                if (foundPosition.isPresent())
+                    positionInDb = foundPosition.get();
+                else {
+                    positionInDb = positionRepository.save(position);
+                }
+                employee.setPosition(positionInDb);
+            } else {
+                employee.setPosition(null);
+            }
+
+        }
+            return company;
+
     }
+
+    /*
+    employeeservice superclass-ból átemelve, hogy itt is megvalósítsam
+
+    @Transactional
+    public Employee save(Employee employee) {
+        // employees.put(employee.getId(), employee);
+        employee.setId(null); // biztos ami biztos ne felülírjon
+        Position position = employee.getPosition();
+        if (position!=null) {
+            String positionName = position.getName();
+            if(!ObjectUtils.isEmpty(positionName)) {
+                Position positionInDb = null;
+                Optional<Position> foundPosition = positionRepository.findByName(positionName);
+                if(foundPosition.isPresent())
+                    positionInDb = foundPosition.get();
+                else {
+                    positionInDb = positionRepository.save(position);
+                }
+                employee.setPosition(positionInDb);
+            } else {
+                employee.setPosition(null);
+            }
+        }
+        return employeeRepository.save(employee);// employee;
+    }
+
+
+
+     */
+
+
 
     @Transactional
     public Company deleteEmployeeFromCompany(long company_id, long employee_id) {

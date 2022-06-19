@@ -161,6 +161,8 @@ public class InitDbService  {
         //companyB=employeeRepository.save(companyB)
         //this.employeeRepository.flush();
         //this.companyRepository.flush();
+
+
         companyA.addEmployee(employeeA);
         companyB.addEmployee(employeeA);
         companyB.addEmployee(employeeB);
@@ -178,6 +180,12 @@ public class InitDbService  {
         pd.setMinSalary(50000);
         pd.setPosition(tester);
         positionDetailsByCompanyRepository.save(pd2);
+
+
+
+
+
+
 
 
     }
