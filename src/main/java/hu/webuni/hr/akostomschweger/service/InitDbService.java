@@ -168,6 +168,7 @@ public class InitDbService  {
         companyB.addEmployee(employeeB);
         companyB.addEmployee(employeeC);
 
+        /*
 
         PositionDetailsByCompany pd = new PositionDetailsByCompany();
         pd.setCompany(companyA);
@@ -182,6 +183,8 @@ public class InitDbService  {
         positionDetailsByCompanyRepository.save(pd2);
 
 
+
+         */
 
 
 

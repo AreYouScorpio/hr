@@ -1,6 +1,8 @@
 package hu.webuni.hr.akostomschweger.model;
 
 import hu.webuni.hr.akostomschweger.dto.EmployeeDto;
+import hu.webuni.hr.akostomschweger.service.EmployeeService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.util.ArrayList;
