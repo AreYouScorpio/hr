@@ -18,51 +18,50 @@ import java.util.Scanner;
 @SpringBootApplication
 public class HrApplication implements CommandLineRunner {
 
-	@Autowired
-	SalaryService salaryService;
+    @Autowired
+    SalaryService salaryService;
 
-	@Autowired
-	InitDbService initDbService;
+    @Autowired
+    InitDbService initDbService;
 
-	public static void main(String[] args) {
-		SpringApplication.run(HrApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(HrApplication.class, args);
+    }
 
-	@Override
-	public void run(String... args) throws Exception {
+    @Override
+    public void run(String... args) throws Exception {
 
 // Scanner scanner = new Scanner(System.in);
 // String a = scanner.nextLine();
-	//	InitDbService initDbService = new InitDbService();
-	//	initDbService.clearDB();
+        //	InitDbService initDbService = new InitDbService();
+        //	initDbService.clearDB();
 
 
-		Employee employee1 =
-				new Employee(1L, "Akos", /*"Tester1",*/ 100,
-						LocalDateTime.of(2000,1, 1,0,0,0,0 ));
+        Employee employee1 =
+                new Employee(1L, "Akos", /*"Tester1",*/ 100,
+                        LocalDateTime.of(2000, 1, 1, 0, 0, 0, 0));
 
-		Employee employee2 =
-				new Employee(2L, "Bkos", /*"Tester2",*/ 200,
-						LocalDateTime.of(2016,1, 1,0,0,0,0 ));
+        Employee employee2 =
+                new Employee(2L, "Bkos", /*"Tester2",*/ 200,
+                        LocalDateTime.of(2016, 1, 1, 0, 0, 0, 0));
 
-		Employee employee3 =
-				new Employee(3L, "Ckos", /*"Tester3",*/ 300,
-						LocalDateTime.of(2018,1, 1,0,0,0,0 ));
+        Employee employee3 =
+                new Employee(3L, "Ckos", /*"Tester3",*/ 300,
+                        LocalDateTime.of(2018, 1, 1, 0, 0, 0, 0));
 
-		Employee employee4 =
-				new Employee(4L, "Dkos", /*"Tester4",*/ 400,
-						LocalDateTime.of(2022,1, 1,0,0,0,0 ));
+        Employee employee4 =
+                new Employee(4L, "Dkos", /*"Tester4",*/ 400,
+                        LocalDateTime.of(2022, 1, 1, 0, 0, 0, 0));
 
-		System.out.println(salaryService.getPayRaisePercent(employee1));
-		System.out.println(salaryService.getPayRaisePercent(employee2));
-		System.out.println(salaryService.getPayRaisePercent(employee3));
-		System.out.println(salaryService.getPayRaisePercent(employee4));
+        System.out.println(salaryService.getPayRaisePercent(employee1));
+        System.out.println(salaryService.getPayRaisePercent(employee2));
+        System.out.println(salaryService.getPayRaisePercent(employee3));
+        System.out.println(salaryService.getPayRaisePercent(employee4));
 
 
+        initDbService.clearDB();
+        initDbService.insertTestData();
 
-		initDbService.clearDB();
-		initDbService.insertTestData();
-
-	}
+    }
 
 }

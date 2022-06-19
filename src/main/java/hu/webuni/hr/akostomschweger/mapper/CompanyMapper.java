@@ -12,9 +12,11 @@ import java.util.List;
 public interface CompanyMapper {
 
     CompanyDto companyToDto(Company company); //
+
     List<CompanyDto> companiesToDtos(List<Company> companies); //
 
     Company dtoToCompany(CompanyDto companyDto);
+
     List<Company> dtosToCompanies(List<CompanyDto> companyDtoList);
 
     // tanari video kod:
@@ -45,7 +47,6 @@ public interface CompanyMapper {
 
     @IterableMapping(qualifiedByName = "summary")
     List<CompanyDto> companiesToDtosWithNoEmployees(List<Company> companies);
-
 
 
 }

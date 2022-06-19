@@ -48,8 +48,8 @@ public class EmployeeController {
     // new--- after Pageable and including minSalary:
     @GetMapping
     public List<EmployeeDto> getAll(@RequestParam(required = false) Integer minSalary,
-                                     @PageableDefault(sort = {"id"})
-                                     Pageable pageable) {
+                                    @PageableDefault(sort = {"id"})
+                                            Pageable pageable) {
         // már nem List, hanem Page of Employees lesz a típusa:
         // ehelyett:
         // List<Employee> employees = null;
@@ -78,8 +78,6 @@ public class EmployeeController {
     }
 
 
-
-
     @GetMapping("/position/{position}")
     public List<EmployeeDto> findByPosition(@PathVariable String position) {
         List<Employee> employees = employeeService.findByPosition(position);
@@ -106,13 +104,10 @@ public class EmployeeController {
     }
 
 
-
-
-
     @GetMapping("/{id}")
     public EmployeeDto getById(@PathVariable long id) {
         Employee employee = employeeService.findById(id)
-                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         //EmployeeDto employeeDto = employeeSuperClass.get(id);
         // if (employeeDto != null)
         //    return ResponseEntity.ok(employeeDto);
@@ -143,7 +138,7 @@ public class EmployeeController {
 
     @PostMapping
     public EmployeeDto createEmployee(@RequestBody @Valid EmployeeDto employeeDto) {
-       Employee employee = employeeService.save(employeeMapper.dtoToEmployee(employeeDto));
+        Employee employee = employeeService.save(employeeMapper.dtoToEmployee(employeeDto));
         return employeeMapper.employeeToDto(employee);
     }
 
@@ -162,7 +157,7 @@ public class EmployeeController {
 
     @PutMapping("/{id}")
     public ResponseEntity<EmployeeDto> modifyEmployee(@PathVariable long id,
-                                    @RequestBody @Valid EmployeeDto employeeDto) {
+                                                      @RequestBody @Valid EmployeeDto employeeDto) {
 
         //Employee employee = employeeService.findById(id);
 
@@ -171,8 +166,7 @@ public class EmployeeController {
         try {
             EmployeeDto savedEmployeeDto = employeeMapper.employeeToDto(employeeService.update(id, employee));
             return ResponseEntity.ok(savedEmployeeDto);
-        }
-        catch (NoSuchElementException e) {
+        } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 

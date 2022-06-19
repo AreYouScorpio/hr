@@ -16,7 +16,6 @@ public class Employee {
     private LocalDateTime startDateAtTheCompany;
 
 
-
     @ManyToOne
     private Position position; // minden ilyennél eldönthető, h a másik oldalt is felvesszük-e, célszerű
 
@@ -30,10 +29,6 @@ public class Employee {
         this.salary = salary;
         this.startDateAtTheCompany = startDateAtTheCompany;
     }
-
-
-
-
 
 
     public Employee() {
@@ -62,20 +57,21 @@ public class Employee {
     public void setName(String name) {
         this.name = name;
     }
-/*
 
-Position entitással a régi gettereit settereit is levesszük
+    /*
 
-    public String getPosition() {
-        return position;
-    }
+    Position entitással a régi gettereit settereit is levesszük
 
-    public void setPosition(String position) {
-        this.position = position;
-    }
+        public String getPosition() {
+            return position;
+        }
+
+        public void setPosition(String position) {
+            this.position = position;
+        }
 
 
- */
+     */
     public int getSalary() {
         return salary;
     }

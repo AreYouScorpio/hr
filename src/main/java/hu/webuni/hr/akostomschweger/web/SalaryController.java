@@ -20,6 +20,6 @@ public class SalaryController {
     public void raiseMinSalary(@PathVariable String positionName,
                                @PathVariable int minSalary,
                                @PathVariable long companyId) {
-        salaryService.raiseMinSalary(companyId, positionName,minSalary);
+        salaryService.raiseMinSalary(companyId, positionName, minSalary);
     }
 }

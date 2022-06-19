@@ -24,8 +24,6 @@ public class Company {
     private CompanyType companyType;
 
 
-
-
     public Company() {
     }
 
@@ -36,7 +34,6 @@ public class Company {
         this.address = address;
         this.employees = employees;
     }
-
 
 
     public List<Employee> getEmployees() {
@@ -88,8 +85,6 @@ public class Company {
     // }
 
 
-
-
     public void addEmployee(Employee employee) {
         if (this.employees == null)
             this.employees = new ArrayList<>();
@@ -105,9 +100,6 @@ public class Company {
     public void setCompanyType(CompanyType companyType) {
         this.companyType = companyType;
     }
-
-
-
 
 
     @Override

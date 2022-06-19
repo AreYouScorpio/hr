@@ -20,6 +20,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     Long countById(Long id);
 
     List<Employee> findBySalaryGreaterThan(int salary);
+
     Page<Employee> findBySalaryGreaterThan(int salary, Pageable pageable);
 
     // position entitás bevezetése miatt ez is megváltozik, már a position name attribútumára keres
@@ -43,7 +44,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
             nativeQuery = true)
     void truncate();
 
-    @Modifying //update vagy delete query esetén (ha nem selectet írunk) --- így nem getresultlist hanem executeupdate-tel futtatja spring
+    @Modifying
+    //update vagy delete query esetén (ha nem selectet írunk) --- így nem getresultlist hanem executeupdate-tel futtatja spring
     @Transactional
     // 1. mego, nem műxik, (hibernate cross joint)
     //@Query("UPDATE Employee e "
@@ -63,5 +65,4 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     int updateSalaries(String position, int minSalary, long companyId);
 
 
-
-    }
+}

@@ -63,7 +63,7 @@ public class EmployeeTLController {
     }
 
     @GetMapping("/employees")
-    public String listEmployees(Map<String,Object> model){
+    public String listEmployees(Map<String, Object> model) {
         model.put("employees", employees);
         model.put("newEmployee", new EmployeeDto());
         return "employees";
@@ -71,16 +71,15 @@ public class EmployeeTLController {
     }
 
 
-
     @PostMapping("/employees")
-    public String addEmployee(EmployeeDto employee){
+    public String addEmployee(EmployeeDto employee) {
         employees.add(employee);
         return "redirect:employees";
 
     }
 
     @GetMapping("/modify/{id}")
-    public String modifyEmployee(@PathVariable long id, Map<String, Object> model){
+    public String modifyEmployee(@PathVariable long id, Map<String, Object> model) {
         /*
         model.put("modEmployee", new EmployeeDto());
         model.put("employee", employees.stream()
@@ -89,10 +88,10 @@ public class EmployeeTLController {
                 .orElseThrow(() ->new IllegalArgumentException("ID not present.")));
 
          */
-        EmployeeDto emp=employees.stream()
-                .filter(e->e.getId()==id)
+        EmployeeDto emp = employees.stream()
+                .filter(e -> e.getId() == id)
                 .findFirst()
-                .orElseThrow(() ->new IllegalArgumentException("ID not present."));
+                .orElseThrow(() -> new IllegalArgumentException("ID not present."));
         model.put("employee", emp);
 //        String sd=emp.getStartDateAtTheCompany().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 //        model.put("startDate", sd);
@@ -101,17 +100,17 @@ public class EmployeeTLController {
     }
 
     @PostMapping("/modify/{id}")
-    public String modifyEmployeePost(@PathVariable long id, Map<String, Object> model, EmployeeDto employee){
-        for(int i=0;i<employees.size();i++)
-            if(employees.get(i).getId()==id)
-                employees.set(i,employee);
+    public String modifyEmployeePost(@PathVariable long id, Map<String, Object> model, EmployeeDto employee) {
+        for (int i = 0; i < employees.size(); i++)
+            if (employees.get(i).getId() == id)
+                employees.set(i, employee);
         return "redirect:/employees";
     }
 
     @PostMapping("/delete/{id}")
-    public String deleteEmployee(@PathVariable long id){
-        for(int i=0;i<employees.size();i++)
-            if(employees.get(i).getId()==id)
+    public String deleteEmployee(@PathVariable long id) {
+        for (int i = 0; i < employees.size(); i++)
+            if (employees.get(i).getId() == id)
                 employees.remove(i);
         return "redirect:/employees";
     }

@@ -26,11 +26,11 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
 
     //e.position -> e.position.name a position entitás bevezetésével:
     @Query("SELECT e.position.name AS position, avg(e.salary) as averageSalary "
-    + "FROM Company c "
-    + "INNER JOIN c.employees e "
-    + "WHERE c.id= :companyId "
-    + "GROUP BY e.position.name "
-    + "ORDER BY avg(e.salary) DESC ")
+            + "FROM Company c "
+            + "INNER JOIN c.employees e "
+            + "WHERE c.id= :companyId "
+            + "GROUP BY e.position.name "
+            + "ORDER BY avg(e.salary) DESC ")
     public List<AverageSalaryByPosition> findAverageSalaryByPosition(long companyId);
 
 }
