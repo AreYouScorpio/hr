@@ -76,6 +76,10 @@ public class CompanyService {
         return companyRepository.save(company);
     }
 
+
+
+
+
     public List<Company> findAll() {
         // return new ArrayList<>(companies.values());
         // System.out.println(companyRepository.findAll().stream().findFirst().get().getEmployees().get(0).getName());

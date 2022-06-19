@@ -1,10 +1,13 @@
 package hu.webuni.hr.akostomschweger.service;
 
 import hu.webuni.hr.akostomschweger.model.Employee;
+import hu.webuni.hr.akostomschweger.model.Position;
 import hu.webuni.hr.akostomschweger.repository.EmployeeRepository;
+import hu.webuni.hr.akostomschweger.repository.PositionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -15,6 +18,9 @@ public abstract class EmployeeSuperClass implements EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
+    // a Position entitás bevezetése után autowired kell ennek is:
+    @Autowired
+    private PositionRepository positionRepository;
 
     /*
 
@@ -42,12 +48,43 @@ public abstract class EmployeeSuperClass implements EmployeeService {
 
          */
 
+    /* új save kell a Position entitás bevezetése után
     @Transactional
     public Employee save(Employee employee) {
         // employees.put(employee.getId(), employee);
         employee.setId(null); // biztos ami biztos ne felülírjon
         return employeeRepository.save(employee);// employee;
     }
+
+
+    az új save --->
+     */
+
+    @Transactional
+    public Employee save(Employee employee) {
+        // employees.put(employee.getId(), employee);
+        employee.setId(null); // biztos ami biztos ne felülírjon
+        Position position = employee.getPosition();
+        if (position!=null) {
+            String positionName = position.getName();
+            if(!ObjectUtils.isEmpty(positionName)) {
+                Position positionInDb = null;
+                Optional<Position> foundPosition = positionRepository.findByName(positionName);
+                if(foundPosition.isPresent())
+                    positionInDb = foundPosition.get();
+                else {
+                    positionInDb = positionRepository.save(position);
+                }
+                employee.setPosition(positionInDb);
+            } else {
+                employee.setPosition(null);
+            }
+        }
+        return employeeRepository.save(employee);// employee;
+    }
+
+
+
 
     public List<Employee> findAll() {
         //return new ArrayList<>(employees.values());
