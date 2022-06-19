@@ -45,11 +45,21 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     @Modifying //update vagy delete query esetén (ha nem selectet írunk) --- így nem getresultlist hanem executeupdate-tel futtatja spring
     @Transactional
+    // 1. mego, nem műxik, (hibernate cross joint)
+    //@Query("UPDATE Employee e "
+    //        + "SET e.salary = :minSalary "
+    //        + "WHERE e.position.name= :position "
+    //        + "AND e.salary < :minSalary "
+    //        + "AND e.company.id = :companyId")
     @Query("UPDATE Employee e "
             + "SET e.salary = :minSalary "
-            + "WHERE e.position.name= :position"
-            + "AND e.salary < :minSalary "
-            + "AND e.company.id = :companyId")
+            + "WHERE e.id IN "
+            + "(SELECT e2.id "
+            + "FROM Employee e2 "
+            + "WHERE e2.position.name= :position "
+            + "AND e2.salary < :minSalary "
+            + "AND e2.company.id = :companyId"
+            + ")")
     int updateSalaries(String position, int minSalary, long companyId);
 
 }
