@@ -42,21 +42,30 @@ public class InitDbService  {
     @Autowired
     PositionDetailsByCompanyRepository positionDetailsByCompanyRepository;
 
+
     @Transactional
     public void clearDB(){
-        employeeRepository.truncate();
+
+        //employeeRepository.truncate();
         //companyRepository.truncate();
 
-        /*
 
-        vagy végig iterálva, de lassabb lenne
+        for (PositionDetailsByCompany p : positionDetailsByCompanyRepository.findAll()) {
+           positionDetailsByCompanyRepository.delete(p); }
+
+           // for (positionRepository r : positionRepository.findAll()) {
+            //positionRepository.delete(r);
+
+
+
+        //vagy végig iterálva, de lassabb lenne
 
         for (Employee e : employeeRepository.findAll()) {
             employeeRepository.delete(e);
         }
 
 
-         */
+
         for (Company c : companyRepository.findAll()) {
             companyRepository.delete(c);
         }
@@ -187,7 +196,7 @@ public class InitDbService  {
 
 
 
-        /*
+
 
         PositionDetailsByCompany pd = new PositionDetailsByCompany();
         pd.setCompany(companyA);
@@ -203,7 +212,11 @@ public class InitDbService  {
 
 
 
-         */
+
+
+
+
+
 
 
 

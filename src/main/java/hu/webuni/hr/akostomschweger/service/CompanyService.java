@@ -110,6 +110,7 @@ public class CompanyService {
         else throw new NoSuchElementException();
     }
 
+    @Transactional
     public void delete(long id) {
         //companies.remove(id);
         companyRepository.deleteById(id);
@@ -124,7 +125,7 @@ public class CompanyService {
         employeeService.save(employee);
 
         // ---
-
+/*
         Position position = employee.getPosition();
         if (position != null) {
             String positionName = position.getName();
@@ -144,6 +145,8 @@ public class CompanyService {
         }
 
         // ---
+
+ */
             return company;
 
     }
@@ -187,7 +190,7 @@ public class CompanyService {
         //removeIf(e -> e.getId() == employee_id);
         employee.setCompany(null);
         company.getEmployees().remove(employee);
-        employeeRepository.save(employee);
+        employeeService.save(employee);
         return company;
     }
 
@@ -203,7 +206,7 @@ public class CompanyService {
 
         for (Employee employee : company.getEmployees()) {
             company.addEmployee(employee);
-            employeeRepository.save(employee);
+            employeeService.save(employee);
         }
 
 
@@ -222,7 +225,7 @@ public class CompanyService {
         company.getEmployees().clear();
         for (Employee employee : employees) {
             company.addEmployee(employee);
-            employeeRepository.save(employee);
+            employeeService.save(employee);
         }
         return company;
 
