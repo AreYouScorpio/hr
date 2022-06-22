@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+//v3: CompanyRepository-ba behívás open view = false esetén
+@NamedEntityGraph(
+        name="Company.full",
+        attributeNodes = @NamedAttributeNode("employees")
+)
 @Entity
 public class Company {
 

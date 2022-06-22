@@ -16,6 +16,7 @@ spring:
       show-sql: true
       hibernate:
         ddl-auto: create
+        open-in-view: false
 
 hr:
     salary:

@@ -82,7 +82,7 @@ public class CompanyController {
     }
 */
 
-
+/*
     @GetMapping
     public List<CompanyDto> getAllFull(@RequestParam(required = false) Boolean full) {
         List<Company> companies = companyService.findAll();
@@ -97,6 +97,8 @@ public class CompanyController {
         else
             //return companyMapper.companiesToDtos(companies);
             return companyMapper.companiesToDtosWithNoEmployees(companies);
+
+ */
             /*
             return companyMapper.companiesToDtos(companyService.findAll())
                     .stream()
@@ -105,7 +107,34 @@ public class CompanyController {
 
 
              */
+    /*
     }
+
+
+     */
+
+    // új get all companies , open view-hoz --->
+
+    @GetMapping
+    public List<CompanyDto> getAllFull(@RequestParam(required = false) Boolean full) {
+        List<Company> companies = null;
+        //System.out.println(companies.stream().findFirst().get().getEmployees().get(0).getName());
+        //System.out.println(companyMapper.companiesToDtos(companies).get(0).getEmployees().isEmpty());
+        //System.out.println("CCCCC" + companyMapper.companiesToDtos(companies).get(0).getRegNo());
+
+        //return companies;
+        boolean notFull = (full == null || !full);
+        if(notFull) {
+            companies = companyService.findAll();
+            return companyMapper.companiesToDtosWithNoEmployees(companies);
+        }
+        else {
+            companies = companyRepository.findAllWithEmployees();
+            return companyMapper.companiesToDtos(companies);
+        }
+    }
+
+
 
 /*
     @GetMapping("/{id}")

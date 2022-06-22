@@ -3,6 +3,7 @@ package hu.webuni.hr.akostomschweger.repository;
 import hu.webuni.hr.akostomschweger.model.AverageSalaryByPosition;
 import hu.webuni.hr.akostomschweger.model.Company;
 import hu.webuni.hr.akostomschweger.model.Employee;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -23,6 +24,14 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
 
     @Query("SELECT c from Company c WHERE SIZE(c.employees) > :minEmployeeCount")
     public List<Company> findByEmployeeCountHigherThan(int minEmployeeCount);
+
+    // open-in-view: false az application.yml-ben, másképp biztosítjuk a memóriába töltődést:
+    // v1: @Query("SELECT DISTINCT c FROM Company c LEFT JOIN FETCH c.employees")
+    // v2: @EntityGraph(attributePaths = "employees")
+    // v2: @Query("SELECT c FROM Company c")
+    @EntityGraph("Company.full") //v3, ha a Company-ra NamedEntityGraph-ot tettünk !
+    @Query("SELECT c FROM Company c") //v3
+    public List<Company> findAllWithEmployees();
 
     //e.position -> e.position.name a position entitás bevezetésével:
     @Query("SELECT e.position.name AS position, avg(e.salary) as averageSalary "
