@@ -4,7 +4,9 @@ import hu.webuni.hr.akostomschweger.dto.EmployeeDto;
 import hu.webuni.hr.akostomschweger.service.EmployeeService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -15,7 +17,12 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureTestDatabase
+//@RunWith(SpringRunner.class)
+//@DataJpaTest
+//@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 //@ActiveProfiles({"prod", "test"}) // profile switcher: both profiles on
 public class EmployeeControllerIT {
 
@@ -56,11 +63,11 @@ public class EmployeeControllerIT {
                 List<EmployeeDto> employeesBefore = getAllEmployees();
 
                 EmployeeDto employee =
-                        new EmployeeDto(21L, "Akos", "jsj", 200,
+                        new EmployeeDto( 13L, "Akos", "jsj", 200,
                                 LocalDateTime.of(2017, Month.FEBRUARY, 3, 6, 30));
                 // employeeController.createEmployee(employee);
-
                 createEmployee(employee);
+
 
                 List<EmployeeDto> employeesAfter = getAllEmployees();
 
@@ -126,7 +133,7 @@ public class EmployeeControllerIT {
                 List<EmployeeDto> employeesBefore = getAllEmployees();
 
                 EmployeeDto employee=
-                        new EmployeeDto(21L,"", "jsj", -1,
+                        new EmployeeDto(2L, "X", "jsj", -1,
                                 LocalDateTime.of(2017, Month.FEBRUARY,3,6,30));
                 // employeeController.createEmployee(employee);
 
@@ -212,8 +219,8 @@ public class EmployeeControllerIT {
 
 
                 WebTestClient.ResponseSpec foundRecord=(this.webTestClient
-                                .get()
-                                .uri("/api/employees/"+id)
+                        .get()
+                        .uri("/api/employees/"+id)
                         //.header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
                         .exchange()
                         .expectStatus()

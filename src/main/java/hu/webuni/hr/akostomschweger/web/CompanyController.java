@@ -193,6 +193,8 @@ public class CompanyController {
                         companyMapper.dtoToCompany(companyDto)));
     }
 
+
+
 /* old putmapping before mapstruct
 
     @PutMapping("/{id}")

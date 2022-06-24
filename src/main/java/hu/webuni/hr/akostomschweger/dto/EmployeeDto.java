@@ -24,6 +24,8 @@ public class EmployeeDto {
 
     private CompanyDto company;
 
+
+
     public CompanyDto getCompany() {
         return company;
     }
@@ -39,6 +41,8 @@ public class EmployeeDto {
         this.salary = salary;
         this.startDateAtTheCompany = startDateAtTheCompany;
     }
+
+
 
     public EmployeeDto() {
     }
