@@ -60,6 +60,56 @@ public class CompanyControllerIT {
         initDbService.insertTestData();
     }
 
+
+    @Test
+    void testEmployeeListChanged() throws Exception{
+
+
+        List<CompanyDto> companyListBefore = getAllCompanies();
+        long companyIdForModification = companyListBefore.get(1).getId();
+        System.out.println("A céglista mérete törlés előtt: " + companyListBefore.size());
+        System.out.println("Az 1. elem neve a cégek listájában? " + companyListBefore.get(1).getName());
+        assertEquals("Y company", companyListBefore.get(1).getName());
+
+        List<EmployeeDto> employeeListBefore =
+                getCompanyAndItsEmployeeList(companyIdForModification).getEmployees();
+
+        System.out.println("A dolgozói lista elemeinek száma módosítás előtt: "+ employeeListBefore.size());
+
+        List<EmployeeDto> employeeListForChange =
+                new ArrayList<>(List.of(
+                        new EmployeeDto("A-Paci", "A-pos", 100,
+                                LocalDateTime.of(2001, Month.FEBRUARY, 3, 6, 30)),
+                        new EmployeeDto("B-Paci", "B-pos", 200,
+                        LocalDateTime.of(2002, Month.FEBRUARY, 3, 6, 30)),
+                        new EmployeeDto("C-Paci", "C-pos", 300,
+                        LocalDateTime.of(2003, Month.FEBRUARY, 3, 6, 30))
+                ));
+
+                companyController.replaceEmployees(companyIdForModification, employeeListForChange);
+
+        List<CompanyDto> companyListAfter = getAllCompanies();
+        List<EmployeeDto> employeeListAfter =
+                getCompanyAndItsEmployeeList(companyIdForModification).getEmployees();
+
+        System.out.println("A céglista mérete törlés után: " + companyListAfter.size());
+        System.out.println("A dolgozói lista elemeinek száma módosítás után: "+ employeeListAfter.size());
+
+
+/*
+
+        assertThat(companyListAfter.subList(0, companyListBefore.size()))
+                .usingRecursiveFieldByFieldElementComparator()
+                .containsExactlyElementsOf(companyListBefore);
+
+        assertThat(companyListAfter
+                .get(companyListAfter.size() - 1))
+                .usingRecursiveComparison()
+                .isEqualTo(company);
+
+ */
+    }
+
     @Test
     void testEmployeeDeleted() throws Exception {
         List<CompanyDto> companyListBefore = getAllCompanies();
@@ -76,7 +126,7 @@ public class CompanyControllerIT {
         System.out.println("A 0. elemű cég (ID: " + deleteTestCompanyId + " )  0. elemű dolgozójának neve: " + getCompanyAndItsEmployeeList(deleteTestCompanyId).getEmployees().get(0).getName());
         System.out.println("A 0. elemű cég (ID: " + deleteTestCompanyId + " )  0. elemű dolgozójának ID-ja: " + deleteTestEmployeeId);
 
-        System.out.println("A 0. elemű cég dolgozóinak száma törlés előtt: " +getCompanyAndItsEmployeeList(deleteTestCompanyId).getEmployees().size());
+        System.out.println("A 0. elemű cég dolgozóinak száma törlés előtt: " + getCompanyAndItsEmployeeList(deleteTestCompanyId).getEmployees().size());
 
 
         EmployeeDto employee = employeeController.getById(deleteTestEmployeeId);
@@ -89,11 +139,11 @@ public class CompanyControllerIT {
         List<CompanyDto> companyListAfter = getAllCompanies();
 
         System.out.println("A céglista mérete törlés után: " + companyListAfter.size());
-        System.out.println("A 0. elemű cég dolgozóinak száma törlés után: " +getCompanyAndItsEmployeeList(deleteTestCompanyId).getEmployees().size());
+        System.out.println("A 0. elemű cég dolgozóinak száma törlés után: " + getCompanyAndItsEmployeeList(deleteTestCompanyId).getEmployees().size());
 
 
-        assertThat(getCompanyAndItsEmployeeList(deleteTestCompanyId).getEmployees().size()==0);
-        assertThat(companyListAfter.size()==companyListBefore.size());
+        assertThat(getCompanyAndItsEmployeeList(deleteTestCompanyId).getEmployees().size() == 0);
+        assertThat(companyListAfter.size() == companyListBefore.size());
 
 
         //System.out.println(companyListBefore.get(0).getEmployees().get(0).getName());
@@ -115,7 +165,7 @@ public class CompanyControllerIT {
     }
 
 
-        @Test
+    @Test
     void testEmployeeAdded() throws Exception {
 
         // !! company-t EAGER-re alakítani, h működjön !!
@@ -138,7 +188,6 @@ public class CompanyControllerIT {
         //company.addNewEmployee(employeeX);
         long savedIdForTesting = createCompany(company);
         companyController.addEmployeeToCompany(savedIdForTesting, employeeX);
-
 
 
         System.out.println("céglista record: " + companyRepository.findAllWithEmployees());
@@ -172,8 +221,6 @@ public class CompanyControllerIT {
         List<CompanyDto> companyListAfter = getAllCompanies();
 
 
-
-
         assertThat(companyListAfter.subList(0, companyListBefore.size()))
                 .usingRecursiveFieldByFieldElementComparator()
                 .containsExactlyElementsOf(companyListBefore);
@@ -182,9 +229,6 @@ public class CompanyControllerIT {
                 .get(companyListAfter.size() - 1))
                 .usingRecursiveComparison()
                 .isEqualTo(company);
-
-
-
 
 
     }
@@ -232,21 +276,21 @@ public class CompanyControllerIT {
         // átalakítani, ez még a companykat kérdezi csak le
 
 
-            List<CompanyDto> responseList = webTestClient
-                    .get()
-                    .uri(BASE_URI)
-                    .exchange()
-                    .expectStatus()
-                    .isOk()
-                    .expectBodyList(CompanyDto.class)
-                    .returnResult().getResponseBody();
+        List<CompanyDto> responseList = webTestClient
+                .get()
+                .uri(BASE_URI)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBodyList(CompanyDto.class)
+                .returnResult().getResponseBody();
 
-            Collections.sort(responseList, (a1, a2) -> Long.compare(a1.getId(), a2.getId()));
+        Collections.sort(responseList, (a1, a2) -> Long.compare(a1.getId(), a2.getId()));
 
-            return responseList;
-        }
-
-
+        return responseList;
     }
+
+
+}
 
 
