@@ -2,6 +2,8 @@ package hu.webuni.hr.akostomschweger.web;
 
 import hu.webuni.hr.akostomschweger.dto.CompanyDto;
 import hu.webuni.hr.akostomschweger.dto.EmployeeDto;
+import hu.webuni.hr.akostomschweger.model.Company;
+import hu.webuni.hr.akostomschweger.model.Employee;
 import hu.webuni.hr.akostomschweger.repository.CompanyRepository;
 import hu.webuni.hr.akostomschweger.service.CompanyService;
 import hu.webuni.hr.akostomschweger.service.EmployeeService;
@@ -55,12 +57,68 @@ public class CompanyControllerIT {
     @BeforeEach
     public void init() {
         initDbService.clearDB();
-        //initDbService.insertTestData();
+        initDbService.insertTestData();
+    }
+
+    @Test
+    void testEmployeeDeleted() throws Exception {
+        List<CompanyDto> companyListBefore = getAllCompanies();
+        System.out.println("A céglista mérete törlés előtt: " + companyListBefore.size());
+        System.out.println("A 0. elem neve a cégek listájában? " + companyListBefore.get(0).getName());
+        assertEquals("X company", companyListBefore.get(0).getName());
+
+
+        long deleteTestCompanyId = companyListBefore.get(0).getId();
+        long deleteTestEmployeeId = getCompanyAndItsEmployeeList(deleteTestCompanyId).getEmployees().get(0).getId();
+
+        System.out.println("A 0. elemű cég aktuális ID-ja: " + deleteTestCompanyId);
+        CompanyDto companyDto = getCompanyAndItsEmployeeList(companyListBefore.get(0).getId());
+        System.out.println("A 0. elemű cég (ID: " + deleteTestCompanyId + " )  0. elemű dolgozójának neve: " + getCompanyAndItsEmployeeList(deleteTestCompanyId).getEmployees().get(0).getName());
+        System.out.println("A 0. elemű cég (ID: " + deleteTestCompanyId + " )  0. elemű dolgozójának ID-ja: " + deleteTestEmployeeId);
+
+        System.out.println("A 0. elemű cég dolgozóinak száma törlés előtt: " +getCompanyAndItsEmployeeList(deleteTestCompanyId).getEmployees().size());
+
+
+        EmployeeDto employee = employeeController.getById(deleteTestEmployeeId);
+        employee.setCompany(null);
+        //Employee employee = employeeRepository.findById(employee_id).get();
+        //mployee.setCompany(null);
+        getCompanyAndItsEmployeeList(deleteTestCompanyId).getEmployees().remove(employee);
+
+
+        List<CompanyDto> companyListAfter = getAllCompanies();
+
+        System.out.println("A céglista mérete törlés után: " + companyListAfter.size());
+        System.out.println("A 0. elemű cég dolgozóinak száma törlés után: " +getCompanyAndItsEmployeeList(deleteTestCompanyId).getEmployees().size());
+
+
+        assertThat(getCompanyAndItsEmployeeList(deleteTestCompanyId).getEmployees().size()==0);
+        assertThat(companyListAfter.size()==companyListBefore.size());
+
+
+        //System.out.println(companyListBefore.get(0).getEmployees().get(0).getName());
+        //companyController.deleteCompany(companyListBefore.size()-1);
+        /*
+        Company company =
+                companyRepository
+                        .findById((long)(companyListBefore.size()-1)).get();
+        System.out.println(company.getName());
+           */
+        //Employee employee = employeeRepository.findById(employee_id).get();
+
+
+        //removeIf(e -> e.getId() == employee_id);
+        //employee.setCompany(null);
+        //company.getEmployees().remove(employee);
+
+
     }
 
 
-    @Test
+        @Test
     void testEmployeeAdded() throws Exception {
+
+        // !! company-t EAGER-re alakítani, h működjön !!
 
         companyRepository.deleteAllInBatch();
 
