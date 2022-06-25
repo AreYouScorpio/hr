@@ -112,6 +112,13 @@
 							<version>${org.mapstruct.version}</version>
 						</path>
 						<!-- other annotation processors -->
+						<path>
+							<groupId>org.hibernate</groupId>
+							<artifactId>hibernate-jpamodelgen</artifactId>
+							<version>5.6.9.Final</version>
+							<!--.. target ktárat törölni, és újraindítani 1x az alkalmazást .. ha kitöröljük verziót, akkor a meglévőt örökli-->
+						</path>
+
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
