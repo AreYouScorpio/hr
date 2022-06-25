@@ -82,7 +82,7 @@ public class CompanyControllerIT {
                         LocalDateTime.of(2017, Month.FEBRUARY, 3, 6, 30));
 
         company.addNewEmployee(employeeX);
-        createCompany(company);
+        createCompany(company, 1L);
         //companyController.createCompany(company);
         //companyController.addEmployeeToCompany(1L,employeeX);
 
@@ -150,10 +150,10 @@ public class CompanyControllerIT {
 
     }
 
-    private void createCompany(CompanyDto company) {
+    private void createCompany(CompanyDto company, long inputId) {
         webTestClient
-                .post()
-                .uri(BASE_URI)
+                .put()
+                .uri(BASE_URI + inputId)
                 .bodyValue(company)
                 .exchange()
                 .expectStatus()
