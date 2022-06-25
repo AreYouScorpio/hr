@@ -29,6 +29,8 @@ public class Company {
     private CompanyType companyType;
 
 
+
+
     public Company() {
     }
 

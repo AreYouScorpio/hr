@@ -119,8 +119,11 @@ public class CompanyService {
     @Transactional
     public Company addNewEmployee(long company_id, Employee employee) {
 
-        Company company = companyRepository.findById(company_id).get();
-        company.addEmployee(employee);
+        Optional<Company> company = companyRepository.findById(company_id);
+        if (!company.isPresent()) return null;
+        else {
+        Company companyToSave=company.get();
+        companyToSave.addEmployee(employee);
         //employeeRepository.save(employee); ----->
         employeeService.save(employee);
 
@@ -147,7 +150,7 @@ public class CompanyService {
         // ---
 
  */
-            return company;
+            return companyToSave;}
 
     }
 

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/companies")
@@ -158,6 +159,10 @@ public class CompanyController {
 
     @GetMapping("/{id}")
     public CompanyDto getById(@PathVariable long id, @RequestParam(required = false) Boolean full) {
+        //for ControllerIT testing - my tries:
+        //Optional<Company> companyForTest = companyService.findById(id);
+        //if (!companyForTest.isPresent()) return null;
+
         Company company = companyService.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if (full != null && full)

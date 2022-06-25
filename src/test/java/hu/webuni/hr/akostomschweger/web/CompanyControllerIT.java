@@ -33,6 +33,8 @@ public class CompanyControllerIT {
 
     private static final String BASE_URI = "/api/companies";
 
+
+
     @Autowired
     WebTestClient webTestClient;
 
@@ -50,6 +52,9 @@ public class CompanyControllerIT {
 
     @Autowired
     EmployeeController employeeController;
+
+    @Autowired
+    EmployeeService employeeService;
 
     @BeforeEach
     public void init() {
@@ -74,25 +79,30 @@ public class CompanyControllerIT {
                 new EmployeeDto(21L, "Akos", "jsj", 200,
                         LocalDateTime.of(2017, Month.FEBRUARY, 3, 6, 30));
 
+        company.addNewEmployee(employeeX);
         createCompany(company);
-        System.out.println("ez a cég: " + company.toString());
+        System.out.println("ez a cég: " + company.getName().toString());
         System.out.println("cég ID: " + company.getId());
 
         //employeeController.createEmployee(employeeX);
+        //employeeService.save(companyController.companyMapper.dtoToEmployee(employeeX));
 
-        companyController.addEmployeeToCompany(1L, employeeX);
-
+        System.out.println(companyRepository.findById(1L).get().getEmployees().get(0).getName());
+        //companyController.addEmployeeToCompany(1, employeeX);
+        //System.out.println(getAllEmployeesForTest().get(0).getCompany().getEmployees().toString());
+        //companyService.addNewEmployee(company.getId(), companyController.companyMapper.dtoToEmployee(employeeX));
 
         //List<EmployeeDto> employeesListBefore = employeeController.findByNameStartingWith("");
+        //List<EmployeeDto> employeesListBefore =
+        //        companyController.getById(1,true).getEmployees().stream().toList();
 
-        companyController.addEmployeeToCompany(1L, employeeX);
-  //      System.out.println("Employee lista: " + );
+        //System.out.println("Employee lista: " + employeesListBefore.toString());
 
 
 // employeeController.createEmployee(employeeX);
         //companyService.addNewEmployee(1, employeeX);
 
-        System.out.println("Employee lista: " + companyController.getAllFull(true).get(0).getName());
+      //  System.out.println("Employee lista: " +                 companyController.getAllFull(true).get(0).getEmployees().get(21).getName());
 
         /*
         List<EmployeeDto> employeesListAfter =
@@ -147,4 +157,25 @@ public class CompanyControllerIT {
 
         return responseList;
     }
+
+    /* átalakítani, ez még a companykat kérdezi csak le
+    private List<EmployeeDto> getAllEmployeesForTest() {
+        List<EmployeeDto> responseList = webTestClient
+                .get()
+                .uri(BASE_URI)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBodyList(EmployeeDto.class)
+                .returnResult().getResponseBody();
+
+        Collections.sort(responseList, (a1, a2) -> Long.compare(a1.getId(), a2.getId()));
+
+        return responseList;
+    }
+
+
+
+     */
+
 }
