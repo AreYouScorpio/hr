@@ -67,6 +67,16 @@ public class CompanyControllerIT {
 
         List<CompanyDto> companyListBefore = getAllCompanies();
         long companyIdForModification = companyListBefore.get(1).getId();
+
+
+        /*
+        for(int i=0; i<companyListBefore.size()-1; i++) {
+            long changeTestEmployeeId = getCompanyAndItsEmployeeList(companyIdForModification).getEmployees().get(i).getId();
+            EmployeeDto employee = employeeController.getById(changeTestEmployeeId);
+            employee.setId(changeTestEmployeeId);
+        }
+         */
+
         System.out.println("A céglista mérete törlés előtt: " + companyListBefore.size());
         System.out.println("Az 1. elem neve a cégek listájában? " + companyListBefore.get(1).getName());
         assertEquals("Y company", companyListBefore.get(1).getName());
@@ -75,6 +85,8 @@ public class CompanyControllerIT {
                 getCompanyAndItsEmployeeList(companyIdForModification).getEmployees();
 
         System.out.println("A dolgozói lista elemeinek száma módosítás előtt: "+ employeeListBefore.size());
+        System.out.println("A dolgozói lista utolsó elemének neve módosítás előtt: "+ employeeListBefore.get(employeeListBefore.size()-1).getName());
+
 
         List<EmployeeDto> employeeListForChange =
                 new ArrayList<>(List.of(
@@ -94,20 +106,18 @@ public class CompanyControllerIT {
 
         System.out.println("A céglista mérete törlés után: " + companyListAfter.size());
         System.out.println("A dolgozói lista elemeinek száma módosítás után: "+ employeeListAfter.size());
+        System.out.println("A dolgozói lista utolsó elemének neve módosítás után: "+ employeeListAfter.get(employeeListAfter.size()-1).getName());
 
 
-/*
 
-        assertThat(companyListAfter.subList(0, companyListBefore.size()))
-                .usingRecursiveFieldByFieldElementComparator()
-                .containsExactlyElementsOf(companyListBefore);
 
-        assertThat(companyListAfter
-                .get(companyListAfter.size() - 1))
-                .usingRecursiveComparison()
-                .isEqualTo(company);
+        assertThat(employeeListAfter)
+                .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
+                .containsExactlyInAnyOrderElementsOf(employeeListForChange);
 
- */
+
+
+
     }
 
     @Test
