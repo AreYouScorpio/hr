@@ -70,24 +70,30 @@ public class CompanyControllerIT {
         companyRepository.deleteAllInBatch();
 
 
+        List<CompanyDto> companyListBefore = getAllCompanies();
+        System.out.println(companyListBefore);
 
 
         CompanyDto company = new CompanyDto(
                 1L, "666", "HelloCegNev", "Kiskunhalas", new ArrayList<EmployeeDto>());
 
         EmployeeDto employeeX =
-                new EmployeeDto(21L, "Akos", "jsj", 200,
+                new EmployeeDto( 1L, "Akos", "jsj", 200,
                         LocalDateTime.of(2017, Month.FEBRUARY, 3, 6, 30));
 
         company.addNewEmployee(employeeX);
         createCompany(company);
+
+
+        //companyController.addEmployeeToCompany(1L, employeeX);
+
         System.out.println("ez a cég: " + company.getName().toString());
         System.out.println("cég ID: " + company.getId());
-
+        // System.out.println("cég employee lista mérete: " + companyController.;
         //employeeController.createEmployee(employeeX);
         //employeeService.save(companyController.companyMapper.dtoToEmployee(employeeX));
 
-        System.out.println(companyRepository.findById(1L).get().getEmployees().get(0).getName());
+        //System.out.println(getAllEmployeesForTest());
         //companyController.addEmployeeToCompany(1, employeeX);
         //System.out.println(getAllEmployeesForTest().get(0).getCompany().getEmployees().toString());
         //companyService.addNewEmployee(company.getId(), companyController.companyMapper.dtoToEmployee(employeeX));
@@ -98,34 +104,32 @@ public class CompanyControllerIT {
 
         //System.out.println("Employee lista: " + employeesListBefore.toString());
 
+List<CompanyDto> companyListAfter = getAllCompanies();
 
 // employeeController.createEmployee(employeeX);
         //companyService.addNewEmployee(1, employeeX);
 
       //  System.out.println("Employee lista: " +                 companyController.getAllFull(true).get(0).getEmployees().get(21).getName());
 
-        /*
-        List<EmployeeDto> employeesListAfter =
-                new ArrayList<>(
-                        employeeController.findByNameStartingWith(""));
+        //       List<EmployeeDto> employeesListAfter =new ArrayList<>(employeeController.findByNameStartingWith(""));
 
 
-        System.out.println("előtte "+employeesListBefore);
-        System.out.println("utána "+employeesListAfter);
+//        System.out.println("előtte "+employeesListBefore);
+   //     System.out.println("utána "+employeesListAfter);
 
 
-/*
-        assertThat(employeesListAfter.subList(0, employeesListBefore.size()))
+
+        assertThat(companyListAfter.subList(0, companyListBefore.size()))
                 .usingRecursiveFieldByFieldElementComparator()
-                .containsExactlyElementsOf(employeesListBefore);
+                .containsExactlyElementsOf(companyListBefore);
 
-        assertThat(employeesListAfter
-                .get(employeesListAfter.size() - 1))
+        assertThat(companyListAfter
+                .get(companyListAfter.size() - 1))
                 .usingRecursiveComparison()
-                .isEqualTo(employee);
+                .isEqualTo(company);
 
 
- */
+
 
 
 
@@ -158,7 +162,8 @@ public class CompanyControllerIT {
         return responseList;
     }
 
-    /* átalakítani, ez még a companykat kérdezi csak le
+    /*
+    // átalakítani, ez még a companykat kérdezi csak le
     private List<EmployeeDto> getAllEmployeesForTest() {
         List<EmployeeDto> responseList = webTestClient
                 .get()
@@ -176,6 +181,8 @@ public class CompanyControllerIT {
 
 
 
+
      */
+
 
 }
