@@ -20,6 +20,8 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -44,6 +46,9 @@ public class CompanyControllerIT {
     CompanyRepository companyRepository;
 
     @Autowired
+    CompanyService companyService;
+
+    @Autowired
     EmployeeController employeeController;
 
     @BeforeEach
@@ -62,25 +67,39 @@ public class CompanyControllerIT {
 
 
 
-        CompanyDto company = new CompanyDto(1L, "666", "HelloCegNev", "Kiskunhalas", new ArrayList<EmployeeDto>());
+        CompanyDto company = new CompanyDto(
+                1L, "666", "HelloCegNev", "Kiskunhalas", new ArrayList<EmployeeDto>());
+
+        EmployeeDto employeeX =
+                new EmployeeDto(21L, "Akos", "jsj", 200,
+                        LocalDateTime.of(2017, Month.FEBRUARY, 3, 6, 30));
 
         createCompany(company);
         System.out.println("ez a cég: " + company.toString());
         System.out.println("cég ID: " + company.getId());
-        System.out.println("employeek: " +companyController.getById(1L, true).getEmployees());
 
-        List<EmployeeDto> employeesListBefore =
-                companyController.getById(1L, true).getEmployees().stream().toList();
-        System.out.println("Employee lista: " + employeesListBefore);
+        //employeeController.createEmployee(employeeX);
 
-        EmployeeDto employee =
-                new EmployeeDto(21L, "Akos", "jsj", 200,
-                        LocalDateTime.of(2017, Month.FEBRUARY, 3, 6, 30));
-        employeeController.createEmployee(employee);
-        companyController.addEmployeeToCompany(1L, employee);
+        companyController.addEmployeeToCompany(1L, employeeX);
 
+
+        //List<EmployeeDto> employeesListBefore = employeeController.findByNameStartingWith("");
+
+        companyController.addEmployeeToCompany(1L, employeeX);
+  //      System.out.println("Employee lista: " + );
+
+
+// employeeController.createEmployee(employeeX);
+        //companyService.addNewEmployee(1, employeeX);
+
+        System.out.println("Employee lista: " + companyController.getAllFull(true).get(0).getName());
+
+        /*
         List<EmployeeDto> employeesListAfter =
-                companyController.getById(1L, true).getEmployees().stream().toList();
+                new ArrayList<>(
+                        employeeController.findByNameStartingWith(""));
+
+
         System.out.println("előtte "+employeesListBefore);
         System.out.println("utána "+employeesListAfter);
 
