@@ -83,7 +83,12 @@ public class CompanyControllerIT {
 
         company.addNewEmployee(employeeX);
         createCompany(company);
+        //companyController.createCompany(company);
+        //companyController.addEmployeeToCompany(1L,employeeX);
 
+        System.out.println(getAllCompanies());
+
+        /*
         System.out.println("cég lista: " + companyController.getById(1L, true));
         //companyController.addEmployeeToCompany(1L, employeeX);
 
@@ -95,6 +100,8 @@ public class CompanyControllerIT {
                         .get(0)
                         .getEmployees()
                         .size());
+
+         */
         //employeeController.createEmployee(employeeX);
         //employeeService.save(companyController.companyMapper.dtoToEmployee(employeeX));
 
