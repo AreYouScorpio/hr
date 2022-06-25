@@ -47,18 +47,15 @@ public class CompanyControllerIT {
     @Autowired
     CompanyRepository companyRepository;
 
-    @Autowired
-    CompanyService companyService;
+
 
     @Autowired
     EmployeeController employeeController;
 
-    @Autowired
-    EmployeeService employeeService;
 
     @BeforeEach
     public void init() {
-        initDbService.clearDB();
+        //initDbService.clearDB();
         //initDbService.insertTestData();
     }
 
@@ -66,34 +63,39 @@ public class CompanyControllerIT {
     @Test
     void testEmployeeAdded() throws Exception {
 
-        initDbService.clearDB();
-        companyRepository.deleteAllInBatch();
+        // companyRepository.deleteAllInBatch();
 
 
-        List<CompanyDto> companyListBefore = getAllCompanies();
-        System.out.println(companyListBefore);
+
+        //List<CompanyDto> companyListBefore = getAllCompanies();
+        //System.out.println(companyListBefore);
 
 
         CompanyDto company = new CompanyDto(
-                1L, "666", "HelloCegNev", "Kiskunhalas", new ArrayList<EmployeeDto>());
+                 "666", "HelloCegNev", "Kiskunhalas", new ArrayList<EmployeeDto>());
 
         EmployeeDto employeeX =
-                new EmployeeDto( 1L, "Akos", "jsj", 200,
+                new EmployeeDto( "Akos", "jsj", 200,
                         LocalDateTime.of(2017, Month.FEBRUARY, 3, 6, 30));
 
-        company.addNewEmployee(employeeX);
-        createCompany(company, 1L);
+        //company.addNewEmployee(employeeX);
+        long savedIdForTesting = createCompany(company);
+        companyController.addEmployeeToCompany(savedIdForTesting,employeeX);
+
+
+
         //companyController.createCompany(company);
         //companyController.addEmployeeToCompany(1L,employeeX);
 
-        System.out.println(getAllCompanies());
+        //System.out.println(getAllCompanies());
 
-        /*
-        System.out.println("cég lista: " + companyController.getById(1L, true));
+        System.out.println("céglista: " + companyRepository.findAllWithEmployees());
+        //System.out.println("cég listája: " +                getCompanyAndItsEmployeeList(savedIdForTesting));
         //companyController.addEmployeeToCompany(1L, employeeX);
 
-        System.out.println("ez a cég: " + company.getName().toString());
-        System.out.println("cég ID: " + company.getId());
+        // System.out.println("ez a cég: " + company.getName().toString());
+        //  System.out.println("cég ID: " + company.getId() + "  új id: " + savedIdForTesting);
+        /*
         System.out.println("cég employee lista mérete: " +
                 companyController
                         .getCompaniesAboveEmployeeNumber(0,true)
@@ -101,7 +103,9 @@ public class CompanyControllerIT {
                         .getEmployees()
                         .size());
 
+
          */
+
         //employeeController.createEmployee(employeeX);
         //employeeService.save(companyController.companyMapper.dtoToEmployee(employeeX));
 
@@ -150,18 +154,25 @@ public class CompanyControllerIT {
 
     }
 
-    private void createCompany(CompanyDto company, long inputId) {
+    private long createCompany(CompanyDto company) {
+
+        /*
         webTestClient
-                .put()
-                .uri(BASE_URI + inputId)
+                .post()
+                .uri(BASE_URI)
                 .bodyValue(company)
                 .exchange()
                 .expectStatus()
                 .isOk();
+
+         */
+        return companyController.createCompany(company).getId();
     }
 
 
-    private List<CompanyDto> getAllCompanies() {
+    private CompanyDto getCompanyAndItsEmployeeList(long id) {
+
+        /*
         List<CompanyDto> responseList = webTestClient
                 .get()
                 .uri(BASE_URI)
@@ -174,6 +185,10 @@ public class CompanyControllerIT {
         Collections.sort(responseList, (a1, a2) -> Long.compare(a1.getId(), a2.getId()));
 
         return responseList;
+
+         */
+
+        return companyController.getById(id, true);
     }
 
     /*

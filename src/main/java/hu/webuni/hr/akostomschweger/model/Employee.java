@@ -30,6 +30,11 @@ public class Employee {
         this.startDateAtTheCompany = startDateAtTheCompany;
     }
 
+    public Employee(String name, int salary, LocalDateTime startDateAtTheCompany) {
+        this.name = name;
+        this.salary = salary;
+        this.startDateAtTheCompany = startDateAtTheCompany;
+    }
 
     public Employee() {
     }

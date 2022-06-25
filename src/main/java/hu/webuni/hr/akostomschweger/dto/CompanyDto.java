@@ -24,6 +24,14 @@ public class CompanyDto {
         this.employees = employees;
     }
 
+    public CompanyDto(String regNo, String name, String address, List<EmployeeDto> employees) {
+        this.regNo = regNo;
+        this.name = name;
+        this.address = address;
+        this.employees = employees;
+    }
+
+
 
     public Long getId() {
         return id;

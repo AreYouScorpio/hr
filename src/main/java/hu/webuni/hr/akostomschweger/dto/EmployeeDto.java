@@ -42,7 +42,18 @@ public class EmployeeDto {
         this.startDateAtTheCompany = startDateAtTheCompany;
     }
 
+    public EmployeeDto(String name, String position, int salary, LocalDateTime startDateAtTheCompany) {
+        this.name = name;
+        this.position = position;
+        this.salary = salary;
+        this.startDateAtTheCompany = startDateAtTheCompany;
+    }
 
+    public EmployeeDto(String name, int salary, LocalDateTime startDateAtTheCompany) {
+        this.name = name;
+        this.salary = salary;
+        this.startDateAtTheCompany = startDateAtTheCompany;
+    }
 
     public EmployeeDto() {
     }

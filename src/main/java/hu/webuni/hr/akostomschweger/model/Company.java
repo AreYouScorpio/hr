@@ -23,7 +23,7 @@ public class Company {
     private String regNo;
     private String name;
     private String address;
-    @OneToMany(mappedBy = "company")
+    @OneToMany(mappedBy = "company" , fetch = FetchType.EAGER)
     private List<Employee> employees = new ArrayList<>();
     @ManyToOne
     private CompanyType companyType;
@@ -42,6 +42,12 @@ public class Company {
         this.employees = employees;
     }
 
+    public Company(String regNo, String name, String address, List<Employee> employees) {
+        this.regNo = regNo;
+        this.name = name;
+        this.address = address;
+        this.employees = employees;
+    }
 
     public List<Employee> getEmployees() {
         return employees;
