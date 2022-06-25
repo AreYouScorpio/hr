@@ -62,7 +62,7 @@ public class CompanyControllerIT {
 
 
     @Test
-    void testEmployeeListChanged() throws Exception{
+    void testEmployeeListChanged() throws Exception {
 
 
         List<CompanyDto> companyListBefore = getAllCompanies();
@@ -84,8 +84,8 @@ public class CompanyControllerIT {
         List<EmployeeDto> employeeListBefore =
                 getCompanyAndItsEmployeeList(companyIdForModification).getEmployees();
 
-        System.out.println("A dolgozói lista elemeinek száma módosítás előtt: "+ employeeListBefore.size());
-        System.out.println("A dolgozói lista utolsó elemének neve módosítás előtt: "+ employeeListBefore.get(employeeListBefore.size()-1).getName());
+        System.out.println("A dolgozói lista elemeinek száma módosítás előtt: " + employeeListBefore.size());
+        System.out.println("A dolgozói lista utolsó elemének neve módosítás előtt: " + employeeListBefore.get(employeeListBefore.size() - 1).getName());
 
 
         List<EmployeeDto> employeeListForChange =
@@ -93,29 +93,25 @@ public class CompanyControllerIT {
                         new EmployeeDto("A-Paci", "A-pos", 100,
                                 LocalDateTime.of(2001, Month.FEBRUARY, 3, 6, 30)),
                         new EmployeeDto("B-Paci", "B-pos", 200,
-                        LocalDateTime.of(2002, Month.FEBRUARY, 3, 6, 30)),
+                                LocalDateTime.of(2002, Month.FEBRUARY, 3, 6, 30)),
                         new EmployeeDto("C-Paci", "C-pos", 300,
-                        LocalDateTime.of(2003, Month.FEBRUARY, 3, 6, 30))
+                                LocalDateTime.of(2003, Month.FEBRUARY, 3, 6, 30))
                 ));
 
-                companyController.replaceEmployees(companyIdForModification, employeeListForChange);
+        companyController.replaceEmployees(companyIdForModification, employeeListForChange);
 
         List<CompanyDto> companyListAfter = getAllCompanies();
         List<EmployeeDto> employeeListAfter =
                 getCompanyAndItsEmployeeList(companyIdForModification).getEmployees();
 
         System.out.println("A céglista mérete törlés után: " + companyListAfter.size());
-        System.out.println("A dolgozói lista elemeinek száma módosítás után: "+ employeeListAfter.size());
-        System.out.println("A dolgozói lista utolsó elemének neve módosítás után: "+ employeeListAfter.get(employeeListAfter.size()-1).getName());
-
-
+        System.out.println("A dolgozói lista elemeinek száma módosítás után: " + employeeListAfter.size());
+        System.out.println("A dolgozói lista utolsó elemének neve módosítás után: " + employeeListAfter.get(employeeListAfter.size() - 1).getName());
 
 
         assertThat(employeeListAfter)
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
                 .containsExactlyInAnyOrderElementsOf(employeeListForChange);
-
-
 
 
     }
