@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Long> ,
-        JpaSpecificationExecutor<Employee>E
+        JpaSpecificationExecutor<Employee>
 
 {
 
