@@ -5,9 +5,12 @@ import hu.webuni.hr.akostomschweger.model.Position;
 import hu.webuni.hr.akostomschweger.repository.EmployeeRepository;
 import hu.webuni.hr.akostomschweger.repository.PositionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -129,4 +132,38 @@ public abstract class EmployeeSuperClass implements EmployeeService {
         return employeeRepository.findByStartDateBetween(startDate, endDate);
         //return new ArrayList<Employee>();
     }
+
+    public List<Employee> findEmployeesByExample(Employee example) {
+        long id = example.getId();
+        String name = example.getName();
+        int salary  = example.getSalary();
+        LocalDateTime startDateAtTheCompany = example.getStartDateAtTheCompany();
+
+        //Airport takeoff = example.getTakeoff();
+        //if (takeoff != null)
+          //  takeoffIata = takeoff.getIata();
+        //LocalDateTime takeoffTime = example.getTakeoffTime();
+
+        Specification<Employee> spec = Specification.where(null); // üres Specification, ami semmire nem szűr
+
+
+        if (id > 0) {
+            spec = spec.and(EmployeeSpecifications.hasId(id));
+        }
+
+        if (StringUtils.hasText(name))
+            spec = spec.and(EmployeeSpecifications.hasName(name));
+
+
+        if (StringUtils.hasText(takeoffIata))
+            spec = spec.and(FlightSpecifications.hasTakeoffIata(takeoffIata));
+
+        if (startDateAtTheCompany != null)
+            spec = spec.and(EmployeeSpecifications.hasStartDateTime(startDateAtTheCompany));
+
+
+        return flightRepository.findAll(spec, Sort.by("id"));
+    }
+
+
 }
