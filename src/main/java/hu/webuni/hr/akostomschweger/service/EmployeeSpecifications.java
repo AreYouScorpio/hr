@@ -1,5 +1,6 @@
 package hu.webuni.hr.akostomschweger.service;
 
+import hu.webuni.hr.akostomschweger.model.Company;
 import hu.webuni.hr.akostomschweger.model.Employee;
 import hu.webuni.hr.akostomschweger.model.Employee_;
 import org.springframework.data.jpa.domain.Specification;
@@ -33,5 +34,10 @@ public class EmployeeSpecifications {
                 cb.between(root.get(Employee_.startDateAtTheCompany),
                         startOfDay, startOfDay.plusDays(1));
     }
+
+    public static Specification<Employee> hasCompany(String companyName) {
+        return (root, cq, cb) -> cb.like(root.get(Employee_.company.getName()), companyName + "%");
+    }
+
 
 }
