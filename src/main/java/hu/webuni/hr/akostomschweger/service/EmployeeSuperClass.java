@@ -136,6 +136,7 @@ public abstract class EmployeeSuperClass implements EmployeeService {
     public List<Employee> findEmployeesByExample(Employee example) {
         long id = example.getId();
         String name = example.getName();
+        String position = example.getPosition().getName();
         int salary  = example.getSalary();
         LocalDateTime startDateAtTheCompany = example.getStartDateAtTheCompany();
 
@@ -155,14 +156,18 @@ public abstract class EmployeeSuperClass implements EmployeeService {
             spec = spec.and(EmployeeSpecifications.hasName(name));
 
 
-        if (StringUtils.hasText(takeoffIata))
-            spec = spec.and(FlightSpecifications.hasTakeoffIata(takeoffIata));
+        if (StringUtils.hasText(position))
+            spec = spec.and(EmployeeSpecifications.hasPosition(position));
+
+        if (salary > 0) {
+            spec = spec.and(EmployeeSpecifications.hasSalary(salary));
+        }
 
         if (startDateAtTheCompany != null)
             spec = spec.and(EmployeeSpecifications.hasStartDateTime(startDateAtTheCompany));
 
 
-        return flightRepository.findAll(spec, Sort.by("id"));
+        return employeeRepository.findAll(spec, Sort.by("id"));
     }
 
 
