@@ -10,6 +10,8 @@ import hu.webuni.hr.akostomschweger.web.CompanyController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -19,6 +21,8 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureTestDatabase
 public class EmployeeServiceIT {
 
     @Autowired
@@ -38,9 +42,10 @@ public class EmployeeServiceIT {
 
     @BeforeEach
     public void init() {
-        initDbService.clearDB();
-        initDbService.insertTestData();
+        //initDbService.clearDB();
+        //initDbService.insertTestData();
     }
+
 
     @Test
     void testFindEmployeeByExample() throws Exception{
@@ -68,7 +73,7 @@ public class EmployeeServiceIT {
 
 
         Employee example = new Employee();
-        example.setName("A");
+        example.setName("V");
         //example.setPosition(new Position("dsjdksj", Qualification.UNIVERSITY));
         //example.setStartDateAtTheCompany(LocalDateTime.of(2002,2,2,1,1));
 
