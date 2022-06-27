@@ -1,8 +1,6 @@
 package hu.webuni.hr.akostomschweger.service;
 
-import hu.webuni.hr.akostomschweger.model.Company;
-import hu.webuni.hr.akostomschweger.model.Employee;
-import hu.webuni.hr.akostomschweger.model.Employee_;
+import hu.webuni.hr.akostomschweger.model.*;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDateTime;
@@ -10,7 +8,7 @@ import java.time.LocalTime;
 
 public class EmployeeSpecifications {
     public static Specification<Employee> hasId(long id) {
-        return (root, cq, cb) -> cb.equal(root.get(Employee_.id), id);
+                return (root, cq, cb) -> cb.equal(root.get(Employee_.id), id);
     }
 
     public static Specification<Employee> hasName(String name) {
@@ -18,7 +16,7 @@ public class EmployeeSpecifications {
     }
 
     public static Specification<Employee> hasPosition(String position) {
-        return (root, cq, cb) -> cb.equal(root.get(Employee_.position), position + "%");
+        return (root, cq, cb) -> cb.equal(root.get(Position_.name.getName()), position + "%");
     }
 
     public static Specification<Employee> hasSalary(int salary) {
