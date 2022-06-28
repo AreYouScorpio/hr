@@ -5,6 +5,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Locale;
 
 public class EmployeeSpecifications {
     public static Specification<Employee> hasId(long id) {
@@ -12,8 +13,13 @@ public class EmployeeSpecifications {
     }
 
     public static Specification<Employee> hasName(String name) {
-        return (root, cq, cb) -> cb.like(root.get(Employee_.name), name + "%");
+        String newName = name.toLowerCase();
+        return (root, cq, cb) -> cb.like(cb.lower(root.get(Employee_.name)), newName + "%");
+
+    // .as(String.class)
     }
+
+
 
     public static Specification<Employee> hasPosition(String position) {
         return (root, cq, cb) -> cb.equal(root.get(Position_.name.getName()), position + "%");
