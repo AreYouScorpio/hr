@@ -3,6 +3,7 @@ package hu.webuni.hr.akostomschweger.service;
 import hu.webuni.hr.akostomschweger.model.*;
 import org.springframework.data.jpa.domain.Specification;
 
+import javax.persistence.criteria.ParameterExpression;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Locale;
@@ -22,11 +23,12 @@ public class EmployeeSpecifications {
 
 
     public static Specification<Employee> hasPosition(String position) {
-        return (root, cq, cb) -> cb.equal(root.get(Position_.name.getName()), position);
+        //ParameterExpression<String> pos = cb.position(String.class, "fejlesztő");
+        return (root, cq, cb) -> cb.equal(root.get(Employee_.position).get(Position_.name), position);
     }
 
     public static Specification<Employee> hasSalary(int salary) {
-        return (root, cq, cb) -> cb.greaterThan(root.get(Employee_.salary), salary);
+        return (root, cq, cb) -> cb.between(root.get(Employee_.salary), (int)(salary*0.95), (int)(salary*1.05) );
     }
 
 

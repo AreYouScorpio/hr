@@ -146,17 +146,15 @@ public abstract class EmployeeSuperClass implements EmployeeService {
 
         //name = example.getName();
         System.out.println("Example name: " +name);
-        //String position = example.getPosition().getName();
-        //System.out.println("Example position: " +position);
-        int salary  = example.getSalary();
+        String position = "";
+        if ((example.getPosition()!=null)) position=example.getPosition().getName();
+        System.out.println("Example position: " +position);
+        int salary = example.getSalary();
         System.out.println("Example salary: " +salary);
         LocalDateTime startDateAtTheCompany = example.getStartDateAtTheCompany();
         System.out.println("Example startDateAtTheCompany: " +startDateAtTheCompany);
 
-        //Airport takeoff = example.getTakeoff();
-        //if (takeoff != null)
-          //  takeoffIata = takeoff.getIata();
-        //LocalDateTime takeoffTime = example.getTakeoffTime();
+
 
         Specification<Employee> spec = Specification.where(null); // üres Specification, ami semmire nem szűr
 
@@ -168,12 +166,12 @@ public abstract class EmployeeSuperClass implements EmployeeService {
         if (StringUtils.hasText(name))
             spec = spec.and(EmployeeSpecifications.hasName(name));
 
-/*
+
         if (StringUtils.hasText(position))
             spec = spec.and(EmployeeSpecifications.hasPosition(position));
 
 
- */
+
         if (salary > 0) {
             spec = spec.and(EmployeeSpecifications.hasSalary(salary));
         }
