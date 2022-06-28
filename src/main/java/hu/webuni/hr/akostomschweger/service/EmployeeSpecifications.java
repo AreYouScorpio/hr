@@ -22,7 +22,7 @@ public class EmployeeSpecifications {
 
 
     public static Specification<Employee> hasPosition(String position) {
-        return (root, cq, cb) -> cb.equal(root.get(Position_.name.getName()), position + "%");
+        return (root, cq, cb) -> cb.equal(root.get(Position_.name.getName()), position);
     }
 
     public static Specification<Employee> hasSalary(int salary) {

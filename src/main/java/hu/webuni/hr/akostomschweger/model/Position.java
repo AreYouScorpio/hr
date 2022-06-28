@@ -1,9 +1,6 @@
 package hu.webuni.hr.akostomschweger.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -16,7 +13,7 @@ public class Position {
     private String name;
     private Qualification qualification;
 
-    @OneToMany(mappedBy = "position")
+    @OneToMany(mappedBy = "position", fetch = FetchType.EAGER)
     private List<Employee> employees;
 
     public Position() {
@@ -49,5 +46,14 @@ public class Position {
 
     public void setEmployees(List<Employee> employees) {
         this.employees = employees;
+    }
+
+    @Override
+    public String toString() {
+        return "Position{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", qualification=" + qualification +
+                '}';
     }
 }
