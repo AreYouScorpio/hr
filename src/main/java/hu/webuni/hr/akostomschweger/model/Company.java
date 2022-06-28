@@ -128,5 +128,13 @@ public class Company {
         return Objects.hash(id);
     }
 
-
+    @Override
+    public String toString() {
+        return "Company{" +
+                "id=" + id +
+                ", regNo='" + regNo + '\'' +
+                ", name='" + name + '\'' +
+                ", address='" + address +
+                '}';
+    }
 }

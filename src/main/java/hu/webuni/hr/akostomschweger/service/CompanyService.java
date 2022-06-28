@@ -9,9 +9,12 @@ import hu.webuni.hr.akostomschweger.repository.CompanyRepository;
 import hu.webuni.hr.akostomschweger.repository.EmployeeRepository;
 import hu.webuni.hr.akostomschweger.repository.PositionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 
@@ -72,17 +75,12 @@ public class CompanyService {
      */
 
 
-
-
     @Transactional
     public Company save(Company company) {
         // companies.put(company.getId(), company);
         // return company;
         return companyRepository.save(company);
     }
-
-
-
 
 
     public List<Company> findAll() {
@@ -122,12 +120,12 @@ public class CompanyService {
         Optional<Company> company = companyRepository.findById(company_id);
         if (!company.isPresent()) return null;
         else {
-        Company companyToSave=company.get();
-        companyToSave.addEmployee(employee);
-        //employeeRepository.save(employee); ----->
-        employeeService.save(employee);
+            Company companyToSave = company.get();
+            companyToSave.addEmployee(employee);
+            //employeeRepository.save(employee); ----->
+            employeeService.save(employee);
 
-        // ---
+            // ---
 /*
         Position position = employee.getPosition();
         if (position != null) {
@@ -150,7 +148,8 @@ public class CompanyService {
         // ---
 
  */
-            return companyToSave;}
+            return companyToSave;
+        }
 
     }
 
@@ -183,7 +182,6 @@ public class CompanyService {
 
 
      */
-
 
 
     @Transactional
@@ -232,5 +230,38 @@ public class CompanyService {
         }
         return company;
 
+    }
+
+    public List<Company> findCompaniesByExample(Company example) {
+        System.out.println("Az example company: " + example);
+        long id = 0L;
+        //if(example.getId()>0) id = example.getId();
+
+        if (example.getId() != null) {
+            id = example.getId();
+        }
+        ;
+        System.out.println("Example ID: " + id);
+
+        String name = "";
+        if (example.getName() != null) {
+            name = example.getName();
+        }
+        ;
+
+        //name = example.getName();
+        System.out.println("Example name: " + name);
+
+        Specification<Company> spec = Specification.where(null); // üres Specification, ami semmire nem szűr
+
+        if (id > 0) {
+            spec = spec.and(CompanySpecifications.hasId(id));
+        }
+
+        if (StringUtils.hasText(name)) // SpringFramework-ös StringUtils
+            spec = spec.and(CompanySpecifications.hasCompanyName(name));
+
+
+        return companyRepository.findAll(spec, Sort.by("id"));
     }
 }
