@@ -134,8 +134,8 @@ public class EmployeeServiceIT {
         //example.setId(25L);
         //example.setName("X");
         //example.setPosition(new Position("fejlesztő", null));
-        example.setSalary(112000);
-        //example.setStartDateAtTheCompany(LocalDateTime.of(2002,2,2,1,1));
+        //example.setSalary(112000);
+        example.setStartDateAtTheCompany(LocalDateTime.of(2018,1,11,1,1));
 
         //System.out.println("A 24-es cég alá rögzített employee ID-ja: " + companyController.getById(savedCompanyIdForTesting, true).getEmployees().get(0).getId());
 
