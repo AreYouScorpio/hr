@@ -61,6 +61,10 @@ public class EmployeeServiceIT {
     @Autowired
     EmployeeController employeeController;
 
+    //@Autowired
+    //EmployeeSuperClass employeeSuperClass;
+
+
     @BeforeEach
     public void init() {
         initDbService.clearDB();
@@ -68,7 +72,7 @@ public class EmployeeServiceIT {
     }
 
     @Test
-    void testFindEmployeeByExample() throws Exception{
+    void testFindEmployeeByExample() throws Exception {
 
         // employeeService.save(new Employee());
 
@@ -76,49 +80,83 @@ public class EmployeeServiceIT {
         CompanyDto company = new CompanyDto(
                 "1000", "TestCompany", "Wurzburg", new ArrayList<EmployeeDto>());
 
+
         List<CompanyDto> companyList = getAllCompanies();
         long companyIdForModification = companyList.get(1).getId();
 
         EmployeeDto employeeX =
-                new EmployeeDto("V-Man", "spring_student", 111,
+                new EmployeeDto("V-Man", "tester", 111,
                         LocalDateTime.of(2020, Month.FEBRUARY, 3, 6, 30));
 
         EmployeeDto employeeY =
-                new EmployeeDto("X-Man", "sprinq_student", 222,
+                new EmployeeDto("X-Man", "programmer", 222,
                         LocalDateTime.of(2021, Month.FEBRUARY, 3, 6, 30));
 
-        company.addNewEmployee(employeeX);
-           long savedCompanyIdForTesting = createCompany(company);
+        // new Position("spring_student", Qualification.UNIVERSITY)
 
-        long savedEmployeeIdForTesting1 =         companyController.addEmployeeToCompany(savedCompanyIdForTesting, employeeX).getId();
+        //long empId1 = employeeSuperClass.save(employeeX).getId();
+        //long empId2 = employeeSuperClass.save(employeeY).getId();
 
-        long savedEmployeeIdForTesting2 =         companyController.addEmployeeToCompany(savedCompanyIdForTesting, employeeY).getId();
+        //company.addNewEmployee(employeeX);
+        long savedCompanyIdForTesting = createCompany(company);
+
+
+        System.out.println("savedCompanyId For Testing: " + savedCompanyIdForTesting);
+//        System.out.println("savedEmployeeId1 For Testing: " + empId1);
+//        System.out.println("savedEmployeeIdId2 For Testing: " + empId2);
+
+
+        long savedEmployeeIdForTesting1 = companyController.addEmployeeToCompany(savedCompanyIdForTesting, employeeX).getId();
+        //long savedEmployeeIdForTesting1 =   25L;      //
+        //savedEmployeeIdForTesting1 = companyRepository.getById(savedEmployeeIdForTesting1).getEmployees()
+        System.out.println("savedEmployeeIdForTesting1: " + savedEmployeeIdForTesting1);
+
+        long savedEmployeeIdForTesting2 = companyController.addEmployeeToCompany(savedCompanyIdForTesting, employeeY).getId();
+        //long savedEmployeeIdForTesting2 =    26L; //
+        System.out.println("savedEmployeeIdForTesting2: " + savedEmployeeIdForTesting2);
+
 
         //List<CompanyDto> companyList = getAllCompanies();
         System.out.println("A céglista mérete törlés előtt: " + companyList.size());
         System.out.println("A 0. elem neve a cégek listájában? " + companyList.get(0).getName());
         // assertEquals("X company", companyList.get(0).getName());
 
+        // employee lista X companyban:
+        // 1. cég 1. employee neve:
+        System.out.println("1. cég 1. employee neve: " + getCompanyAndItsEmployeeList(savedCompanyIdForTesting).getEmployees().get(0).getName());
+        // 1. cég 2. employee neve:
+        System.out.println("1. cég 2. employee neve: " + getCompanyAndItsEmployeeList(savedCompanyIdForTesting).getEmployees().get(1).getName());
+        // 1.cég 1. employee ID-ja:
+        System.out.println("1.cég 1. employee ID-ja: " + getCompanyAndItsEmployeeList(savedCompanyIdForTesting).getEmployees().get(0).getId());
+        System.out.println("1.cég 2. employee ID-ja: " + getCompanyAndItsEmployeeList(savedCompanyIdForTesting).getEmployees().get(1).getId());
 
         Employee example = new Employee();
-        example.setId(1L);
-        example.setName("V");
-        example.setPosition(new Position("spri", Qualification.UNIVERSITY));
-        example.setStartDateAtTheCompany(LocalDateTime.of(2002,2,2,1,1));
+        example.setId(25L);
+        //example.setName("V");
+        //example.setPosition(new Position("spri", Qualification.UNIVERSITY));
+        //example.setStartDateAtTheCompany(LocalDateTime.of(2002,2,2,1,1));
+
+        //System.out.println("A 24-es cég alá rögzített employee ID-ja: " + companyController.getById(savedCompanyIdForTesting, true).getEmployees().get(0).getId());
 
         //long exampleId = employeeRepository.save(example).getId();
         //System.out.println(exampleId);
         //long savedExampleID = companyRepository.(example).getId();
 
-        List<Employee> foundEmployees=
+        List<Employee> foundEmployees =
                 this.smartEmployeeService.findEmployeesByExample(example);
 
+        System.out.println("Results:");
+        System.out.println(foundEmployees.get(0).getName());
+        System.out.println(foundEmployees.get(0).getId());
+
+        /*
         assertThat(foundEmployees.stream()
                 .map(Employee::getId)
                 .collect(Collectors.toList()))
                 .containsExactly(savedEmployeeIdForTesting1, savedEmployeeIdForTesting2);
 
 
+         */
 
 
     }

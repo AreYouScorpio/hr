@@ -22,10 +22,19 @@ public class Employee {
     @ManyToOne
     private Company company;
 
+
     public Employee(Long id, String name, int salary, LocalDateTime startDateAtTheCompany) {
         this.id = id;
         this.name = name;
         // this.position = position; -> a Position entity bevezetésével ez már nem kell redundánsan
+        this.salary = salary;
+        this.startDateAtTheCompany = startDateAtTheCompany;
+    }
+
+
+
+    public Employee(String name, String position, int salary, LocalDateTime startDateAtTheCompany) {
+        this.name = name;
         this.salary = salary;
         this.startDateAtTheCompany = startDateAtTheCompany;
     }

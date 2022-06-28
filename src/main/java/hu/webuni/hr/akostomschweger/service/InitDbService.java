@@ -137,7 +137,7 @@ public class InitDbService  {
         employeeB.setPosition(tester);
 
         Employee employeeC = new Employee(
-                null,
+                0L,
                 "Zkos",
                 /*"senior java developer",
 
