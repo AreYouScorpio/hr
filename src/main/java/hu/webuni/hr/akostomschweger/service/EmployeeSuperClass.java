@@ -135,12 +135,16 @@ public abstract class EmployeeSuperClass implements EmployeeService {
 
     public List<Employee> findEmployeesByExample(Employee example) {
         System.out.println("Az example: " + example);
-        //long id = 0L;
+        long id = 0L;
         //if(example.getId()>0) id = example.getId();
 
-        long id = example.getId();
+        if (example.getId()!=null) {id = example.getId();};
         System.out.println("Example ID: " + id);
-        String name = example.getName();
+
+        String name = "";
+        if (example.getName()!=null) {name = example.getName();};
+
+        //name = example.getName();
         System.out.println("Example name: " +name);
         //String position = example.getPosition().getName();
         //System.out.println("Example position: " +position);

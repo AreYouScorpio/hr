@@ -131,8 +131,8 @@ public class EmployeeServiceIT {
         System.out.println("1.cég 2. employee ID-ja: " + getCompanyAndItsEmployeeList(savedCompanyIdForTesting).getEmployees().get(1).getId());
 
         Employee example = new Employee();
-        example.setId(25L);
-        //example.setName("V");
+        //example.setId(25L);
+        example.setName("X");
         //example.setPosition(new Position("spri", Qualification.UNIVERSITY));
         //example.setStartDateAtTheCompany(LocalDateTime.of(2002,2,2,1,1));
 
@@ -145,9 +145,34 @@ public class EmployeeServiceIT {
         List<Employee> foundEmployees =
                 this.smartEmployeeService.findEmployeesByExample(example);
 
-        System.out.println("Results:");
+
+
+
+        /*
+        System.out.println("Results per ID:");
         System.out.println(foundEmployees.get(0).getName());
         System.out.println(foundEmployees.get(0).getId());
+        */
+
+        System.out.println("Results:");
+        System.out.println("-size: " + foundEmployees.size());
+
+
+        for (int i = 0; i < foundEmployees.size(); i++) {
+
+            System.out.println("Name: " + foundEmployees.get(i).getName() + ", details:");
+            System.out.println(foundEmployees.get(i).toString());
+
+
+            /*
+            System.out.println(foundEmployees.stream()
+                    .map(Employee::getId)
+                    .collect(Collectors.toList()));
+             */
+
+
+
+
 
         /*
         assertThat(foundEmployees.stream()
@@ -159,8 +184,8 @@ public class EmployeeServiceIT {
          */
 
 
+        }
     }
-
     /*
     private long createEmployee
             (String flightNumber, long takeoff, long landing, LocalDateTime dateTime) {
