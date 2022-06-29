@@ -78,6 +78,15 @@ public class EmployeeController {
     }
 
 
+    @PostMapping("/query")
+    public List<EmployeeDto> findByExample(@RequestBody EmployeeDto example) {
+        return employeeMapper.employeesToDtos(
+                employeeService.findEmployeesByExample(employeeMapper.dtoToEmployee(example)));
+    }
+
+
+
+
     @GetMapping("/position/{position}")
     public List<EmployeeDto> findByPosition(@PathVariable String position) {
         List<Employee> employees = employeeService.findByPosition(position);

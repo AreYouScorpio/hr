@@ -136,8 +136,8 @@ public class EmployeeServiceIT {
         //example.setName("X");
         //example.setPosition(new Position("fejlesztő", null));
         //example.setSalary(112000);
-        //example.setStartDateAtTheCompany(LocalDateTime.of(2018,1,11,1,1));
-        example.setCompany(new Company(0L, null, "X" , null, null));
+        //example.setStartDateAtTheCompany(LocalDateTime.of(2020,2,3,1,1));
+        example.setCompany(new Company(null, null, "Y" , null, null));
 
         //System.out.println("A 24-es cég alá rögzített employee ID-ja: " + companyController.getById(savedCompanyIdForTesting, true).getEmployees().get(0).getId());
 

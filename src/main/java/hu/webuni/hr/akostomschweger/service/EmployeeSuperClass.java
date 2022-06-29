@@ -133,6 +133,7 @@ public abstract class EmployeeSuperClass implements EmployeeService {
         //return new ArrayList<Employee>();
     }
 
+    @Override
     public List<Employee> findEmployeesByExample(Employee example) {
         System.out.println("Az example: " + example);
         long id = 0L;
