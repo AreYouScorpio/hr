@@ -80,6 +80,7 @@ public class EmployeeController {
 
     @PostMapping("/query")
     public List<EmployeeDto> findByExample(@RequestBody EmployeeDto example) {
+        System.out.println("XXXX" + employeeMapper.dtoToEmployee(example));
         return employeeMapper.employeesToDtos(
                 employeeService.findEmployeesByExample(employeeMapper.dtoToEmployee(example)));
     }
