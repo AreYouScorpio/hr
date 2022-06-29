@@ -136,7 +136,8 @@ public class EmployeeServiceIT {
         //example.setName("X");
         //example.setPosition(new Position("fejlesztő", null));
         //example.setSalary(112000);
-        example.setStartDateAtTheCompany(LocalDateTime.of(2018,1,11,1,1));
+        //example.setStartDateAtTheCompany(LocalDateTime.of(2018,1,11,1,1));
+        example.setCompany(new Company(0L, null, "X" , null, null));
 
         //System.out.println("A 24-es cég alá rögzített employee ID-ja: " + companyController.getById(savedCompanyIdForTesting, true).getEmployees().get(0).getId());
 
@@ -181,8 +182,6 @@ public class EmployeeServiceIT {
                 .map(Employee::getId)
                 .collect(Collectors.toList()))
                 .containsExactly(savedEmployeeIdForTesting1, savedEmployeeIdForTesting2);
-
-
          */
 
 
@@ -196,9 +195,7 @@ public class EmployeeServiceIT {
                 takeoff,
                 landing,
                 dateTime).getId();
-
     }
-
      */
 
     private long createCompany(CompanyDto company) {
@@ -211,7 +208,6 @@ public class EmployeeServiceIT {
                 .exchange()
                 .expectStatus()
                 .isOk();
-
          */
         return companyController.createCompany(company).getId();
     }
@@ -227,11 +223,8 @@ public class EmployeeServiceIT {
                 .isOk()
                 .expectBodyList(CompanyDto.class)
                 .returnResult().getResponseBody();
-
         Collections.sort(responseList, (a1, a2) -> Long.compare(a1.getId(), a2.getId()));
-
         return responseList;
-
          */
 
         return companyController.getById(id, true);
@@ -257,4 +250,3 @@ public class EmployeeServiceIT {
     }
 
 }
-

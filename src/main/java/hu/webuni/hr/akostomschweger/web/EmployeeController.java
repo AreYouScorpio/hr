@@ -93,6 +93,7 @@ public class EmployeeController {
 
     }
 
+
     @GetMapping("/date/{startDate}/{endDate}")
     public List<EmployeeDto> findByStartDateBetween(@PathVariable String startDate, @PathVariable String endDate) {
         List<Employee> employees = employeeService
@@ -218,6 +219,17 @@ public class EmployeeController {
         return employeeService.getPayRaisePercent(employee);
     }
 
+    /*
+    @GetMapping("/query")
+    public List<EmployeeDto> findByNameStartingWith(@PathVariable String prefix) {
+        List<Employee> employees = employeeService
+                .findByNameStartingWith(prefix);
+        return employeeMapper.employeesToDtos(employees);
+
+    }
+
+
+     */
 
 }
 

@@ -42,7 +42,8 @@ public class EmployeeSpecifications {
     }
 
     public static Specification<Employee> hasCompany(String companyName) {
-        return (root, cq, cb) -> cb.like(root.get(Employee_.company.getName()), companyName + "%");
+        String newName = companyName.toLowerCase();
+        return (root, cq, cb) -> cb.like(cb.lower(root.get(Employee_.company).get(Company_.name)), newName + "%");
     }
 
 

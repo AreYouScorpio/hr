@@ -153,6 +153,9 @@ public abstract class EmployeeSuperClass implements EmployeeService {
         System.out.println("Example salary: " +salary);
         LocalDateTime startDateAtTheCompany = example.getStartDateAtTheCompany();
         System.out.println("Example startDateAtTheCompany: " +startDateAtTheCompany);
+        String company = "";
+        if ((example.getCompany()!=null)) company=example.getCompany().getName();
+        System.out.println("Example company: " +company);
 
 
 
@@ -179,6 +182,8 @@ public abstract class EmployeeSuperClass implements EmployeeService {
         if (startDateAtTheCompany != null)
             spec = spec.and(EmployeeSpecifications.hasStartDateTime(startDateAtTheCompany));
 
+        if (StringUtils.hasText(company))
+            spec = spec.and(EmployeeSpecifications.hasCompany(company));
 
         return employeeRepository.findAll(spec, Sort.by("id"));
     }
