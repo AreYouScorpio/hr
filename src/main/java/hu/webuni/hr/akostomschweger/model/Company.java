@@ -11,7 +11,7 @@ import java.util.Objects;
 
 //v3: CompanyRepository-ba behívás open view = false esetén
 @NamedEntityGraph(
-        name="Company.full",
+        name = "Company.full",
         attributeNodes = @NamedAttributeNode("employees")
 )
 @Entity
@@ -23,12 +23,10 @@ public class Company {
     private String regNo;
     private String name;
     private String address;
-    @OneToMany(mappedBy = "company" , fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "company", fetch = FetchType.EAGER)
     private List<Employee> employees = new ArrayList<>();
     @ManyToOne
     private CompanyType companyType;
-
-
 
 
     public Company() {

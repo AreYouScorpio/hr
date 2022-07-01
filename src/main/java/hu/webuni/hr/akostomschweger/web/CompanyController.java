@@ -125,11 +125,10 @@ public class CompanyController {
 
         //return companies;
         boolean notFull = (full == null || !full);
-        if(notFull) {
+        if (notFull) {
             companies = companyService.findAll();
             return companyMapper.companiesToDtosWithNoEmployees(companies);
-        }
-        else {
+        } else {
             companies = companyRepository.findAllWithEmployees();
             return companyMapper.companiesToDtos(companies);
         }
@@ -361,7 +360,6 @@ public class CompanyController {
                                                                     Boolean full) {
         return companyRepository.findAverageSalaryByPosition(id);
     }
-
 
 
 }

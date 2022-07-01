@@ -14,12 +14,10 @@ public class DefaultEmployeeService extends EmployeeSuperClass {
     AtConfigurationProperties config;
 
 
-
     @Override
     public int getPayRaisePercent(Employee employee) {
         return config.getSalary().getDef().getPercent();
     }
-
 
 
 }

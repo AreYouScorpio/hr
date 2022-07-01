@@ -18,7 +18,6 @@ public class SmartEmployeeService extends EmployeeSuperClass {
     AtConfigurationProperties config;
 
 
-
     @Override
     public int getPayRaisePercent(Employee employee) {
 
@@ -51,7 +50,6 @@ public class SmartEmployeeService extends EmployeeSuperClass {
         } else {
             choice = 3; //10%
         }
-
 
 
         switch (choice) {

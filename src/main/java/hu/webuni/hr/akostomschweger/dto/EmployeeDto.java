@@ -25,7 +25,6 @@ public class EmployeeDto {
     private CompanyDto company;
 
 
-
     public CompanyDto getCompany() {
         return company;
     }

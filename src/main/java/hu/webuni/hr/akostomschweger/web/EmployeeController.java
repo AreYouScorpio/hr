@@ -80,12 +80,11 @@ public class EmployeeController {
 
     @PostMapping("/query")
     public List<EmployeeDto> findByExample(@RequestBody EmployeeDto example) {
-        System.out.println("XXXX" + employeeMapper.dtoToEmployee(example));
+        // teszt, amikor nem adódott át PostMan-nel a company
+        // System.out.println("XXXX" + employeeMapper.dtoToEmployee(example));
         return employeeMapper.employeesToDtos(
                 employeeService.findEmployeesByExample(employeeMapper.dtoToEmployee(example)));
     }
-
-
 
 
     @GetMapping("/position/{position}")

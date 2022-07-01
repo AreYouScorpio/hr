@@ -32,7 +32,6 @@ public class Employee {
     }
 
 
-
     public Employee(String name, String position, int salary, LocalDateTime startDateAtTheCompany) {
         this.name = name;
         this.salary = salary;

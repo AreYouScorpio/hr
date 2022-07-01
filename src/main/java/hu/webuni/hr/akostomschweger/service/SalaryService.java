@@ -35,19 +35,18 @@ public class SalaryService {
     }
 
     public int getPayRaisePercent(Employee employee) {
-        return (int) (employee.getSalary()*(1+employeeService.getPayRaisePercent(employee)/100.00));
+        return (int) (employee.getSalary() * (1 + employeeService.getPayRaisePercent(employee) / 100.00));
     }
-
 
 
     @Transactional
     public void raiseMinSalary(long companyId, String positionName, int minSalary) {
-    PositionDetailsByCompany pd =             positionDetailsByCompanyRepository
-                        .findByPositionNameAndCompanyId(positionName, companyId)
+        PositionDetailsByCompany pd = positionDetailsByCompanyRepository
+                .findByPositionNameAndCompanyId(positionName, companyId)
                 .get();
 
-    pd.setMinSalary(minSalary);
-    //nem hatékony, sok SQL update utasítás
+        pd.setMinSalary(minSalary);
+        //nem hatékony, sok SQL update utasítás
         /*
     pd.getCompany().getEmployees().forEach(e->{
         if(e.getPosition().getName().equals(positionName)&&e.getSalary()<minSalary)
@@ -57,7 +56,7 @@ public class SalaryService {
          */
         // 2. megoldás --->
 
-                employeeRepository.updateSalaries(positionName, minSalary, companyId);
+        employeeRepository.updateSalaries(positionName, minSalary, companyId);
 
 
     }

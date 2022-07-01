@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class InitDbService  {
+public class InitDbService {
 
     @Autowired
     CompanyRepository companyRepository;
@@ -44,18 +44,18 @@ public class InitDbService  {
 
 
     @Transactional
-    public void clearDB(){
+    public void clearDB() {
 
         //employeeRepository.truncate();
         //companyRepository.truncate();
 
 
         for (PositionDetailsByCompany p : positionDetailsByCompanyRepository.findAll()) {
-           positionDetailsByCompanyRepository.delete(p); }
+            positionDetailsByCompanyRepository.delete(p);
+        }
 
-           // for (positionRepository r : positionRepository.findAll()) {
-            //positionRepository.delete(r);
-
+        // for (positionRepository r : positionRepository.findAll()) {
+        //positionRepository.delete(r);
 
 
         //vagy végig iterálva, de lassabb lenne
@@ -63,7 +63,6 @@ public class InitDbService  {
         for (Employee e : employeeRepository.findAll()) {
             employeeRepository.delete(e);
         }
-
 
 
         for (Company c : companyRepository.findAll()) {
@@ -104,16 +103,13 @@ public class InitDbService  {
     }
 
 
-
-
-    public void insertTestData(){
+    public void insertTestData() {
 
         //position entitás bekapcsolása
         hu.webuni.hr.akostomschweger.model.Position developer = positionRepository.save(
                 new hu.webuni.hr.akostomschweger.model.Position("fejlesztő", Qualification.UNIVERSITY));
         hu.webuni.hr.akostomschweger.model.Position tester = positionRepository.save(
                 new hu.webuni.hr.akostomschweger.model.Position("tesztelő", Qualification.HIGH_SCHOOL));
-
 
 
         Employee employeeA = new Employee(
@@ -147,22 +143,21 @@ public class InitDbService  {
         employeeB.setPosition(tester);
 
 
-        Company companyA =  new Company(
+        Company companyA = new Company(
                 null,
                 "88888",
                 "X company",
                 "Weert",
-                 new ArrayList<Employee>());
+                new ArrayList<Employee>());
 
         //new ArrayList<Employee>(List.of(employeeA,employeeB))
 
-        Company companyB =  new Company(
+        Company companyB = new Company(
                 null,
                 "99999",
                 "Y company",
                 "Best",
                 new ArrayList<Employee>());
-
 
 
         employeeRepository.save(employeeA);
@@ -195,9 +190,6 @@ public class InitDbService  {
         employeeRepository.save(employeeB);
 
 
-
-
-
         PositionDetailsByCompany pd = new PositionDetailsByCompany();
         pd.setCompany(companyA);
         pd.setMinSalary(100000);
@@ -209,18 +201,6 @@ public class InitDbService  {
         pd.setMinSalary(50000);
         pd.setPosition(tester);
         positionDetailsByCompanyRepository.save(pd2);
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     }

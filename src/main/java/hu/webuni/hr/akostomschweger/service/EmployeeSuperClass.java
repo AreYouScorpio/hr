@@ -68,12 +68,12 @@ public abstract class EmployeeSuperClass implements EmployeeService {
         // employees.put(employee.getId(), employee);
         employee.setId(null); // biztos ami biztos ne felülírjon
         Position position = employee.getPosition();
-        if (position!=null) {
+        if (position != null) {
             String positionName = position.getName();
-            if(!ObjectUtils.isEmpty(positionName)) {
+            if (!ObjectUtils.isEmpty(positionName)) {
                 Position positionInDb = null;
                 Optional<Position> foundPosition = positionRepository.findByName(positionName);
-                if(foundPosition.isPresent())
+                if (foundPosition.isPresent())
                     positionInDb = foundPosition.get();
                 else {
                     positionInDb = positionRepository.save(position);
@@ -87,11 +87,9 @@ public abstract class EmployeeSuperClass implements EmployeeService {
     }
 
 
-
-
     public List<Employee> findAll() {
         //return new ArrayList<>(employees.values());
-    return employeeRepository.findAll();
+        return employeeRepository.findAll();
     }
 
 
@@ -104,15 +102,15 @@ public abstract class EmployeeSuperClass implements EmployeeService {
     public Employee update(long id, Employee employee) {
         // employees.put(id, employee);
         // return employee;
-    if(employeeRepository.existsById(employee.getId()))
-        return employeeRepository.save(employee);
-    else throw new NoSuchElementException();
+        if (employeeRepository.existsById(employee.getId()))
+            return employeeRepository.save(employee);
+        else throw new NoSuchElementException();
     }
 
     @Transactional
     public void delete(long id) {
         // employees.remove(id);
-    employeeRepository.deleteById(id);
+        employeeRepository.deleteById(id);
     }
 
     public List<Employee> findByPosition(String position) {
@@ -139,25 +137,30 @@ public abstract class EmployeeSuperClass implements EmployeeService {
         long id = 0L;
         //if(example.getId()>0) id = example.getId();
 
-        if (example.getId()!=null) {id = example.getId();};
+        if (example.getId() != null) {
+            id = example.getId();
+        }
+        ;
         System.out.println("Example ID: " + id);
 
         String name = "";
-        if (example.getName()!=null) {name = example.getName();};
+        if (example.getName() != null) {
+            name = example.getName();
+        }
+        ;
 
         //name = example.getName();
-        System.out.println("Example name: " +name);
+        System.out.println("Example name: " + name);
         String position = "";
-        if ((example.getPosition()!=null)) position=example.getPosition().getName();
-        System.out.println("Example position: " +position);
+        if ((example.getPosition() != null)) position = example.getPosition().getName();
+        System.out.println("Example position: " + position);
         int salary = example.getSalary();
-        System.out.println("Example salary: " +salary);
+        System.out.println("Example salary: " + salary);
         LocalDateTime startDateAtTheCompany = example.getStartDateAtTheCompany();
-        System.out.println("Example startDateAtTheCompany: " +startDateAtTheCompany);
+        System.out.println("Example startDateAtTheCompany: " + startDateAtTheCompany);
         String company = "";
-        if ((example.getCompany()!=null)) company=example.getCompany().getName();
-        System.out.println("Example company: " +company);
-
+        if ((example.getCompany() != null)) company = example.getCompany().getName();
+        System.out.println("Example company: " + company);
 
 
         Specification<Employee> spec = Specification.where(null); // üres Specification, ami semmire nem szűr
@@ -173,7 +176,6 @@ public abstract class EmployeeSuperClass implements EmployeeService {
 
         if (StringUtils.hasText(position))
             spec = spec.and(EmployeeSpecifications.hasPosition(position));
-
 
 
         if (salary > 0) {

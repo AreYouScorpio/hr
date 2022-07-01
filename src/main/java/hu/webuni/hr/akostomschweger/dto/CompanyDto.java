@@ -32,7 +32,6 @@ public class CompanyDto {
     }
 
 
-
     public Long getId() {
         return id;
     }
