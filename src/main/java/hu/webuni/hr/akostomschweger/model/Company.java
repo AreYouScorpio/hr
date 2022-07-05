@@ -132,7 +132,8 @@ public class Company {
                 "id=" + id +
                 ", regNo='" + regNo + '\'' +
                 ", name='" + name + '\'' +
-                ", address='" + address +
+                ", address='" + address + '\'' +
+                ", employees=" + employees +
                 '}';
     }
 }

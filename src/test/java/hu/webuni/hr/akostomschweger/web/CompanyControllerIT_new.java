@@ -2,19 +2,13 @@ package hu.webuni.hr.akostomschweger.web;
 
 import hu.webuni.hr.akostomschweger.dto.CompanyDto;
 import hu.webuni.hr.akostomschweger.dto.EmployeeDto;
-import hu.webuni.hr.akostomschweger.model.Company;
-import hu.webuni.hr.akostomschweger.model.Employee;
 import hu.webuni.hr.akostomschweger.repository.CompanyRepository;
-import hu.webuni.hr.akostomschweger.service.CompanyService;
-import hu.webuni.hr.akostomschweger.service.EmployeeService;
 import hu.webuni.hr.akostomschweger.service.InitDbService;
-import hu.webuni.hr.akostomschweger.service.SalaryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.time.LocalDateTime;
@@ -22,8 +16,6 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 //@ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
-public class CompanyControllerIT {
+public class CompanyControllerIT_new {
 
 
     private static final String BASE_URI = "/api/companies";
@@ -65,7 +57,7 @@ public class CompanyControllerIT {
     void testEmployeeListChanged() throws Exception {
 
 
-        List<CompanyDto> companyListBefore = getAllCompanies();
+        List<CompanyDto> companyListBefore = getAllCompaniesWithoutEmployees();
         long companyIdForModification = companyListBefore.get(1).getId();
 
 
@@ -82,7 +74,7 @@ public class CompanyControllerIT {
         assertEquals("Y company", companyListBefore.get(1).getName());
 
         List<EmployeeDto> employeeListBefore =
-                getCompanyAndItsEmployeeList(companyIdForModification).getEmployees();
+                getCompanyByIdFull(companyIdForModification).getEmployees();
 
         System.out.println("A dolgozói lista elemeinek száma módosítás előtt: " + employeeListBefore.size());
         System.out.println("A dolgozói lista utolsó elemének neve módosítás előtt: " + employeeListBefore.get(employeeListBefore.size() - 1).getName());
@@ -100,9 +92,9 @@ public class CompanyControllerIT {
 
         companyController.replaceEmployees(companyIdForModification, employeeListForChange);
 
-        List<CompanyDto> companyListAfter = getAllCompanies();
+        List<CompanyDto> companyListAfter = getAllCompaniesWithoutEmployees();
         List<EmployeeDto> employeeListAfter =
-                getCompanyAndItsEmployeeList(companyIdForModification).getEmployees();
+                getCompanyByIdFull(companyIdForModification).getEmployees();
 
         System.out.println("A céglista mérete törlés után: " + companyListAfter.size());
         System.out.println("A dolgozói lista elemeinek száma módosítás után: " + employeeListAfter.size());
@@ -118,37 +110,37 @@ public class CompanyControllerIT {
 
     @Test
     void testEmployeeDeleted() throws Exception {
-        List<CompanyDto> companyListBefore = getAllCompanies();
+        List<CompanyDto> companyListBefore = getAllCompaniesWithoutEmployees();
         System.out.println("A céglista mérete törlés előtt: " + companyListBefore.size());
         System.out.println("A 0. elem neve a cégek listájában? " + companyListBefore.get(0).getName());
         assertEquals("X company", companyListBefore.get(0).getName());
 
 
         long deleteTestCompanyId = companyListBefore.get(0).getId();
-        long deleteTestEmployeeId = getCompanyAndItsEmployeeList(deleteTestCompanyId).getEmployees().get(0).getId();
+        long deleteTestEmployeeId = getCompanyByIdFull(deleteTestCompanyId).getEmployees().get(0).getId();
 
         System.out.println("A 0. elemű cég aktuális ID-ja: " + deleteTestCompanyId);
-        CompanyDto companyDto = getCompanyAndItsEmployeeList(companyListBefore.get(0).getId());
-        System.out.println("A 0. elemű cég (ID: " + deleteTestCompanyId + " )  0. elemű dolgozójának neve: " + getCompanyAndItsEmployeeList(deleteTestCompanyId).getEmployees().get(0).getName());
+        CompanyDto companyDto = getCompanyByIdFull(companyListBefore.get(0).getId());
+        System.out.println("A 0. elemű cég (ID: " + deleteTestCompanyId + " )  0. elemű dolgozójának neve: " + getCompanyByIdFull(deleteTestCompanyId).getEmployees().get(0).getName());
         System.out.println("A 0. elemű cég (ID: " + deleteTestCompanyId + " )  0. elemű dolgozójának ID-ja: " + deleteTestEmployeeId);
 
-        System.out.println("A 0. elemű cég dolgozóinak száma törlés előtt: " + getCompanyAndItsEmployeeList(deleteTestCompanyId).getEmployees().size());
+        System.out.println("A 0. elemű cég dolgozóinak száma törlés előtt: " + getCompanyByIdFull(deleteTestCompanyId).getEmployees().size());
 
 
         EmployeeDto employee = employeeController.getById(deleteTestEmployeeId);
         employee.setCompany(null);
         //Employee employee = employeeRepository.findById(employee_id).get();
         //mployee.setCompany(null);
-        getCompanyAndItsEmployeeList(deleteTestCompanyId).getEmployees().remove(employee);
+        getCompanyByIdFull(deleteTestCompanyId).getEmployees().remove(employee);
 
 
-        List<CompanyDto> companyListAfter = getAllCompanies();
+        List<CompanyDto> companyListAfter = getAllCompaniesWithoutEmployees();
 
         System.out.println("A céglista mérete törlés után: " + companyListAfter.size());
-        System.out.println("A 0. elemű cég dolgozóinak száma törlés után: " + getCompanyAndItsEmployeeList(deleteTestCompanyId).getEmployees().size());
+        System.out.println("A 0. elemű cég dolgozóinak száma törlés után: " + getCompanyByIdFull(deleteTestCompanyId).getEmployees().size());
 
 
-        assertThat(getCompanyAndItsEmployeeList(deleteTestCompanyId).getEmployees().size() == 0);
+        assertThat(getCompanyByIdFull(deleteTestCompanyId).getEmployees().size() == 0);
         assertThat(companyListAfter.size() == companyListBefore.size());
 
 
@@ -174,15 +166,25 @@ public class CompanyControllerIT {
     @Test
     void testEmployeeAdded() throws Exception {
 
+        // /addemployeetocompany/{company_id}
+
         // !! company-t EAGER-re alakítani, h működjön !!
 
-        companyRepository.deleteAllInBatch();
 
+        // companyRepository.deleteAllInBatch();
+
+        //createCompany(companyDto);
 
         // ez nem dto ad vissza, hanem companyt:
-        List<CompanyDto> companyListBefore = getAllCompanies();
+        List<CompanyDto> companyListBefore = getAllCompaniesWithoutEmployees();
+        long companyIdForModification = companyListBefore.get(1).getId();
+        System.out.println("A módosítandó company ID (old): " + companyIdForModification);
+        //CompanyDto companyWithEmployeesBefore =
+        // getCompanyAndItsEmployeeList(companyIdForModification);
+        //System.out.println(companyWithEmployeesBefore);
         //System.out.println(companyListBefore);
 
+        System.out.println("OK");
 
         CompanyDto company = new CompanyDto(
                 "666", "HelloCegNev", "Kiskunhalas", new ArrayList<EmployeeDto>());
@@ -193,24 +195,41 @@ public class CompanyControllerIT {
 
         //company.addNewEmployee(employeeX);
         long savedIdForTesting = createCompany(company);
-        companyController.addEmployeeToCompany(savedIdForTesting, employeeX);
+
+        System.out.println("A módosítandó company ID (new): " + savedIdForTesting);
 
 
-        System.out.println("céglista record: " + companyRepository.findAllWithEmployees());
-        System.out.println("cég listájából a hozzáadott employee neve: " +
-                getCompanyAndItsEmployeeList(savedIdForTesting).getEmployees().get(0).getName());
+        //companyController.addEmployeeToCompany(savedIdForTesting, employeeX);
+        //controller helyett webTest hívás:
+
+        long employeeSavedId = saveEmployee(employeeX, savedIdForTesting);
+
+        System.out.println("OK, elmentett Employee ID-ja WebTestClientből: " + employeeSavedId);
+
+        //System.out.println(getCompanyAndItsEmployeeList(savedIdForTesting));
+        System.out.println("Employee felvitele utáni teljes céglista WebTestClientből: " + getAllCompanies());
+        //System.out.println("Employee felvitele utáni teljes céglista employeekkal WebTestClientből: " + getCompanyAndItsEmployeeList(savedIdForTesting));
+
+
+        //System.out.println("céglista record companyRepoból: " + companyRepository.findAllWithEmployees());
+        //System.out.println("cég listájából a hozzáadott employee neve (Repo): " +
+        //        getCompanyAndItsEmployeeList(savedIdForTesting).getEmployees().get(0).getName());
         //companyController.addEmployeeToCompany(1L, employeeX);
 
-        System.out.println("ez a cég: " + company.getName());
+        //System.out.println("ez a cég: " + company.getName());
+        System.out.println("a lekérdezendő cég aktuális ID-ja: " + savedIdForTesting);
+
+        System.out.println("ez a cég WebTestClientből: " + getCompanyByIdFull(savedIdForTesting));
+
         System.out.println("cég eredeti ID: " + company.getId() + "  új generált id: " + savedIdForTesting);
 
         company.setId(savedIdForTesting); // hogy a teszt lefusson, ne null legyen a generált ID
 
-        assertEquals("Akos", getCompanyAndItsEmployeeList(savedIdForTesting).getEmployees().get(0).getName());
-        assertEquals("springtanuló", getCompanyAndItsEmployeeList(savedIdForTesting).getEmployees().get(0).getPosition());
-        assertEquals(200, getCompanyAndItsEmployeeList(savedIdForTesting).getEmployees().get(0).getSalary());
+        assertEquals("Akos", getCompanyByIdFull(savedIdForTesting).getEmployees().get(0).getName());
+        assertEquals("springtanuló", getCompanyByIdFull(savedIdForTesting).getEmployees().get(0).getPosition());
+        assertEquals(200, getCompanyByIdFull(savedIdForTesting).getEmployees().get(0).getSalary());
         assertEquals(LocalDateTime.of(2017, Month.FEBRUARY, 3, 6, 30),
-                getCompanyAndItsEmployeeList(savedIdForTesting).getEmployees().get(0).getStartDateAtTheCompany());
+                getCompanyByIdFull(savedIdForTesting).getEmployees().get(0).getStartDateAtTheCompany());
 
         /*
         System.out.println("cég employee lista mérete: " +
@@ -224,7 +243,7 @@ public class CompanyControllerIT {
          */
 
 
-        List<CompanyDto> companyListAfter = getAllCompanies();
+        List<CompanyDto> companyListAfter = getAllCompaniesWithoutEmployees();
 
 
         assertThat(companyListAfter.subList(0, companyListBefore.size()))
@@ -239,28 +258,105 @@ public class CompanyControllerIT {
 
     }
 
-    private long createCompany(CompanyDto company) {
+    private long createCompany(CompanyDto company) { //ok
 
-        /*
-        webTestClient
+
+        long Id = webTestClient
                 .post()
                 .uri(BASE_URI)
                 .bodyValue(company)
                 .exchange()
                 .expectStatus()
-                .isOk();
+                .isOk().expectBody(CompanyDto.class).returnResult().getResponseBody().getId();
 
-         */
-        return companyController.createCompany(company).getId();
+
+        return Id;
+        //return companyController.createCompany(company).getId();
+    }
+
+    private List<EmployeeDto> get(long id) {
+
+
+        List<EmployeeDto> responseList = webTestClient
+                .get()
+                .uri(BASE_URI + "/{id}")
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBody(CompanyDto.class)
+                .returnResult().getResponseBody().getEmployees();
+
+        //Collections.sort(responseList, (a1, a2) -> Long.compare(a1.getId(), a2.getId()));
+
+        return responseList;
+
+
+        //return companyController.getById(id, true);
     }
 
 
-    private CompanyDto getCompanyAndItsEmployeeList(long id) {
+    private CompanyDto getCompanyByIdFull(long id) {
 
-        /*
+
+        CompanyDto responseList = webTestClient
+                .get()
+                .uri(BASE_URI + "/" + id + "?full=true")
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBody(CompanyDto.class)
+                .returnResult().getResponseBody();
+
+        //Collections.sort(responseList, (a1, a2) -> Long.compare(a1.getId(), a2.getId()));
+
+        return responseList;
+
+
+        //return companyController.getById(id, true);
+    }
+
+    private CompanyDto getCompanyByIdShort(long id) {
+
+
+        CompanyDto responseList = webTestClient
+                .get()
+                .uri(BASE_URI + "/" + id)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBody(CompanyDto.class)
+                .returnResult().getResponseBody();
+
+        //Collections.sort(responseList, (a1, a2) -> Long.compare(a1.getId(), a2.getId()));
+
+        return responseList;
+
+
+        //return companyController.getById(id, true);
+    }
+
+    private long saveEmployee(EmployeeDto newEmployee, long company_id) { //ok
+        return webTestClient
+                .post()
+                .uri(BASE_URI + "/addemployeetocompany/" + company_id)
+//				//.headers(headers -> headers.setBasicAuth(username, pass))
+                //.headers(headers -> headers.setBearerAuth(jwt))
+                .bodyValue(newEmployee)
+                .exchange()
+                .expectBody(CompanyDto.class)
+                .returnResult()
+                .getResponseBody()
+                .getEmployees().get(0).getId();
+    }
+
+    private List<CompanyDto> getAllCompanies() {
+
+        // átalakítani, ez még a companykat kérdezi csak le
+
+
         List<CompanyDto> responseList = webTestClient
                 .get()
-                .uri(BASE_URI)
+                .uri(BASE_URI + "?full=true")
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -270,14 +366,9 @@ public class CompanyControllerIT {
         Collections.sort(responseList, (a1, a2) -> Long.compare(a1.getId(), a2.getId()));
 
         return responseList;
-
-         */
-
-        return companyController.getById(id, true);
     }
 
-
-    private List<CompanyDto> getAllCompanies() {
+    private List<CompanyDto> getAllCompaniesWithoutEmployees() {
 
         // átalakítani, ez még a companykat kérdezi csak le
 
@@ -295,7 +386,6 @@ public class CompanyControllerIT {
 
         return responseList;
     }
-
 
 }
 

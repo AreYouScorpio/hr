@@ -96,4 +96,15 @@ public class EmployeeDto {
     public void setStartDateAtTheCompany(LocalDateTime startDateAtTheCompany) {
         this.startDateAtTheCompany = startDateAtTheCompany;
     }
+
+    @Override
+    public String toString() {
+        return "EmployeeDto{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", position='" + position + '\'' +
+                ", salary=" + salary +
+                ", startDateAtTheCompany=" + startDateAtTheCompany +
+                '}';
+    }
 }

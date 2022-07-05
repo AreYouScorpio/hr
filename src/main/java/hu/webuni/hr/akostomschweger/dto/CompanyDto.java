@@ -76,4 +76,15 @@ public class CompanyDto {
     public void addNewEmployee(EmployeeDto employeeDto) {
         employees.add(employeeDto);
     }
+
+    @Override
+    public String toString() {
+        return "CompanyDto{" +
+                "id=" + id +
+                ", regNo='" + regNo + '\'' +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", employees=" + employees +
+                '}';
+    }
 }
