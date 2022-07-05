@@ -191,7 +191,7 @@ public class CompanyService {
         //removeIf(e -> e.getId() == employee_id);
         employee.setCompany(null);
         company.getEmployees().remove(employee);
-        employeeService.save(employee);
+        // employeeService.save(employee); ---> a transactional miatt nem kell.. amúgy jó volt, amíg IT tesztben nem WebTestClienttel próbáltam, de utána muszáj volt törölni
         return company;
     }
 
