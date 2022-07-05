@@ -128,7 +128,7 @@ public class CompanyControllerIT_new {
 
 
         //EmployeeDto employee = getEmployeeList(deleteTestCompanyId);
-                //employeeController.getById(deleteTestEmployeeId);
+        //employeeController.getById(deleteTestEmployeeId);
         System.out.println("A törlendő cég ID: " + deleteTestCompanyId + " és employee ID: " + deleteTestEmployeeId);
 
 
@@ -278,8 +278,8 @@ public class CompanyControllerIT_new {
                 .exchange()
                 .expectStatus()
                 .isOk();
-                //.expectBody(EmployeeDto.class)
-                //.returnResult().getResponseBody().getId();
+        //.expectBody(EmployeeDto.class)
+        //.returnResult().getResponseBody().getId();
 
         //getEmployeeList(companyId).remove(employeeId);
 
@@ -447,7 +447,7 @@ public class CompanyControllerIT_new {
 
         List<CompanyDto> responseList = webTestClient
                 .put()
-                .uri(BASE_URI+ "/" + companyIdForModification + "/employees")
+                .uri(BASE_URI + "/" + companyIdForModification + "/employees")
                 .bodyValue(employeeListForChange)
                 .exchange()
                 .expectStatus()
