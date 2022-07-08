@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-@Service
+//@Service // - itt ne legyen annotáció, kül bean hiba miatt nem indul el
 public class HolidayRequestService {
 
     @Autowired
@@ -33,7 +33,7 @@ public class HolidayRequestService {
     }
 
     public Optional<HolidayRequest> findById(long id) {
-        return holidayRequestRepository.findById();
+        return holidayRequestRepository.findById(id);
     }
 
     public Page<HolidayRequest> findHolidayRequestByExample(HolidayRequestFilterDto example, Pageable pageable) {
