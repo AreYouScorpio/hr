@@ -2,6 +2,8 @@ package hu.webuni.hr.akostomschweger.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -21,6 +23,12 @@ public class Employee {
 
     @ManyToOne
     private Company company;
+
+    @OneToMany(mappedBy = "employee", fetch = FetchType.EAGER)
+    private List<HolidayRequest> holidayRequests;
+
+    @ManyToOne
+    private Employee manager;
 
 
     public Employee(Long id, String name, int salary, LocalDateTime startDateAtTheCompany) {
@@ -133,5 +141,29 @@ public class Employee {
                 ", position=" + position +
                 ", company=" + company +
                 '}';
+    }
+
+    public List<HolidayRequest> getHolidayRequests() {
+        return holidayRequests;
+    }
+
+    public void setHolidayRequests(List<HolidayRequest> holidayRequests) {
+        this.holidayRequests = holidayRequests;
+    }
+
+    public void addHolidayRequest(HolidayRequest holidayRequest) {
+        if(this.holidayRequests == null)
+            this.holidayRequests = new ArrayList<>();
+
+        this.holidayRequests.add(holidayRequest);
+        holidayRequest.setEmployee(this);
+    }
+
+    public Employee getManager() {
+        return manager;
+    }
+
+    public void setManager(Employee manager) {
+        this.manager = manager;
     }
 }
