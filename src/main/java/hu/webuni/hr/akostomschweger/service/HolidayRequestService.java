@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-//@Service // - itt ne legyen annotáció, kül bean hiba miatt nem indul el
+@Service // - itt ne legyen annotáció, kül bean hiba miatt nem indul el .. vagy mégis kell?
 public class HolidayRequestService {
 
     @Autowired
