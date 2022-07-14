@@ -51,7 +51,6 @@ public class HolidayRequestController {
 
 
     @PostMapping
-
     //@PreAuthorize("#newHolidayRequest.employeeId == authentication.principal.employee.employeeId")
     public HolidayRequestDto addHolidayRequest(@RequestBody @Valid HolidayRequestDto newHolidayRequest) {
         HolidayRequest holidayRequest;

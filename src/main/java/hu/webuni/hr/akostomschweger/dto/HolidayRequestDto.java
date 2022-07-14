@@ -8,14 +8,14 @@ public class HolidayRequestDto {
 
     private long id;
     private LocalDateTime createdAt;
-    @NotNull
+    @NotNull (message = "employeeId cannot be null")
     private Long employeeId;
     private Long approverId;
     private Boolean approved;
     private LocalDateTime approvedAt;
-    @NotNull
+    @NotNull (message = "startDate cannot be null")
     private LocalDate startDate;
-    @NotNull
+    @NotNull (message = "endDate cannot be null")
     private LocalDate endDate;
 
     public HolidayRequestDto() {
