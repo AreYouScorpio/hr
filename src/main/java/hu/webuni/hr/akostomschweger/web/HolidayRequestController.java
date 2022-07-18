@@ -54,7 +54,8 @@ public class HolidayRequestController {
     //@PreAuthorize("#newHolidayRequest.employeeId == authentication.principal.employee.employeeId")
     public HolidayRequestDto addHolidayRequest(@RequestBody @Valid HolidayRequestDto newHolidayRequest) {
         HolidayRequest holidayRequest;
-        System.out.println("hhhhhh " + newHolidayRequest.getEmployeeId());
+        System.out.println("EmployeeID for HolidayRequest: " + newHolidayRequest.getEmployeeId());
+        System.out.println("ApproverID for HolidayRequest: " + newHolidayRequest.getApproverId());
         //try {
           //  Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             holidayRequest = holidayRequestService.addHolidayRequest(holidayRequestMapper.dtoToHolidayRequest(newHolidayRequest), newHolidayRequest.getEmployeeId());

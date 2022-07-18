@@ -2,6 +2,7 @@ package hu.webuni.hr.akostomschweger.mapper;
 
 import hu.webuni.hr.akostomschweger.dto.HolidayRequestDto;
 import hu.webuni.hr.akostomschweger.model.HolidayRequest;
+import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -18,8 +19,9 @@ public interface HolidayRequestMapper {
     @Mapping(source = "approver.id", target = "approverId")
     HolidayRequestDto holidayRequestToDto(HolidayRequest holidayRequest);
 
-    @Mapping(target = "employee", ignore = true)
-    @Mapping(target = "approver", ignore = true)
+    @InheritInverseConfiguration // így tárolja az approverId-t is, de mappinggel nem
+//  @Mapping(target = "employee", ignore = true
+//  @Mapping(target = "approver", ignore = true)
     HolidayRequest dtoToHolidayRequest(@Valid HolidayRequestDto holidayRequestDto);
 
     List<HolidayRequest> dtosToHolidayRequests(List<HolidayRequestDto> holidayRequestDtos);
