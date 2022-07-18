@@ -10,6 +10,7 @@ public class HolidayRequestDto {
     private LocalDateTime createdAt;
     @NotNull (message = "employeeId cannot be null")
     private Long employeeId;
+    @NotNull (message = "approverId cannot be null")
     private Long approverId;
     private Boolean approved;
     private LocalDateTime approvedAt;

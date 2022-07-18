@@ -5,11 +5,8 @@ import hu.webuni.hr.akostomschweger.model.Company;
 import hu.webuni.hr.akostomschweger.model.Employee;
 import hu.webuni.hr.akostomschweger.model.PositionDetailsByCompany;
 import hu.webuni.hr.akostomschweger.model.Qualification;
-import hu.webuni.hr.akostomschweger.repository.CompanyRepository;
-import hu.webuni.hr.akostomschweger.repository.EmployeeRepository;
+import hu.webuni.hr.akostomschweger.repository.*;
 // import org.flywaydb.core.Flyway;
-import hu.webuni.hr.akostomschweger.repository.PositionDetailsByCompanyRepository;
-import hu.webuni.hr.akostomschweger.repository.PositionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -28,6 +25,8 @@ public class InitDbService {
     CompanyRepository companyRepository;
     @Autowired
     EmployeeRepository employeeRepository;
+    @Autowired
+    HolidayRequestRepository holidayRequestRepository;
 
     @Autowired
     CompanyService companyService;
@@ -50,9 +49,14 @@ public class InitDbService {
         //companyRepository.truncate();
 
 
+        holidayRequestRepository.deleteAll();
+
+
         for (PositionDetailsByCompany p : positionDetailsByCompanyRepository.findAll()) {
             positionDetailsByCompanyRepository.delete(p);
         }
+
+
 
         // for (positionRepository r : positionRepository.findAll()) {
         //positionRepository.delete(r);
