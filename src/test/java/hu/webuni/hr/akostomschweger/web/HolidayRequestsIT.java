@@ -406,6 +406,107 @@ public class HolidayRequestsIT {
     }
 
 
+    @Test
+    void testSearchHolidayRequest() throws Exception {
+        // EmployeeController employeeController = new EmployeeController();
+
+
+        List<EmployeeDto> employeesBefore = getAllEmployees();
+        System.out.println(employeesBefore);
+
+        EmployeeDto employee1 =
+                new EmployeeDto(1L, "Akos", "jsj", 100,
+                        LocalDateTime.of(2017, Month.JANUARY, 3, 6, 30));
+        EmployeeDto employee2 =
+                new EmployeeDto(2L, "Bkos", "jxj", 200,
+                        LocalDateTime.of(2017, Month.FEBRUARY, 3, 6, 30));
+        // employeeController.createEmployee(employee);
+        long employee1id = createEmployee(employee1);
+        System.out.println("employee1id: " + employee1id);
+        createEmployee(employee2);
+
+        long employee2id = createEmployee(employee2);
+        System.out.println("employee2id: " + employee2id);
+
+
+        List<EmployeeDto> employeesAfter = getAllEmployees();
+        System.out.println(employeesAfter);
+
+
+        List<HolidayRequestDto> holidayRequestsBefore = getAllHRs();
+        System.out.println("holidayRequestsBefore: " + holidayRequestsBefore);
+
+        HolidayRequestDto holidayRequest = new HolidayRequestDto(
+                1283L, //id
+                LocalDateTime.now(), // "createdAt",
+                employee1id, // "employeeId"
+                employee2id, // "approverId"
+                null,// "approved"
+                null, // "approvedAt"
+                LocalDate.of(2022, 07, 26), // "startDate"
+                LocalDate.of(2022, 07, 28) // "endDate"
+        );
+
+        HolidayRequestDto holidayRequest2 = new HolidayRequestDto(
+                1284L, //id
+                LocalDateTime.now(), // "createdAt",
+                employee2id, // "employeeId"
+                employee1id, // "approverId"
+                true,// "approved"
+                LocalDateTime.of(2022,07,22,10,10,01,111), // "approvedAt"
+                LocalDate.of(2022, 07, 27), // "startDate"
+                LocalDate.of(2022, 07, 29) // "endDate"
+        );
+
+
+        long HR_Id = createHR(holidayRequest);
+        long HR_Id2 = createHR(holidayRequest2);
+
+        long approverId1 = holidayRequest.getApproverId();
+        System.out.println("approverId1: " + approverId1);
+
+        long approverId2 = holidayRequest2.getApproverId();
+        System.out.println("approverId2: " + approverId2);
+
+        holidayRequest.setId(HR_Id);
+        holidayRequest2.setId(HR_Id2);
+        System.out.println("HR_details_1: " + holidayRequest);
+        System.out.println("HR_Id1: " + HR_Id);
+        System.out.println("HR_details_2: " + holidayRequest2);
+        System.out.println("HR_Id2: " + HR_Id2);
+
+        HolidayRequestDto metamodel = new HolidayRequestDto();
+        metamodel.setId(0L);
+        metamodel.setCreatedAt(null);
+        metamodel.setEmployeeId(null);
+        metamodel.setApproverId(null);
+        metamodel.setApproved(null);
+        metamodel.setApprovedAt(null);
+        metamodel.setStartDate(null);
+        metamodel.setEndDate(null);
+        System.out.println("metamodel: " + metamodel);
+
+        List<HolidayRequestDto> result = searchHR(metamodel);
+
+        System.out.println("A találat HR lista " + result);
+
+
+        //List<HolidayRequestDto> holidayRequestsAfter = getAllHRs();
+        //System.out.println("holidayRequestsAfter: " + holidayRequestsAfter);
+
+        //assertEquals(27, getHR_ById(HR_Id).getStartDate().getDayOfMonth());
+        //assertNotEquals(26, getHR_ById(HR_Id).getStartDate().getDayOfMonth());
+        //assertEquals(29, getHR_ById(HR_Id).getEndDate().getDayOfMonth());
+        //assertNotEquals(28, getHR_ById(HR_Id).getEndDate().getDayOfMonth());
+
+
+        // Employee employeeTest = employeeService.findById(21L);
+        //assertThat(employeeTest.getSalary()).isEqualTo(200);
+
+
+    }
+
+
     private long createHR(HolidayRequestDto holidayRequestDto) {
         long id = webTestClient
                 .post()
@@ -549,6 +650,46 @@ public class HolidayRequestsIT {
         //.expectBody(HolidayRequestDto.class)
         //.returnResult().getResponseBody();
 //return response;
+
+
+
+
+
+            /*
+        webTestClient
+                .put()
+                .uri(BASE_URI_HR + "/" + id)
+                .bodyValue(holidayRequestDtoNew)
+                .exchange()
+                .expectStatus()
+                .isOk();
+
+
+             */
+
+
+    }
+
+
+    private List<HolidayRequestDto> searchHR(HolidayRequestDto metamodel) {
+        List<HolidayRequestDto> responseList =
+                webTestClient
+                        .post()
+                        .uri(BASE_URI_HR + "/search")
+                        //.contentType(APPLICATION_JSON)
+                        //.syncBody(holidayRequestDtoNew)
+                        //.accept(MediaType.APPLICATION_JSON)
+                        //.contentType(APPLICATION_JSON)
+                        .bodyValue(metamodel)
+                        .exchange()
+                        .expectStatus()
+                        .isOk()
+                        .expectBodyList(HolidayRequestDto.class)
+                        .returnResult().getResponseBody();
+
+        Collections.sort(responseList, (a1, a2) -> Long.compare(a1.getId(), a2.getId()));
+
+        return responseList;
 
 
 
