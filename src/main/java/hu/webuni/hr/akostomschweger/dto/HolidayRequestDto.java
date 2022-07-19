@@ -19,6 +19,18 @@ public class HolidayRequestDto {
     @NotNull (message = "endDate cannot be null")
     private LocalDate endDate;
 
+
+    public HolidayRequestDto(long id, LocalDateTime createdAt, Long employeeId, Long approverId, Boolean approved, LocalDateTime approvedAt, LocalDate startDate, LocalDate endDate) {
+        this.id = id;
+        this.createdAt = createdAt;
+        this.employeeId = employeeId;
+        this.approverId = approverId;
+        this.approved = approved;
+        this.approvedAt = approvedAt;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
     public HolidayRequestDto() {
     }
 
@@ -84,5 +96,19 @@ public class HolidayRequestDto {
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+    }
+
+    @Override
+    public String toString() {
+        return "HolidayRequestDto{" +
+                "id=" + id +
+                ", createdAt=" + createdAt +
+                ", employeeId=" + employeeId +
+                ", approverId=" + approverId +
+                ", approved=" + approved +
+                ", approvedAt=" + approvedAt +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                '}';
     }
 }
