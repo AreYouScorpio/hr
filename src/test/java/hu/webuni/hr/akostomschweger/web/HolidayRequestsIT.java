@@ -93,7 +93,7 @@ public class HolidayRequestsIT {
                 LocalDateTime.now(), // "createdAt",
                 employee1id, // "employeeId"
                 employee2id, // "approverId"
-                false,// "approved"
+                null,// "approved"
                 null, // "approvedAt"
                 LocalDate.of(2022, 07, 26), // "startDate"
                 LocalDate.of(2022, 07, 28) // "endDate"
@@ -159,7 +159,7 @@ public class HolidayRequestsIT {
                 LocalDateTime.now(), // "createdAt",
                 employee1id, // "employeeId"
                 employee2id, // "approverId"
-                false,// "approved"
+                null,// "approved"
                 null, // "approvedAt"
                 LocalDate.of(2022, 07, 26), // "startDate"
                 LocalDate.of(2022, 07, 28) // "endDate"
@@ -211,7 +211,7 @@ public class HolidayRequestsIT {
                 LocalDateTime.now(), // "createdAt",
                 employee1id, // "employeeId"
                 employee2id, // "approverId"
-                false,// "approved"
+                null,// "approved"
                 null, // "approvedAt"
                 LocalDate.of(2022, 07, 26), // "startDate"
                 LocalDate.of(2022, 07, 28) // "endDate"
@@ -396,8 +396,8 @@ public class HolidayRequestsIT {
                 .delete()
                 .uri(BASE_URI_HR + "/" + id)
                 .exchange()
-               // .expectStatus()
-                //.isOk()
+                .expectStatus()
+                .isOk()
         ;
     }
 
