@@ -306,29 +306,25 @@ public class HolidayRequestsIT {
         HolidayRequestDto holidayRequest2 = new HolidayRequestDto(
                 HR_Id, //id
                 LocalDateTime.now(), // "createdAt",
-                approverIdOld, // "employeeId"
-                employeeIdOld, // "approverId"
+                employee1id, // "employeeId"
+                employee2id, // "approverId"
                 null,// "approved"
                 null, // "approvedAt"
-                LocalDate.of(2022,07,26), // "startDate"
-                LocalDate.of(2022,07,28) // "endDate"
+                LocalDate.of(2022,07,27), // "startDate"
+                LocalDate.of(2022,07,29) // "endDate"
         );
 
         System.out.println("most jön a módosítás.. " + HR_Id + "id-ra , és erre a HR-re:" + holidayRequest2);
         modifyHR(HR_Id, holidayRequest2);
 
-        long employeeIdNew = holidayRequest.getEmployeeId();
-        System.out.println("employeeIdNew: " + employeeIdNew);
-        long approverIdNew = holidayRequest.getApproverId();
-        System.out.println("approverIdNew: " + approverIdNew);
-
-
 
         List<HolidayRequestDto> holidayRequestsAfter = getAllHRs();
         System.out.println("holidayRequestsAfter: " + holidayRequestsAfter);
 
-        assertEquals(approverIdOld, getHR_ById(HR_Id).getEmployeeId());
-        assertNotEquals(approverIdOld, approverIdNew);
+        assertEquals(27, getHR_ById(HR_Id).getStartDate().getDayOfMonth());
+        assertNotEquals(26, getHR_ById(HR_Id).getStartDate().getDayOfMonth());
+        assertEquals(29, getHR_ById(HR_Id).getEndDate().getDayOfMonth());
+        assertNotEquals(28, getHR_ById(HR_Id).getEndDate().getDayOfMonth());
 
 
 
