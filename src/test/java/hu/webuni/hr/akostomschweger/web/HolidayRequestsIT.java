@@ -290,26 +290,26 @@ public class HolidayRequestsIT {
         //holidayRequest.setId(HR_Id);
 
         System.out.println("WebClient response ID: " + getHR_ById(HR_Id).getId());
-        long approverId= getHR_ById(HR_Id).getApproverId();
+        long approverId = getHR_ById(HR_Id).getApproverId();
         System.out.println("ApproverID: " + approverId);
         List<HolidayRequestDto> holidayRequestsBeforeApproved = getAllHRs();
         boolean statusBeforeApproved;
-                        if(getHR_ById(HR_Id).getApproved()==null)
-                statusBeforeApproved=false;
-                else
-                    statusBeforeApproved = getHR_ById(HR_Id).getApproved();
+        if (getHR_ById(HR_Id).getApproved() == null)
+            statusBeforeApproved = false;
+        else
+            statusBeforeApproved = getHR_ById(HR_Id).getApproved();
         System.out.println("Status before approved: "
                 + statusBeforeApproved);
 
-        approveHR(HR_Id,approverId );
+        approveHR(HR_Id, approverId);
 
 
         List<HolidayRequestDto> holidayRequestsAfterApproved = getAllHRs();
         boolean statusAfterApproved;
-        if(getHR_ById(HR_Id).getApproved()==null)
-                statusAfterApproved=false;
-            else
-                statusAfterApproved = getHR_ById(HR_Id).getApproved();
+        if (getHR_ById(HR_Id).getApproved() == null)
+            statusAfterApproved = false;
+        else
+            statusAfterApproved = getHR_ById(HR_Id).getApproved();
 
         System.out.println("Status after approved: "
                 + statusAfterApproved);
@@ -319,9 +319,7 @@ public class HolidayRequestsIT {
         assertEquals(true, statusAfterApproved);
 
 
-
     }
-
 
 
     @Test
@@ -333,10 +331,10 @@ public class HolidayRequestsIT {
         System.out.println(employeesBefore);
 
         EmployeeDto employee1 =
-                new EmployeeDto( 1L, "Akos", "jsj", 100,
+                new EmployeeDto(1L, "Akos", "jsj", 100,
                         LocalDateTime.of(2017, Month.JANUARY, 3, 6, 30));
         EmployeeDto employee2 =
-                new EmployeeDto( 2L, "Bkos", "jxj", 200,
+                new EmployeeDto(2L, "Bkos", "jxj", 200,
                         LocalDateTime.of(2017, Month.FEBRUARY, 3, 6, 30));
         // employeeController.createEmployee(employee);
         long employee1id = createEmployee(employee1);
@@ -361,12 +359,9 @@ public class HolidayRequestsIT {
                 employee2id, // "approverId"
                 null,// "approved"
                 null, // "approvedAt"
-                LocalDate.of(2022,07,26), // "startDate"
-                LocalDate.of(2022,07,28) // "endDate"
+                LocalDate.of(2022, 07, 26), // "startDate"
+                LocalDate.of(2022, 07, 28) // "endDate"
         );
-
-
-
 
 
         long HR_Id = createHR(holidayRequest);
@@ -387,8 +382,8 @@ public class HolidayRequestsIT {
                 employee2id, // "approverId"
                 null,// "approved"
                 null, // "approvedAt"
-                LocalDate.of(2022,07,27), // "startDate"
-                LocalDate.of(2022,07,29) // "endDate"
+                LocalDate.of(2022, 07, 27), // "startDate"
+                LocalDate.of(2022, 07, 29) // "endDate"
         );
 
         System.out.println("most jön a módosítás.. " + HR_Id + "id-ra , és erre a HR-re:" + holidayRequest2);
@@ -404,20 +399,11 @@ public class HolidayRequestsIT {
         assertNotEquals(28, getHR_ById(HR_Id).getEndDate().getDayOfMonth());
 
 
-
-
-
-
         // Employee employeeTest = employeeService.findById(21L);
         //assertThat(employeeTest.getSalary()).isEqualTo(200);
 
 
-
-
-
-
     }
-
 
 
     private long createHR(HolidayRequestDto holidayRequestDto) {
@@ -511,13 +497,11 @@ public class HolidayRequestsIT {
     }
 
 
-
-
-    private void approveHR(long HR_Id, long approverId ) {
-            //HolidayRequestDto response =
+    private void approveHR(long HR_Id, long approverId) {
+        //HolidayRequestDto response =
         webTestClient
                 .put()
-                .uri(BASE_URI_HR + "/" +HR_Id + "/" + "approval?status=true&approverId=" + approverId)
+                .uri(BASE_URI_HR + "/" + HR_Id + "/" + "approval?status=true&approverId=" + approverId)
                 //.contentType(APPLICATION_JSON)
                 //.syncBody(holidayRequestDtoNew)
                 //.accept(MediaType.APPLICATION_JSON)
@@ -526,8 +510,8 @@ public class HolidayRequestsIT {
                 .exchange()
                 .expectStatus()
                 .isOk();
-                //.expectBody(HolidayRequestDto.class)
-                //.returnResult().getResponseBody();
+        //.expectBody(HolidayRequestDto.class)
+        //.returnResult().getResponseBody();
 //return response;
 
 
@@ -553,7 +537,7 @@ public class HolidayRequestsIT {
         //HolidayRequestDto response =
         webTestClient
                 .put()
-                .uri(BASE_URI_HR + "/" +id)
+                .uri(BASE_URI_HR + "/" + id)
                 //.contentType(APPLICATION_JSON)
                 //.syncBody(holidayRequestDtoNew)
                 //.accept(MediaType.APPLICATION_JSON)
@@ -584,7 +568,6 @@ public class HolidayRequestsIT {
 
 
     }
-
 
 
 }
