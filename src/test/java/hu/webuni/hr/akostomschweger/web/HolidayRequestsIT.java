@@ -237,8 +237,8 @@ public class HolidayRequestsIT {
         System.out.println("Size after delete: " + holidayRequestsAfterDelete.size());
 
 
-        //assertEquals(holidayRequestsAfterDelete.size() - 1, holidayRequestsBeforeDelete.size());
-        //assertEquals(getHR_ById(HR_Id), null);
+        assertEquals(holidayRequestsAfterDelete.size(), holidayRequestsBeforeDelete.size()-1);
+//      assertEquals(getHR_ById(HR_Id), null);
 
 
     }
@@ -494,7 +494,7 @@ public class HolidayRequestsIT {
         //List<HolidayRequestDto> holidayRequestsAfter = getAllHRs();
         //System.out.println("holidayRequestsAfter: " + holidayRequestsAfter);
 
-        //assertEquals(27, getHR_ById(HR_Id).getStartDate().getDayOfMonth());
+        assertEquals(true, result.get(0).getApproved());
         //assertNotEquals(26, getHR_ById(HR_Id).getStartDate().getDayOfMonth());
         //assertEquals(29, getHR_ById(HR_Id).getEndDate().getDayOfMonth());
         //assertNotEquals(28, getHR_ById(HR_Id).getEndDate().getDayOfMonth());
