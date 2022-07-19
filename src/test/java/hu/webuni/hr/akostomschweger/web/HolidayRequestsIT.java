@@ -246,7 +246,7 @@ public class HolidayRequestsIT {
 
 
 
-/*
+
     @Test
     void testModifyHolidayRequest() throws Exception {
         // EmployeeController employeeController = new EmployeeController();
@@ -282,7 +282,7 @@ public class HolidayRequestsIT {
                 LocalDateTime.now(), // "createdAt",
                 employee1id, // "employeeId"
                 employee2id, // "approverId"
-                false,// "approved"
+                null,// "approved"
                 null, // "approvedAt"
                 LocalDate.of(2022,07,26), // "startDate"
                 LocalDate.of(2022,07,28) // "endDate"
@@ -306,9 +306,9 @@ public class HolidayRequestsIT {
         HolidayRequestDto holidayRequest2 = new HolidayRequestDto(
                 HR_Id, //id
                 LocalDateTime.now(), // "createdAt",
-                employee2id, // "employeeId"
-                employee1id, // "approverId"
-                true,// "approved"
+                approverIdOld, // "employeeId"
+                employeeIdOld, // "approverId"
+                null,// "approved"
                 null, // "approvedAt"
                 LocalDate.of(2022,07,26), // "startDate"
                 LocalDate.of(2022,07,28) // "endDate"
@@ -323,7 +323,7 @@ public class HolidayRequestsIT {
         System.out.println("approverIdNew: " + approverIdNew);
 
 
-/*
+
         List<HolidayRequestDto> holidayRequestsAfter = getAllHRs();
         System.out.println("holidayRequestsAfter: " + holidayRequestsAfter);
 
@@ -345,7 +345,7 @@ public class HolidayRequestsIT {
 
     }
 
- */
+
 
     private long createHR(HolidayRequestDto holidayRequestDto) {
         long id = webTestClient
@@ -439,9 +439,10 @@ public class HolidayRequestsIT {
 
 
 
-/*
-    private HolidayRequestDto modifyHR(@RequestParam long id, HolidayRequestDto holidayRequestDtoNew) {
-            HolidayRequestDto response = webTestClient
+
+    private void modifyHR(long id, HolidayRequestDto holidayRequestDtoNew) {
+            //HolidayRequestDto response =
+        webTestClient
                 .put()
                 .uri(BASE_URI_HR + "/" +id)
                 //.contentType(APPLICATION_JSON)
@@ -451,13 +452,12 @@ public class HolidayRequestsIT {
                 .bodyValue(holidayRequestDtoNew)
                 .exchange()
                 .expectStatus()
-                .isOk()
-                .expectBody(HolidayRequestDto.class)
-                .returnResult().getResponseBody();
-;
-return response;
+                .isOk();
+                //.expectBody(HolidayRequestDto.class)
+                //.returnResult().getResponseBody();
+//return response;
 
-*/
+
 
 
 
@@ -474,7 +474,7 @@ return response;
              */
 
 
-    //  }
+    }
 
 
 }
