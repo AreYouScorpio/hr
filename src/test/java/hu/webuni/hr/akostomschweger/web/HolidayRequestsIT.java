@@ -244,6 +244,83 @@ public class HolidayRequestsIT {
     }
 
 
+    @Test
+    void testHR_Approved() throws Exception {
+
+
+        List<EmployeeDto> employeesBefore = getAllEmployees();
+        System.out.println(employeesBefore);
+
+        EmployeeDto employee1 =
+                new EmployeeDto(1L, "Akos", "jsj", 100,
+                        LocalDateTime.of(2017, Month.JANUARY, 3, 6, 30));
+        EmployeeDto employee2 =
+                new EmployeeDto(2L, "Bkos", "jxj", 200,
+                        LocalDateTime.of(2017, Month.FEBRUARY, 3, 6, 30));
+        // employeeController.createEmployee(employee);
+        long employee1id = createEmployee(employee1);
+        System.out.println("employee1id: " + employee1id);
+        createEmployee(employee2);
+        long employee2id = createEmployee(employee2);
+        System.out.println("employee2id: " + employee2id);
+
+
+        List<EmployeeDto> employeesAfter = getAllEmployees();
+        System.out.println(employeesAfter);
+
+
+        List<HolidayRequestDto> holidayRequestsBefore = getAllHRs();
+        System.out.println("holidayRequestsBefore: " + holidayRequestsBefore);
+
+        HolidayRequestDto holidayRequest = new HolidayRequestDto(
+                1283L, //id
+                LocalDateTime.now(), // "createdAt",
+                employee1id, // "employeeId"
+                employee2id, // "approverId"
+                null,// "approved"
+                null, // "approvedAt"
+                LocalDate.of(2022, 07, 26), // "startDate"
+                LocalDate.of(2022, 07, 28) // "endDate"
+        );
+
+        long HR_Id = createHR(holidayRequest);
+        holidayRequest.setId(HR_Id);
+        System.out.println("HR_details: " + holidayRequest);
+        System.out.println("HR_Id: " + HR_Id);
+        //holidayRequest.setId(HR_Id);
+
+        System.out.println("WebClient response ID: " + getHR_ById(HR_Id).getId());
+        long approverId= getHR_ById(HR_Id).getApproverId();
+        System.out.println("ApproverID: " + approverId);
+        List<HolidayRequestDto> holidayRequestsBeforeApproved = getAllHRs();
+        boolean statusBeforeApproved;
+                        if(getHR_ById(HR_Id).getApproved()==null)
+                statusBeforeApproved=false;
+                else
+                    statusBeforeApproved = getHR_ById(HR_Id).getApproved();
+        System.out.println("Status before approved: "
+                + statusBeforeApproved);
+
+        approveHR(HR_Id,approverId );
+
+
+        List<HolidayRequestDto> holidayRequestsAfterApproved = getAllHRs();
+        boolean statusAfterApproved;
+        if(getHR_ById(HR_Id).getApproved()==null)
+                statusAfterApproved=false;
+            else
+                statusAfterApproved = getHR_ById(HR_Id).getApproved();
+
+        System.out.println("Status after approved: "
+                + statusAfterApproved);
+
+
+        assertEquals(false, statusBeforeApproved);
+        assertEquals(true, statusAfterApproved);
+
+
+
+    }
 
 
 
@@ -436,16 +513,16 @@ public class HolidayRequestsIT {
 
 
 
-    private void modifyHR(long id, HolidayRequestDto holidayRequestDtoNew) {
+    private void approveHR(long HR_Id, long approverId ) {
             //HolidayRequestDto response =
         webTestClient
                 .put()
-                .uri(BASE_URI_HR + "/" +id)
+                .uri(BASE_URI_HR + "/" +HR_Id + "/" + "approval?status=true&approverId=" + approverId)
                 //.contentType(APPLICATION_JSON)
                 //.syncBody(holidayRequestDtoNew)
                 //.accept(MediaType.APPLICATION_JSON)
                 //.contentType(APPLICATION_JSON)
-                .bodyValue(holidayRequestDtoNew)
+                //.bodyValue(holidayRequestDtoNew)
                 .exchange()
                 .expectStatus()
                 .isOk();
@@ -471,6 +548,43 @@ public class HolidayRequestsIT {
 
 
     }
+
+    private void modifyHR(long id, HolidayRequestDto holidayRequestDtoNew) {
+        //HolidayRequestDto response =
+        webTestClient
+                .put()
+                .uri(BASE_URI_HR + "/" +id)
+                //.contentType(APPLICATION_JSON)
+                //.syncBody(holidayRequestDtoNew)
+                //.accept(MediaType.APPLICATION_JSON)
+                //.contentType(APPLICATION_JSON)
+                .bodyValue(holidayRequestDtoNew)
+                .exchange()
+                .expectStatus()
+                .isOk();
+        //.expectBody(HolidayRequestDto.class)
+        //.returnResult().getResponseBody();
+//return response;
+
+
+
+
+
+            /*
+        webTestClient
+                .put()
+                .uri(BASE_URI_HR + "/" + id)
+                .bodyValue(holidayRequestDtoNew)
+                .exchange()
+                .expectStatus()
+                .isOk();
+
+
+             */
+
+
+    }
+
 
 
 }
