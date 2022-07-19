@@ -26,6 +26,7 @@ public class HolidayRequestDto {
         this.employeeId = employeeId;
         this.approverId = approverId;
         this.approved = approved;
+        //if(this.approved==null) {this.approved = false;} else {this.approved = approved;};
         this.approvedAt = approvedAt;
         this.startDate = startDate;
         this.endDate = endDate;

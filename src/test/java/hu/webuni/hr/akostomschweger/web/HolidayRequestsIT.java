@@ -480,7 +480,7 @@ public class HolidayRequestsIT {
         metamodel.setCreatedAt(null);
         metamodel.setEmployeeId(null);
         metamodel.setApproverId(null);
-        metamodel.setApproved(null);
+        metamodel.setApproved(true);
         metamodel.setApprovedAt(null);
         metamodel.setStartDate(null);
         metamodel.setEndDate(null);
