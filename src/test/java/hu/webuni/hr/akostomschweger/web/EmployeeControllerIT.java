@@ -1,11 +1,16 @@
 package hu.webuni.hr.akostomschweger.web;
 
 import hu.webuni.hr.akostomschweger.dto.EmployeeDto;
+import hu.webuni.hr.akostomschweger.dto.LoginDto;
+import hu.webuni.hr.akostomschweger.model.Employee;
+import hu.webuni.hr.akostomschweger.repository.EmployeeRepository;
 import hu.webuni.hr.akostomschweger.service.EmployeeService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,18 +31,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 //@ActiveProfiles({"prod", "test"}) // profile switcher: both profiles on
 public class EmployeeControllerIT {
 
-        private static final String BASE_URI = "/api/employees";
+    private static final String BASE_URI = "/api/employees";
+    private static final String TESTUSER_NAME = "testuser";
+    private static final String PASSWORD = "pass";
 
-        @Autowired
-        WebTestClient webTestClient;
+    @Autowired
+    WebTestClient webTestClient;
 
-        @Autowired
-        EmployeeService employeeService;
+    @Autowired
+    EmployeeService employeeService;
 
-        @Autowired
-        EmployeeController employeeController;
+    @Autowired
+    EmployeeController employeeController;
 
-        // ez csak egy plusz teszt a Service-en át --->
+
+    // ez csak egy plusz teszt a Service-en át --->
 
         /*
         @Test
@@ -55,104 +63,164 @@ public class EmployeeControllerIT {
 
          */
 
+    // security:
 
-        @Test
-        void testCreateEmployeeValidWithController() throws Exception {
-                // EmployeeController employeeController = new EmployeeController();
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
-                List<EmployeeDto> employeesBefore = getAllEmployees();
-
-                EmployeeDto employee =
-                        new EmployeeDto( 13L, "Akos", "jsj", 200,
-                                LocalDateTime.of(2017, Month.FEBRUARY, 3, 6, 30));
-                // employeeController.createEmployee(employee);
-                createEmployee(employee);
+    @Autowired
+    EmployeeRepository employeeRepository;
 
 
-                List<EmployeeDto> employeesAfter = getAllEmployees();
+    String username = "user";
+    String pass = "pass";
 
-                assertThat(employeesAfter.subList(0, employeesBefore.size()))
-                        .usingRecursiveFieldByFieldElementComparator()
-                        .containsExactlyElementsOf(employeesBefore);
+    private String jwt;
 
-                assertThat(employeesAfter
-                        .get(employeesAfter.size() - 1))
-                        .usingRecursiveComparison()
-                        .isEqualTo(employee);
-
-
-                // Employee employeeTest = employeeService.findById(21L);
-                //assertThat(employeeTest.getSalary()).isEqualTo(200);
-
-
+    @BeforeEach
+    public void init() {
+        if (employeeRepository.findByUsername(TESTUSER_NAME).isEmpty()) {
+            Employee testuser = new Employee();
+            testuser.setUsername(TESTUSER_NAME);
+            testuser.setPassword(passwordEncoder.encode(PASSWORD));
+            employeeRepository.save(testuser);
         }
 
-        private void createEmployee(EmployeeDto employee) {
+        LoginDto body = new LoginDto();
+        body.setUsername(username);
+        body.setPassword(pass);
+        jwt = webTestClient.post()
+                .uri("/api/login")
+                .headers(headers -> headers.setBasicAuth(TESTUSER_NAME, PASSWORD))
+                .bodyValue(body)
+                .exchange()
+                .expectBody(String.class)
+                .returnResult()
+                .getResponseBody();
+    }
+
+
+    @Test
+    void testCreateEmployeeValidWithController() throws Exception {
+        // EmployeeController employeeController = new EmployeeController();
+
+        List<EmployeeDto> employeesBefore = getAllEmployees();
+
+        System.out.println("Módosításhoz létrehozás és módosítás előtti lista: " + employeesBefore);
+
+        EmployeeDto employee =
+                new EmployeeDto(13L, "Akos", "jsj", 200,
+                        LocalDateTime.of(2017, Month.FEBRUARY, 3, 6, 30));
+        // employeeController.createEmployee(employee);
+        createEmployee(employee);
+
+
+        List<EmployeeDto> employeesAfter = getAllEmployees();
+
+
+
+        assertThat(employeesAfter.subList(0, employeesBefore.size()))
+                .usingRecursiveFieldByFieldElementComparator()
+                .containsExactlyElementsOf(employeesBefore);
+
+        assertThat(employeesAfter
+                .get(employeesAfter.size() - 1))
+                .usingRecursiveComparison().ignoringFields("id")
+                .isEqualTo(employee);
+
+
+        // Employee employeeTest = employeeService.findById(21L);
+        //assertThat(employeeTest.getSalary()).isEqualTo(200);
+
+
+    }
+
+
+    private long createEmployeeWithId(EmployeeDto employee) {
+        long idNewX = webTestClient
+                .post()
+                .uri(BASE_URI)
+                .headers(headers -> headers.setBasicAuth(TESTUSER_NAME, PASSWORD))
+                .bodyValue(employee)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBody(EmployeeDto.class).returnResult().getResponseBody().getId();
+
+        return idNewX;
+    }
+
+    private void createEmployee(EmployeeDto employee) {
+        webTestClient
+                .post()
+                .uri(BASE_URI)
+                .headers(headers -> headers.setBasicAuth(TESTUSER_NAME, PASSWORD))
+                .bodyValue(employee)
+                .exchange()
+                .expectStatus()
+                .isOk();
+    }
+
+    private void createEmployeeInvalid(EmployeeDto employee) {
+        webTestClient
+                .post()
+                .uri(BASE_URI)
+                .headers(headers -> headers.setBasicAuth(TESTUSER_NAME, PASSWORD))
+                .bodyValue(employee)
+                .exchange()
+                .expectStatus()
+                .isBadRequest();
+    }
+
+    private List<EmployeeDto> getAllEmployees() {
+        List<EmployeeDto> responseList =
                 webTestClient
-                        .post()
+                        .get()
                         .uri(BASE_URI)
-                        .bodyValue(employee)
+                        .headers(headers -> headers.setBasicAuth(TESTUSER_NAME, PASSWORD))
                         .exchange()
                         .expectStatus()
-                        .isOk();
-        }
+                        .isOk()
+                        .expectBodyList(EmployeeDto.class)
+                        .returnResult()
+                        .getResponseBody();
 
-        private void createEmployeeInvalid(EmployeeDto employee) {
-                webTestClient
-                        .post()
-                        .uri(BASE_URI)
-                        .bodyValue(employee)
-                        .exchange()
-                        .expectStatus()
-                        .isBadRequest();
-        }
+        Collections.sort(responseList, (a1, a2) -> Long.compare(a1.getId(), a2.getId()));
+        return responseList;
 
-        private List<EmployeeDto> getAllEmployees() {
-                List<EmployeeDto> responseList =
-                        webTestClient
-                                .get()
-                                .uri(BASE_URI)
-                                .exchange()
-                                .expectStatus()
-                                .isOk()
-                                .expectBodyList(EmployeeDto.class)
-                                .returnResult()
-                                .getResponseBody();
-
-                Collections.sort(responseList, (a1, a2) -> Long.compare(a1.getId(), a2.getId()));
-                return responseList;
-
-        }
+    }
 
 
+    @Test
+    void testCreateEmployeeInvalidWithController() throws Exception {
+        // EmployeeController employeeController = new EmployeeController();
 
-        @Test
-        void testCreateEmployeeInvalidWithController() throws Exception {
-                // EmployeeController employeeController = new EmployeeController();
+        List<EmployeeDto> employeesBefore = getAllEmployees();
 
-                List<EmployeeDto> employeesBefore = getAllEmployees();
+        System.out.println("Módosításhoz létrehozás és módosítás előtti lista: " + employeesBefore);
 
-                EmployeeDto employee=
-                        new EmployeeDto(2L, "X", "jsj", -1,
-                                LocalDateTime.of(2017, Month.FEBRUARY,3,6,30));
-                // employeeController.createEmployee(employee);
+        EmployeeDto employee =
+                new EmployeeDto(2L, "X", "jsj", -1,
+                        LocalDateTime.of(2017, Month.FEBRUARY, 3, 6, 30));
+        // employeeController.createEmployee(employee);
 
-                createEmployeeInvalid(employee);
+        createEmployeeInvalid(employee);
 
-                List<EmployeeDto> employeesAfter = getAllEmployees();
-
-                assertThat(employeesAfter.subList(0, employeesBefore.size()))
-                        .usingRecursiveFieldByFieldElementComparator()
-                        .containsExactlyElementsOf(employeesBefore);
-
-                assertThat(employeesAfter.size()).isEqualTo(employeesBefore.size());
+        List<EmployeeDto> employeesAfter = getAllEmployees();
 
 
-                // Employee employeeTest = employeeService.findById(21L);
-                //assertThat(employeeTest.getSalary()).isEqualTo(200);
+        assertThat(employeesAfter.subList(0, employeesBefore.size()))
+                .usingRecursiveFieldByFieldElementComparator()
+                .containsExactlyElementsOf(employeesBefore);
+
+        assertThat(employeesAfter.size()).isEqualTo(employeesBefore.size());
 
 
-        }
+        // Employee employeeTest = employeeService.findById(21L);
+        //assertThat(employeeTest.getSalary()).isEqualTo(200);
+
+
+    }
 
 
 
@@ -182,23 +250,23 @@ public class EmployeeControllerIT {
 
  */
 
-        @Test
-        void testModifyEmployeeValidWithController() throws Exception {
-                // EmployeeController employeeController = new EmployeeController();
-                List<EmployeeDto> employeesBefore = getAllEmployees();
+    @Test
+    void testModifyEmployeeValidWithController() throws Exception {
+        // EmployeeController employeeController = new EmployeeController();
+        List<EmployeeDto> employeesBefore = getAllEmployees();
 
-                EmployeeDto employee =
-                        new EmployeeDto(1L, "Xkos", "jsj", 200,
-                                LocalDateTime.of(2017, Month.FEBRUARY, 3, 6, 30));
-                // employeeController.createEmployee(employee);
+        EmployeeDto employee =
+                new EmployeeDto(1L, "Xkos", "jsj", 200,
+                        LocalDateTime.of(2017, Month.FEBRUARY, 3, 6, 30));
+        // employeeController.createEmployee(employee);
 
-                modifyEmployee(1L, employee);
+        modifyEmployee(1L, employee);
 
-                List<EmployeeDto> employeesAfter = getAllEmployees();
+        List<EmployeeDto> employeesAfter = getAllEmployees();
 
-                assertThat(employeesAfter.get(0).getName()).isEqualTo("Xkos");
+        assertThat(employeesAfter.get(0).getName()).isEqualTo("Xkos");
 
-                assertThat(employeesAfter.size()).isEqualTo(employeesBefore.size());
+        assertThat(employeesAfter.size()).isEqualTo(employeesBefore.size());
 
 
 
@@ -213,11 +281,24 @@ public class EmployeeControllerIT {
 
 
  */
-        }
+    }
 
-        private void modifyEmployee(@RequestParam long id, EmployeeDto employee) {
+    private WebTestClient.ResponseSpec modifyEmployee(@RequestParam long id, EmployeeDto employee) {
+
+        /*
+        WebTestClient.ResponseSpec foundRecord=(this.webTestClient
+                .get()
+                .uri("/api/employees/"+id)
+                .headers(headers -> headers.setBasicAuth(TESTUSER_NAME, PASSWORD))
+                //.header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+                .exchange()
+                .expectStatus()
+                .isNotFound());
 
 
+         */
+
+/*
                 WebTestClient.ResponseSpec foundRecord=(this.webTestClient
                         .get()
                         .uri("/api/employees/"+id)
@@ -228,9 +309,24 @@ public class EmployeeControllerIT {
 
 
 
+ */
 
 
-/*
+// security-vel:
+
+          return       webTestClient
+                .put()
+                .uri("/api/employees/" + id)
+                .headers(headers -> headers.setBasicAuth(TESTUSER_NAME, PASSWORD))
+                .bodyValue(employee)
+                .exchange();
+
+                //.expectStatus()
+                //.isOk()
+                //.expectBody(EmployeeDto.class).returnResult().getResponseBody().getId();
+        //;
+
+               /*
                 {
                 webTestClient
                         .put()
@@ -241,7 +337,8 @@ public class EmployeeControllerIT {
                         .isOk();
         }
   */
-        }
+        //return idNew;
+    }
 
 
         /*
@@ -260,4 +357,16 @@ public class EmployeeControllerIT {
 
 
          */
+
+    private WebTestClient.ResponseSpec saveEmployee(EmployeeDto newEmployee) {
+        return webTestClient
+                .post()
+                .uri(BASE_URI)
+                .headers(headers -> headers.setBasicAuth(TESTUSER_NAME, PASSWORD))
+                //.headers(headers -> headers.setBearerAuth(jwt))
+                .bodyValue(newEmployee)
+                .exchange();
+    }
+
 }
+

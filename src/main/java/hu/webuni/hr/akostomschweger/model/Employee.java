@@ -30,6 +30,35 @@ public class Employee {
     @ManyToOne
     private Employee manager;
 
+    @OneToMany(mappedBy = "manager")
+    private List<Employee> managedEmployees;
+
+    private String username;
+    private String password;
+
+    public List<Employee> getManagedEmployees() {
+        return managedEmployees;
+    }
+
+    public void setManagedEmployees(List<Employee> managedEmployees) {
+        this.managedEmployees = managedEmployees;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public Employee(Long id, String name, int salary, LocalDateTime startDateAtTheCompany) {
         this.id = id;

@@ -10,6 +10,7 @@ import hu.webuni.hr.akostomschweger.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +41,9 @@ public class InitDbService {
 
     @Autowired
     PositionDetailsByCompanyRepository positionDetailsByCompanyRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     @Transactional
@@ -125,6 +129,8 @@ public class InitDbService {
                 111111,
                 LocalDateTime.of(2018, 1, 11, 11, 11));
         employeeA.setPosition(developer);
+        employeeA.setUsername("user1");
+        employeeA.setPassword(passwordEncoder.encode("pass"));
 
         Employee employeeB = new Employee(
                 1002L,
@@ -135,6 +141,8 @@ public class InitDbService {
                 222222,
                 LocalDateTime.of(2019, 2, 22, 22, 22));
         employeeB.setPosition(tester);
+        employeeB.setUsername("user2");
+        employeeB.setPassword(passwordEncoder.encode("pass"));
 
         Employee employeeC = new Employee(
                 0L,
@@ -144,8 +152,9 @@ public class InitDbService {
                  */
                 333333,
                 LocalDateTime.of(2020, 2, 22, 22, 22));
-        employeeB.setPosition(tester);
-
+        employeeC.setPosition(tester);
+        employeeC.setUsername("user3");
+        employeeC.setPassword(passwordEncoder.encode("pass"));
 
         Company companyA = new Company(
                 null,
@@ -168,6 +177,7 @@ public class InitDbService {
         //employeeA=employeeRepository.save(employeeA);
         employeeRepository.save(employeeB);
         //employeeB=employeeRepository.save(employeeB);
+        employeeRepository.save(employeeC);
 
 
         companyRepository.save(companyA);
@@ -187,11 +197,11 @@ public class InitDbService {
 
         //employeeRepository.save(employeeA);
         companyA.addEmployee(employeeA);
-        employeeRepository.save(employeeA);
+        //employeeRepository.save(employeeA); ---> ha aktívak, akkor a security nem megy, felülíródik másodszorra
         companyB.addEmployee(employeeA);
-        employeeRepository.save(employeeA);
+        //employeeRepository.save(employeeA);---> ha aktívak, akkor a security nem megy, felülíródik másodszorra
         companyB.addEmployee(employeeB);
-        employeeRepository.save(employeeB);
+        //employeeRepository.save(employeeB);---> ha aktívak, akkor a security nem megy, felülíródik másodszorra
 
 
         PositionDetailsByCompany pd = new PositionDetailsByCompany();

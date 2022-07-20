@@ -3,10 +3,7 @@ package hu.webuni.hr.akostomschweger.repository;
 import hu.webuni.hr.akostomschweger.model.Employee;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +12,7 @@ import javax.swing.text.html.parser.Entity;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Long> ,
         JpaSpecificationExecutor<Employee>
@@ -68,5 +66,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> ,
             + ")")
     int updateSalaries(String position, int minSalary, long companyId);
 
+    @EntityGraph(attributePaths = "managedEmployees")
+    Optional<Employee> findByUsername(String username);
 
 }
