@@ -128,9 +128,6 @@ public class InitDbService {
                  */
                 111111,
                 LocalDateTime.of(2018, 1, 11, 11, 11));
-        employeeA.setPosition(developer);
-        employeeA.setUsername("user1");
-        employeeA.setPassword(passwordEncoder.encode("pass"));
 
         Employee employeeB = new Employee(
                 1002L,
@@ -140,9 +137,7 @@ public class InitDbService {
                  */
                 222222,
                 LocalDateTime.of(2019, 2, 22, 22, 22));
-        employeeB.setPosition(tester);
-        employeeB.setUsername("user2");
-        employeeB.setPassword(passwordEncoder.encode("pass"));
+
 
         Employee employeeC = new Employee(
                 0L,
@@ -152,9 +147,12 @@ public class InitDbService {
                  */
                 333333,
                 LocalDateTime.of(2020, 2, 22, 22, 22));
-        employeeC.setPosition(tester);
-        employeeC.setUsername("user3");
-        employeeC.setPassword(passwordEncoder.encode("pass"));
+
+
+        System.out.println("Employees A,B,C:");
+        System.out.println(employeeA);
+        System.out.println(employeeB);
+        System.out.println(employeeC);
 
         Company companyA = new Company(
                 null,
@@ -175,9 +173,23 @@ public class InitDbService {
 
         employeeRepository.save(employeeA);
         //employeeA=employeeRepository.save(employeeA);
+        employeeA.setPosition(developer);
+        employeeA.setUsername("user1");
+        //employeeA.setPassword(passwordEncoder.encode("pass"));
+
         employeeRepository.save(employeeB);
         //employeeB=employeeRepository.save(employeeB);
+        employeeB.setPosition(tester);
+        employeeB.setUsername("user2");
+        //employeeB.setPassword(passwordEncoder.encode("pass"));
+        employeeB.setManager(employeeA);
+
+
         employeeRepository.save(employeeC);
+        employeeC.setPosition(tester);
+        employeeC.setUsername("user3");
+        //employeeC.setPassword(passwordEncoder.encode("pass"));
+        employeeC.setManager(employeeA);
 
 
         companyRepository.save(companyA);

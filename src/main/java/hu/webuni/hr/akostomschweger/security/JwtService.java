@@ -1,0 +1,78 @@
+package hu.webuni.hr.akostomschweger.security;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTCreator;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import hu.webuni.hr.akostomschweger.model.Employee;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+
+@Service
+public class JwtService {
+
+    public static final String ISSUER = "HrApp";
+    public static final String AUTH = "auth";
+    public static final String FULLNAME = "fullname";
+    public static final String ID = "id";
+    public static final String MANAGER = "manager";
+    public static final String USERNAME = "username";
+    public static final String MANAGED_EMPLOYEES = "managedEmployees";
+    private Algorithm alg = Algorithm.HMAC256("mysecret");
+
+    public String createJwtToken(UserDetails principal) {
+
+        Employee employee = ((HrUser)principal).getEmployee();
+        Employee manager = employee.getManager();
+        Collection<Employee> managedEmployees = employee.getManagedEmployees();
+
+        JWTCreator.Builder jwtBuilder = JWT.create()
+                .withSubject(principal.getUsername())
+                .withArrayClaim(AUTH,
+                        principal.getAuthorities().stream().map(GrantedAuthority::getAuthority).toArray(String[]::new))
+                //egyéb claim-eket is rakunk bele:
+                .withClaim(FULLNAME, employee.getName())
+                .withClaim(ID, employee.getId());
+
+        if(manager!=null) {
+            jwtBuilder.withClaim(MANAGER, createEmployeeData(manager));
+        }
+
+        if(managedEmployees != null && !managedEmployees.isEmpty()) {
+            jwtBuilder.withClaim(MANAGED_EMPLOYEES,
+                    managedEmployees.stream().map(this::createEmployeeData)
+                            .collect(Collectors.toList()));
+        }
+
+
+        return jwtBuilder
+                .withExpiresAt(new Date(System.currentTimeMillis()+ TimeUnit.MINUTES.toMillis(2)))
+                .withIssuer(ISSUER)
+                .sign(alg);
+    }
+
+    private Map<String, Object> createEmployeeData(Employee employee) {
+
+    return Map.of(ID, employee.getId(),
+            USERNAME, employee.getUsername());
+    }
+
+    public UserDetails parseJwt(String jwtToken) {
+
+        DecodedJWT decodedJwt = JWT.require(alg)
+                .withIssuer(ISSUER)
+                .build()
+                .verify(jwtToken);
+        return new User(decodedJwt.getSubject(), "dummy_barmi_lehet", decodedJwt.getClaim(AUTH).asList(String.class).stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList())); // user jelszó kéne, de mivel most végezzük az autentikációt, később úgysem használjuk, de am később innét tudná
+    }
+}

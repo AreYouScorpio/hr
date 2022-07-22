@@ -3,6 +3,7 @@ package hu.webuni.hr.akostomschweger.model;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,12 +32,12 @@ public class Employee {
     private Employee manager;
 
     @OneToMany(mappedBy = "manager")
-    private List<Employee> managedEmployees;
+    private Collection<Employee> managedEmployees;
 
     private String username;
     private String password;
 
-    public List<Employee> getManagedEmployees() {
+    public Collection<Employee> getManagedEmployees() {
         return managedEmployees;
     }
 

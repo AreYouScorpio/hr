@@ -1,5 +1,6 @@
 package hu.webuni.hr.akostomschweger.config;
 
+import hu.webuni.hr.akostomschweger.security.JwtAuthFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,8 +17,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-    @Configuration
+@Configuration
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
     public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -25,8 +27,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
         @Autowired
         UserDetailsService userDetailsService;
 
-        // @Autowired
-        // JwtAuthFilter jwtAuthFilter;
+        @Autowired
+        JwtAuthFilter jwtAuthFilter;
 
         @Bean
         public PasswordEncoder passwordEncoder() {
@@ -52,12 +54,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                     .authorizeRequests()
-                    // .antMatchers("/api/login/**").permitAll()
+                    .antMatchers("/api/login/**").permitAll()
+                    .antMatchers("/api/holidayrequests/**").authenticated()
 //                    .antMatchers(HttpMethod.POST, "/api/.../**").hasAuthority("admin")
 //                    .antMatchers(HttpMethod.PUT, "/api/.../**").hasAnyAuthority("user", "admin")
-                    .anyRequest().authenticated();
+                    //.anyRequest().authenticated(); -> új.. a többire beengedek mindenkit:
+                    .anyRequest().permitAll();
 
-            //    http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+            http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         }
 

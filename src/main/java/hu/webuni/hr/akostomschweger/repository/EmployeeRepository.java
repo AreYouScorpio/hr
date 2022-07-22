@@ -66,7 +66,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> ,
             + ")")
     int updateSalaries(String position, int minSalary, long companyId);
 
-    @EntityGraph(attributePaths = "managedEmployees")
+    @EntityGraph(attributePaths = {"managedEmployees"}, type = EntityGraph.EntityGraphType.LOAD) // vagy itt felsoroloma managert is, vagy a típusa LOAD graf legyen
     Optional<Employee> findByUsername(String username);
 
 }

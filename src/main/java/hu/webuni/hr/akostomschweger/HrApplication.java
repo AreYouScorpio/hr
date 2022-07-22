@@ -59,6 +59,7 @@ public class HrApplication implements CommandLineRunner {
         System.out.println(salaryService.getPayRaisePercent(employee4));
 
 
+
         initDbService.clearDB();
         initDbService.insertTestData();
 
