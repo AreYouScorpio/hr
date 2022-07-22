@@ -1,10 +1,13 @@
 package hu.webuni.hr.akostomschweger.dto;
 
+import hu.webuni.hr.akostomschweger.model.Employee;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class EmployeeDto {
 
@@ -24,6 +27,24 @@ public class EmployeeDto {
 
     private CompanyDto company;
 
+    private String username;
+    private String password;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public CompanyDto getCompany() {
         return company;
@@ -97,6 +118,8 @@ public class EmployeeDto {
         this.startDateAtTheCompany = startDateAtTheCompany;
     }
 
+    /*
+
     @Override
     public String toString() {
         return "EmployeeDto{" +
@@ -105,6 +128,22 @@ public class EmployeeDto {
                 ", position='" + position + '\'' +
                 ", salary=" + salary +
                 ", startDateAtTheCompany=" + startDateAtTheCompany +
+                '}';
+    }
+
+     */
+
+    @Override
+    public String toString() {
+        return "EmployeeDto{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", position='" + position + '\'' +
+                ", salary=" + salary +
+                ", startDateAtTheCompany=" + startDateAtTheCompany +
+                ", company=" + company +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 }
