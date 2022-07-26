@@ -17,8 +17,8 @@ import java.io.IOException;
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
-    public static final String BEARER = "Bearer ";
     public static final String AUTHORIZATION = "Authorization";
+    public static final String BEARER = "Bearer ";
 
     @Autowired
     private JwtService jwtService;
@@ -34,6 +34,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities()); // a második lenne a jelszó vagy hitelesítő, most null
             // ha érdekel, milyen IP-ről jön ez a user v ha lenne session ID-ja, akk mi az, akk a köv sor.. plusz előzőben Authenticationt átalakítani
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request, response); // továbbengedjük a kérést és a választ

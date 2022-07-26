@@ -171,26 +171,30 @@ public class InitDbService {
                 new ArrayList<Employee>());
 
 
-        employeeRepository.save(employeeA);
         //employeeA=employeeRepository.save(employeeA);
         employeeA.setPosition(developer);
         employeeA.setUsername("user1");
-        //employeeA.setPassword(passwordEncoder.encode("pass"));
+        employeeA.setPassword(passwordEncoder.encode("pass"));
+        employeeRepository.save(employeeA);
 
-        employeeRepository.save(employeeB);
         //employeeB=employeeRepository.save(employeeB);
+        employeeRepository.save(employeeB);
         employeeB.setPosition(tester);
         employeeB.setUsername("user2");
-        //employeeB.setPassword(passwordEncoder.encode("pass"));
+        employeeB.setPassword(passwordEncoder.encode("pass"));
         employeeB.setManager(employeeA);
 
 
         employeeRepository.save(employeeC);
         employeeC.setPosition(tester);
         employeeC.setUsername("user3");
-        //employeeC.setPassword(passwordEncoder.encode("pass"));
+        employeeC.setPassword(passwordEncoder.encode("pass"));
         employeeC.setManager(employeeA);
 
+        System.out.println("usernames added, employee A,B,C now:");
+        System.out.println(employeeA);
+        System.out.println(employeeB);
+        System.out.println(employeeC);
 
         companyRepository.save(companyA);
         //companyA=employeeRepository.save(companyA)

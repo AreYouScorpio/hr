@@ -31,7 +31,7 @@ public class Employee {
     @ManyToOne
     private Employee manager;
 
-    @OneToMany(mappedBy = "manager")
+    @OneToMany(mappedBy = "manager") //mappedBy adja meg, ki az ő párja
     private Collection<Employee> managedEmployees;
 
     private String username;
@@ -170,7 +170,16 @@ public class Employee {
                 ", startDateAtTheCompany=" + startDateAtTheCompany +
                 ", position=" + position +
                 ", company=" + company +
+                ", holidayRequests=" + holidayRequests +
+                ", manager=" + manager +
+                ", managedEmployees=" + managedEmployees +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
                 '}';
+    }
+
+    public void setManagedEmployees(Collection<Employee> managedEmployees) {
+        this.managedEmployees = managedEmployees;
     }
 
     public List<HolidayRequest> getHolidayRequests() {

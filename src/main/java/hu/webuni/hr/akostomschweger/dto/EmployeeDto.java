@@ -27,25 +27,28 @@ public class EmployeeDto {
 
     private CompanyDto company;
 
-    private String username;
-    private String password;
+    /*
+        private String username;
+        private String password;
 
-    public String getUsername() {
-        return username;
-    }
+        public String getUsername() {
+            return username;
+        }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+        public void setUsername(String username) {
+            this.username = username;
+        }
 
-    public String getPassword() {
-        return password;
-    }
+        public String getPassword() {
+            return password;
+        }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+        public void setPassword(String password) {
+            this.password = password;
+        }
 
+
+     */
     public CompanyDto getCompany() {
         return company;
     }
@@ -141,9 +144,10 @@ public class EmployeeDto {
                 ", position='" + position + '\'' +
                 ", salary=" + salary +
                 ", startDateAtTheCompany=" + startDateAtTheCompany +
-                ", company=" + company +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+                ", company=" + company
+                //+
+                //", username='" + username + '\'' +
+                //", password='" + password + '\''
+                + '}';
     }
 }

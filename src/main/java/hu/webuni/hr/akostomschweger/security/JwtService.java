@@ -2,6 +2,7 @@ package hu.webuni.hr.akostomschweger.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
+import com.auth0.jwt.JWTCreator.Builder;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import hu.webuni.hr.akostomschweger.model.Employee;
@@ -18,25 +19,30 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import static hu.webuni.hr.akostomschweger.model.HolidayRequest_.employee;
+
 @Service
 public class JwtService {
 
-    public static final String ISSUER = "HrApp";
-    public static final String AUTH = "auth";
+    public static final String ISSUER = "HrApp"; //**
+
+    public static final String AUTH = "auth"; //**
+
     public static final String FULLNAME = "fullname";
     public static final String ID = "id";
     public static final String MANAGER = "manager";
     public static final String USERNAME = "username";
     public static final String MANAGED_EMPLOYEES = "managedEmployees";
-    private Algorithm alg = Algorithm.HMAC256("mysecret");
+
+    private Algorithm alg = Algorithm.HMAC256("mysecret"); //**
 
     public String createJwtToken(UserDetails principal) {
 
-        Employee employee = ((HrUser)principal).getEmployee();
-        Employee manager = employee.getManager();
-        Collection<Employee> managedEmployees = employee.getManagedEmployees();
+        Employee employee = ((HrUser)principal).getEmployee(); //**
+        Employee manager = employee.getManager(); //**
+        Collection<Employee> managedEmployees = employee.getManagedEmployees(); //**
 
-        JWTCreator.Builder jwtBuilder = JWT.create()
+        Builder jwtBuilder = JWT.create()
                 .withSubject(principal.getUsername())
                 .withArrayClaim(AUTH,
                         principal.getAuthorities().stream().map(GrantedAuthority::getAuthority).toArray(String[]::new))
