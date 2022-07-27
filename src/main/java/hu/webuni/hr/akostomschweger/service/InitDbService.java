@@ -111,6 +111,7 @@ public class InitDbService {
     }
 
 
+    @Transactional
     public void insertTestData() {
 
         //position entitás bekapcsolása
@@ -175,21 +176,26 @@ public class InitDbService {
         employeeA.setPosition(developer);
         employeeA.setUsername("user1");
         employeeA.setPassword(passwordEncoder.encode("pass"));
-        employeeRepository.save(employeeA);
+        long newUserId = employeeRepository.save(employeeA).getId();
+        employeeA.setId(newUserId);
 
         //employeeB=employeeRepository.save(employeeB);
-        employeeRepository.save(employeeB);
         employeeB.setPosition(tester);
         employeeB.setUsername("user2");
         employeeB.setPassword(passwordEncoder.encode("pass"));
         employeeB.setManager(employeeA);
+        long newUserId2 = employeeRepository.save(employeeB).getId();
+        employeeB.setId(newUserId2);
 
 
-        employeeRepository.save(employeeC);
+
+        //employeeRepository.save(employeeC);
         employeeC.setPosition(tester);
         employeeC.setUsername("user3");
         employeeC.setPassword(passwordEncoder.encode("pass"));
         employeeC.setManager(employeeA);
+        long newUserId3 = employeeRepository.save(employeeC).getId();
+        employeeC.setId(newUserId3);
 
         System.out.println("usernames added, employee A,B,C now:");
         System.out.println(employeeA);

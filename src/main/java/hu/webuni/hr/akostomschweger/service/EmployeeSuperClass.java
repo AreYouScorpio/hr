@@ -25,6 +25,9 @@ public abstract class EmployeeSuperClass implements EmployeeService {
     @Autowired
     private PositionRepository positionRepository;
 
+    @Autowired
+    PositionService positionService;
+
     /*
 
         private Map<Long, Employee> employees = new HashMap<>();
@@ -66,6 +69,7 @@ public abstract class EmployeeSuperClass implements EmployeeService {
     @Transactional
     public Employee save(Employee employee) {
         // employees.put(employee.getId(), employee);
+
         employee.setId(null); // biztos ami biztos ne felülírjon
         Position position = employee.getPosition();
         if (position != null) {
@@ -84,6 +88,12 @@ public abstract class EmployeeSuperClass implements EmployeeService {
             }
         }
         return employeeRepository.save(employee);// employee;
+
+
+
+        //tanár positionService-szel csinálta: positionService.setPositionForEmployee(employee);
+        //tanár positionService-szel csinálta: return employeeRepository.save(employee);
+
     }
 
 
