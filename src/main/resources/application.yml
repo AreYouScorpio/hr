@@ -19,6 +19,11 @@ spring:
         open-in-view: false
 
 hr:
+    jwt:
+      issuer: HrApp
+      expiry: 20m
+      secret: mysecret
+      alg: HMAC384
     salary:
       def:
         percent:  5

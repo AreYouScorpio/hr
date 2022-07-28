@@ -6,13 +6,17 @@ import com.auth0.jwt.JWTCreator.Builder;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import hu.webuni.hr.akostomschweger.config.AtConfigurationProperties;
 import hu.webuni.hr.akostomschweger.model.Employee;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -22,7 +26,6 @@ import static hu.webuni.hr.akostomschweger.model.HolidayRequest_.employee;
 @Service
 public class JwtService {
 
-    public static final String ISSUER = "HrApp"; //**
 
     public static final String AUTH = "auth"; //**
 
@@ -32,7 +35,31 @@ public class JwtService {
     public static final String USERNAME = "username";
     public static final String MANAGED_EMPLOYEES = "managedEmployees";
 
-    private Algorithm alg = Algorithm.HMAC256("mysecret"); //**
+    //yml beolvasáshoz írjuk: (tanári név: HrConfigProperties, nálam AtConfigurationProperties
+    @Autowired
+    private AtConfigurationProperties config;
+
+    // az nem lenne jó, hogy itt
+    // private String issuer = config.getJwt().getIssuer();
+    // amikor az eleje meghívódik (a tagváltozó inicializáló), akk még az injektálás nem történt meg AutoWired-el
+    // ezért fent írunk egy @PostConstruct annotációs metódust
+
+    private Algorithm alg; //yml.ből , ezért törölve ez alg = Algorithm.HMAC256("mysecret"); //**
+    private String issuer; //** //yml beolvasás miatt törölve ez: public static final String ISSUER = "HrApp";
+
+    //így kell, h az injektálás után fusson le:
+    @PostConstruct
+    public void init() {
+        AtConfigurationProperties.Jwt jwt = config.getJwt();
+        issuer = jwt.getIssuer();
+        try {
+            alg = (Algorithm) Algorithm.class.getMethod(jwt.getAlg(), String.class)
+                    .invoke(Algorithm.class, jwt.getSecret()); // az a metódus kell, ami stringet fogad el bemenő paraméterként
+        }
+        catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | IllegalArgumentException | SecurityException exception) {
+            exception.printStackTrace();
+        }
+    }
 
     public String createJwtToken(UserDetails principal) {
 
@@ -59,9 +86,17 @@ public class JwtService {
         }
 
 
+        /* yml beolvasás legyen a token lejárati időre ehelyett
         return jwtBuilder
                 .withExpiresAt(new Date(System.currentTimeMillis()+ TimeUnit.MINUTES.toMillis(20))) //JWT token meddig éljen, 2 helyett 20 perc pl
-                .withIssuer(ISSUER)
+                .withIssuer(issuer)
+                .sign(alg);
+
+         */
+        return jwtBuilder
+                .withExpiresAt(new Date(System.currentTimeMillis()+
+                        config.getJwt().getExpiry().toMillis())) //JWT token meddig éljen, 2 helyett 20 perc pl
+                .withIssuer(issuer)
                 .sign(alg);
     }
 
@@ -74,7 +109,7 @@ public class JwtService {
     public UserDetails parseJwt(String jwtToken) {
 
         DecodedJWT decodedJwt = JWT.require(alg)
-                .withIssuer(ISSUER)
+                .withIssuer(issuer)
                 .build()
                 .verify(jwtToken);
 

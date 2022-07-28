@@ -1,6 +1,9 @@
 package hu.webuni.hr.akostomschweger.config;
 
+import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.stereotype.Component;
+
+import java.time.Duration;
 
 
 @org.springframework.boot.context.properties.ConfigurationProperties(prefix = "hr")
@@ -8,6 +11,17 @@ import org.springframework.stereotype.Component;
 public class AtConfigurationProperties {
 
     private Salary salary = new Salary();
+
+    // jwt token added + getter + setter + yml-ben megadni, hogyan lehet használni + lent egy static osztály neki
+    private Jwt jwt = new Jwt();
+
+    public Jwt getJwt() {
+        return jwt;
+    }
+
+    public void setJwt(Jwt jwt) {
+        this.jwt = jwt;
+    }
 
     public Salary getSalary() {
         return salary;
@@ -18,6 +32,9 @@ public class AtConfigurationProperties {
     }
 
     public static class Salary {
+
+
+
         private Default def = new Default();
         private Special special = new Special();
 
@@ -117,6 +134,48 @@ public class AtConfigurationProperties {
 
         public void setLimit3(double limit3) {
             this.limit3 = limit3;
+        }
+    }
+
+
+
+    public static class Jwt {
+
+        private String secret;
+        private Duration expiry;// spring propertyből tudja kezelni és be tudjuk írni h pl 30perc
+        private String issuer;
+        private String alg;
+
+        public String getSecret() {
+            return secret;
+        }
+
+        public void setSecret(String secret) {
+            this.secret = secret;
+        }
+
+        public Duration getExpiry() {
+            return expiry;
+        }
+
+        public void setExpiry(Duration expiry) {
+            this.expiry = expiry;
+        }
+
+        public String getIssuer() {
+            return issuer;
+        }
+
+        public void setIssuer(String issuer) {
+            this.issuer = issuer;
+        }
+
+        public String getAlg() {
+            return alg;
+        }
+
+        public void setAlg(String alg) {
+            this.alg = alg;
         }
     }
 
