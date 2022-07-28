@@ -83,6 +83,8 @@ public class HolidayRequestService {
         return holidayRequestRepository.save(holidayRequest);
     }
 
+    //old .. JWT token előtt (felettes ellenőrzés holidayrequest approve-hoz--->
+    /*
     @Transactional
     public HolidayRequest approveHolidayRequest(long id, long approverId, boolean status) {
         HolidayRequest holidayRequest = holidayRequestRepository.findById(id).get();
@@ -91,6 +93,34 @@ public class HolidayRequestService {
         holidayRequest.setApprovedAt(LocalDateTime.now());
         return holidayRequest;
     }
+
+
+     */
+    // JWT token security checkhez ez az új--->
+
+    @Transactional
+    public HolidayRequest approveHolidayRequest(long id, boolean status) {
+        HolidayRequest holidayRequest = holidayRequestRepository.findById(id).get();
+
+        // inkább kinyerjük az id-t:
+        Long approverId = getCurrentUser().getEmployee().getId();
+        Employee manager = holidayRequest.getEmployee().getManager();
+        if(manager!=null) {
+            if(!manager.getId().equals(approverId))
+                throw new AccessDeniedException("Approve is allowed only by manager of employee.");
+                    }
+        else if (holidayRequest.getEmployee().getId().equals(approverId))//saját magát approve-olhatja, akinek már nincs főnöke
+        {
+            throw new AccessDeniedException("Approve is allowed only by request's owner.");
+
+        }
+
+        holidayRequest.setApprover(employeeService.findById(approverId).get());
+        holidayRequest.setApproved(status);
+        holidayRequest.setApprovedAt(LocalDateTime.now());
+        return holidayRequest;
+    }
+
 
     @Transactional
     public HolidayRequest modifyHolidayRequest(long id, HolidayRequest newHolidayRequest) {

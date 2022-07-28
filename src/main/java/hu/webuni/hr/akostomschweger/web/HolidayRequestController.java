@@ -96,11 +96,28 @@ public class HolidayRequestController {
         }
     }
 
+    //old , before JWT token check, hogy a felettese-e aki approve-ol:
+    /*
     @PutMapping(value = "/{id}/approval", params = {"status", "approverId"})
     public HolidayRequestDto approveHolidayRequest(@PathVariable long id, @RequestParam long approverId, @RequestParam boolean status) {
         HolidayRequest holidayRequest;
         try {
             holidayRequest = holidayRequestService.approveHolidayRequest(id, approverId, status);
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        return holidayRequestMapper.holidayRequestToDto(holidayRequest);
+    }
+
+
+     */
+// felettes check JWT tokennel:
+
+    @PutMapping(value = "/{id}/approval", params = {"status"}) // törölve az approverId felküldés
+    public HolidayRequestDto approveHolidayRequest(@PathVariable long id, @RequestParam boolean status) { //detto
+        HolidayRequest holidayRequest;
+        try {
+            holidayRequest = holidayRequestService.approveHolidayRequest(id, status); //detto .. ehelyett nyerjük ki a metódusban
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
