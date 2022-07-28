@@ -112,7 +112,7 @@ public class HolidayRequestController {
 
      */
 // felettes check JWT tokennel:
-
+// holidayRequestId és approverId kerül felküldésre
     @PutMapping(value = "/{id}/approval", params = {"status"}) // törölve az approverId felküldés
     public HolidayRequestDto approveHolidayRequest(@PathVariable long id, @RequestParam boolean status) { //detto
         HolidayRequest holidayRequest;
