@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -51,17 +53,17 @@ public class HolidayRequestController {
 
 
     @PostMapping
-    //@PreAuthorize("#newHolidayRequest.employeeId == authentication.principal.employee.employeeId")
+    @PreAuthorize("#newHolidayRequest.employeeId == authentication.principal.employee.id") // első fele a holidayrequest employeeId-ja (employeeId), a második pedig a visszaadott HrUser (Employee) id-ja (sima id)
     public HolidayRequestDto addHolidayRequest(@RequestBody @Valid HolidayRequestDto newHolidayRequest) {
         HolidayRequest holidayRequest;
         System.out.println("EmployeeID for HolidayRequest: " + newHolidayRequest.getEmployeeId());
         System.out.println("ApproverID for HolidayRequest: " + newHolidayRequest.getApproverId());
-        //try {
-          //  Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        try {
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             holidayRequest = holidayRequestService.addHolidayRequest(holidayRequestMapper.dtoToHolidayRequest(newHolidayRequest), newHolidayRequest.getEmployeeId());
-        //} catch (NoSuchElementException e) {
-          //  throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        //}
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
         return holidayRequestMapper.holidayRequestToDto(holidayRequest);
     }
 

@@ -31,5 +31,10 @@ public class HrUserDetailsService implements UserDetailsService {
         return new HrUser(username, employee.getPassword(),
                 Arrays.asList(new SimpleGrantedAuthority("USER")), employee);
 
+        // ez adja vissza a HolidayRequestController-nek
+        // a authentication.principal.employee.employeeId-t
+        // ami a SecurityConfig @EnableGlobalMethodSecurity(prePostEnabled = true) -jával
+        // van beállítva,h ellenőrizve legyen
+        // az itt visszaadott HrUser lesz az authentication.principal
     }
 }

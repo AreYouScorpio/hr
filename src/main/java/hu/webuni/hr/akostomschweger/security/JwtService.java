@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.JWTCreator.Builder;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import hu.webuni.hr.akostomschweger.model.Employee;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,10 +13,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -79,6 +77,51 @@ public class JwtService {
                 .withIssuer(ISSUER)
                 .build()
                 .verify(jwtToken);
-        return new User(decodedJwt.getSubject(), "dummy_barmi_lehet", decodedJwt.getClaim(AUTH).asList(String.class).stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList())); // user jelszó kéne, de mivel most végezzük az autentikációt, később úgysem használjuk, de am később innét tudná
+
+        Employee employee = new Employee();
+        employee.setId(decodedJwt.getClaim(ID).asLong());
+        employee.setUsername(decodedJwt.getSubject());
+        employee.setName(decodedJwt.getClaim(FULLNAME).asString());
+        Claim managerClaim = decodedJwt.getClaim(MANAGER);
+        if ( managerClaim != null ) {
+            Map<String, Object> managerData = managerClaim.asMap();
+            employee.setManager(parseEmployee(managerData));
+        }
+
+        Claim managedEmployeesClaim = decodedJwt.getClaim(MANAGED_EMPLOYEES);
+        if (managedEmployeesClaim!=  null) {
+            employee.setManagedEmployees(new ArrayList<>());
+            List<HashMap> managedEmployees = managedEmployeesClaim.asList(HashMap.class);
+            if (managedEmployees!= null) {
+                for (HashMap employeeMap :managedEmployees) {
+                    Employee managedEmployee = parseEmployee(employeeMap);
+                    if(managedEmployee!=null) {
+                        employee.getManagedEmployees().add(managedEmployee);
+                    }
+                }
+            }
+        }
+
+        return new HrUser(decodedJwt.getSubject(),
+                "dummy_barmi_lehet",
+                decodedJwt
+                        .getClaim(AUTH)
+                        .asList(String.class)
+                        .stream()
+                        .map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toList()), employee); // user jelszó kéne, de mivel most végezzük az autentikációt, később úgysem használjuk, de am később innét tudná
+    }
+
+    private Employee parseEmployee(Map<String, Object> employeeData) {
+
+        if (employeeData !=null) {
+            Employee employee = new Employee();
+            employee.setId(((Integer) employeeData.get(ID)).longValue());
+            employee.setUsername((String) employeeData.get(USERNAME));
+
+
+            return new Employee();
+        }
+        return null;
     }
 }
