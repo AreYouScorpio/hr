@@ -72,10 +72,10 @@ public class EmployeeControllerIT {
     EmployeeRepository employeeRepository;
 
 
-    String username = "user";
+    String username = "user1";
     String pass = "pass";
 
-    private String jwt;
+    private String jwt; // bearer token megszerzése a)
 
     @BeforeEach
     public void init() {
@@ -86,13 +86,13 @@ public class EmployeeControllerIT {
             employeeRepository.save(testuser);
         }
 
-        LoginDto body = new LoginDto();
-        body.setUsername(username);
-        body.setPassword(pass);
-        jwt = webTestClient.post()
+        LoginDto body = new LoginDto(); // bearer token megszerzése a)
+        body.setUsername(username); // bearer token megszerzése a)
+        body.setPassword(pass); // bearer token megszerzése a)
+        jwt = webTestClient.post()// bearer token megszerzése a)
                 .uri("/api/login")
-                .headers(headers -> headers.setBasicAuth(TESTUSER_NAME, PASSWORD))
-                .bodyValue(body)
+                //.headers(headers -> headers.setBasicAuth(TESTUSER_NAME, PASSWORD)) ---> JWT-re átállás miatt törölve a basicauth és mindenütt lent is
+                .bodyValue(body)// bearer token megszerzése a) -- fent a body + hozzáadva a username password az IT teszthez
                 .exchange()
                 .expectBody(String.class)
                 .returnResult()
@@ -140,7 +140,9 @@ public class EmployeeControllerIT {
         long idNewX = webTestClient
                 .post()
                 .uri(BASE_URI)
-                .headers(headers -> headers.setBasicAuth(TESTUSER_NAME, PASSWORD))
+                //.headers(headers -> headers.setBasicAuth(TESTUSER_NAME, PASSWORD))
+                //csere a bearer jwt tokenhez:
+                .headers(headers -> headers.setBearerAuth(jwt))
                 .bodyValue(employee)
                 .exchange()
                 .expectStatus()
@@ -154,7 +156,9 @@ public class EmployeeControllerIT {
         webTestClient
                 .post()
                 .uri(BASE_URI)
-                .headers(headers -> headers.setBasicAuth(TESTUSER_NAME, PASSWORD))
+                //.headers(headers -> headers.setBasicAuth(TESTUSER_NAME, PASSWORD))
+                //csere a bearer jwt tokenhez:
+                .headers(headers -> headers.setBearerAuth(jwt))
                 .bodyValue(employee)
                 .exchange()
                 .expectStatus()
@@ -165,7 +169,9 @@ public class EmployeeControllerIT {
         webTestClient
                 .post()
                 .uri(BASE_URI)
-                .headers(headers -> headers.setBasicAuth(TESTUSER_NAME, PASSWORD))
+                //.headers(headers -> headers.setBasicAuth(TESTUSER_NAME, PASSWORD))
+                //csere a bearer jwt tokenhez:
+                .headers(headers -> headers.setBearerAuth(jwt))
                 .bodyValue(employee)
                 .exchange()
                 .expectStatus()
@@ -177,7 +183,9 @@ public class EmployeeControllerIT {
                 webTestClient
                         .get()
                         .uri(BASE_URI)
-                        .headers(headers -> headers.setBasicAuth(TESTUSER_NAME, PASSWORD))
+                        //.headers(headers -> headers.setBasicAuth(TESTUSER_NAME, PASSWORD))
+                        //csere a bearer jwt tokenhez:
+                        .headers(headers -> headers.setBearerAuth(jwt))
                         .exchange()
                         .expectStatus()
                         .isOk()
@@ -317,7 +325,9 @@ public class EmployeeControllerIT {
           return       webTestClient
                 .put()
                 .uri("/api/employees/" + id)
-                .headers(headers -> headers.setBasicAuth(TESTUSER_NAME, PASSWORD))
+                //.headers(headers -> headers.setBasicAuth(TESTUSER_NAME, PASSWORD))
+                  //csere a bearer jwt tokenhez:
+                .headers(headers -> headers.setBearerAuth(jwt))
                 .bodyValue(employee)
                 .exchange();
 
@@ -362,7 +372,9 @@ public class EmployeeControllerIT {
         return webTestClient
                 .post()
                 .uri(BASE_URI)
-                .headers(headers -> headers.setBasicAuth(TESTUSER_NAME, PASSWORD))
+                //.headers(headers -> headers.setBasicAuth(TESTUSER_NAME, PASSWORD))
+                //csere a bearer jwt tokenhez:
+                .headers(headers -> headers.setBearerAuth(jwt))
                 //.headers(headers -> headers.setBearerAuth(jwt))
                 .bodyValue(newEmployee)
                 .exchange();

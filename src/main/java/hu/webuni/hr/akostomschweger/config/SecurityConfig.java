@@ -48,14 +48,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
-                    .httpBasic()
-                    .and()
+                    //.httpBasic()
+                    //.and()
                     .csrf().disable()
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                     .authorizeRequests()
                     .antMatchers("/api/login/**").permitAll()
                     .antMatchers("/api/holidayrequests/**").authenticated()
+                    //hreq int teszthez újra visszaállítjuk az employees auth-ot:
+                    .antMatchers("/api/employees/**").authenticated()
 //                    .antMatchers(HttpMethod.POST, "/api/.../**").hasAuthority("admin")
 //                    .antMatchers(HttpMethod.PUT, "/api/.../**").hasAnyAuthority("user", "admin")
                     //.anyRequest().authenticated(); -> új.. a többire beengedek mindenkit:
