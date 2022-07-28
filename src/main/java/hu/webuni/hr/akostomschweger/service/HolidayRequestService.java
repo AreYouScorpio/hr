@@ -4,10 +4,13 @@ import hu.webuni.hr.akostomschweger.dto.HolidayRequestFilterDto;
 import hu.webuni.hr.akostomschweger.model.Employee;
 import hu.webuni.hr.akostomschweger.model.HolidayRequest;
 import hu.webuni.hr.akostomschweger.repository.HolidayRequestRepository;
+import hu.webuni.hr.akostomschweger.security.HrUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -103,14 +106,25 @@ public class HolidayRequestService {
     @Transactional
     public void deleteHolidayRequest(long id) {
         HolidayRequest holidayRequest = holidayRequestRepository.findById(id).get();
+        // holidayRequestController deletemapping-ra nem tudtunk @PreAuth-ot tenni, m csak id utazik, nem úgy, mint a holidayrequest létrehozásánál
+        // emiatt itt checkoljuk, hogy a szabadságigényt magának hozza-e létre az employee
+        // ---> erre írt metódus:
+        checkOwnerOfHolidayRequest(holidayRequest);
         if (holidayRequest.getApproved() != null)
             throw new InvalidParameterException();
         holidayRequest.getEmployee().getHolidayRequests().remove(holidayRequest);
         holidayRequestRepository.deleteById(id);
     }
 
+    private void checkOwnerOfHolidayRequest(HolidayRequest holidayRequest) {
+        HrUser user = getCurrentUser();
+        if(!holidayRequest.getEmployee().getId().equals(user.getEmployee().getId()))
+            throw new AccessDeniedException("Holiday request not owned by current user."); //springes !!
+    }
 
-
+    private HrUser getCurrentUser() {
+        return (HrUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
 
 
 }

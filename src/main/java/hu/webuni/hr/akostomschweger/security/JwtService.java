@@ -60,7 +60,7 @@ public class JwtService {
 
 
         return jwtBuilder
-                .withExpiresAt(new Date(System.currentTimeMillis()+ TimeUnit.MINUTES.toMillis(2)))
+                .withExpiresAt(new Date(System.currentTimeMillis()+ TimeUnit.MINUTES.toMillis(20))) //JWT token meddig éljen, 2 helyett 20 perc pl
                 .withIssuer(ISSUER)
                 .sign(alg);
     }

@@ -84,7 +84,8 @@ public class HolidayRequestController {
         return holidayRequestMapper.holidayRequestToDto(holidayRequest);
     }
 
-    @DeleteMapping("/{id}")
+    // !!!! fontos @PreAuthorize-hoz:
+    @DeleteMapping("/{id}") // a delete-hez csak id kerül felküldésre, emiatt PreAuthorize-t nem tudok írni, mint a post-nál id checkre, emiatt a holidayrequestservice deleteholidayrequestjében kell megírni !!!
     public void deleteHolidayRequest(@PathVariable long id) {
         try {
             holidayRequestService.deleteHolidayRequest(id);
